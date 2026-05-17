@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Bird Products
+    </title>
+
+    <link rel="stylesheet" href="all.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet">
+    <style>
+        /* =========================
+   BIRD PAGE
+========================= */
+
+        .bird-hero{
+            width:90%;
+            margin:40px auto;
+        }
+
+        .bird-hero-content{
+            background:#f7efe7;
+            border-radius:35px;
+            padding:50px;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            overflow:hidden;
+            position:relative;
+        }
+
+        .bird-hero-content::before{
+            content:"";
+            position:absolute;
+            width:350px;
+            height:350px;
+            border-radius:50%;
+            background:rgba(139,94,60,.08);
+            right:-120px;
+            top:-120px;
+        }
+
+        .bird-text{
+            z-index:2;
+        }
+
+        .bird-text h1{
+            font-size:65px;
+            margin:25px 0 15px;
+            color:#3e2414;
+        }
+
+        .bird-text p{
+            color:#6f5a4d;
+            font-size:20px;
+        }
+
+        .bird-image img{
+            width:500px;
+            z-index:2;
+            position:relative;
+        }
+
+        /* =========================
+           SHOP TITLE
+        ========================= */
+
+        .shop-title{
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            gap:20px;
+            margin:60px 0 40px;
+        }
+
+        .shop-title h2{
+            font-size:35px;
+            color:#3e2414;
+        }
+
+        .shop-title span{
+            width:80px;
+            height:2px;
+            background:#d8b08c;
+        }
+
+        /* =========================
+           BIRD CATEGORIES
+        ========================= */
+
+        .bird-categories{
+            width:90%;
+            margin:auto;
+            display:grid;
+            grid-template-columns:repeat(4,1fr);
+            gap:30px;
+            padding-bottom:80px;
+        }
+
+        /* CARD */
+
+        .bird-card{
+            background:white;
+            border-radius:30px;
+            overflow:hidden;
+            text-decoration:none;
+            box-shadow:0 10px 25px rgba(0,0,0,.05);
+            transition:.4s;
+        }
+
+        .bird-card:hover{
+            transform:translateY(-10px);
+        }
+
+        /* IMAGE */
+
+        .bird-card-image{
+            height:280px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            overflow:hidden;
+
+            background:
+                    linear-gradient(
+                            135deg,
+                            #f3e2d1,
+                            #faf6f1
+                    );
+        }
+
+        .bird-card-image img{
+            width:220px;
+            height:220px;
+            object-fit:contain;
+            transition:.3s;
+        }
+
+        .bird-card:hover .bird-card-image img{
+            transform:scale(1.08);
+        }
+
+        /* INFO */
+
+        .bird-card-info{
+            padding:25px;
+            text-align:center;
+        }
+
+        .bird-card-info h3{
+            color:#3e2414;
+            font-size:28px;
+            margin-bottom:10px;
+        }
+
+        .bird-card-info p{
+            color:#8b5e3c;
+            margin-bottom:20px;
+        }
+
+        /* BUTTON */
+
+        .bird-card-info button{
+            border:none;
+            background:#8b5e3c;
+            color:white;
+            padding:12px 28px;
+            border-radius:999px;
+            cursor:pointer;
+            font-weight:600;
+            transition:.3s;
+        }
+
+        .bird-card-info button:hover{
+            background:#3e2414;
+            transform:translateY(-3px);
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media(max-width:1100px){
+
+            .bird-categories{
+                grid-template-columns:repeat(2,1fr);
+            }
+
+            .bird-hero-content{
+                flex-direction:column;
+                text-align:center;
+                gap:40px;
+            }
+        }
+
+        @media(max-width:700px){
+
+            .bird-categories{
+                grid-template-columns:1fr;
+            }
+
+            .bird-text h1{
+                font-size:45px;
+            }
+
+            .bird-image img{
+                width:300px;
+            }
+
+            .bird-hero-content{
+                padding:40px 25px;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div class="topbar">
+
+    <div class="topbar-left">
+        <i class="fa-solid fa-phone"></i>
+        +970 59 876 5432
+    </div>
+
+    <div class="topbar-center">
+        <i class="fa-solid fa-truck"></i>
+        Free delivery on orders over $100
+    </div>
+
+    <div class="topbar-right">
+
+        <a href="#">
+            <i class="fa-brands fa-facebook-f"></i>
+        </a>
+
+        <a href="#">
+            <i class="fa-brands fa-instagram"></i>
+        </a>
+
+        <a href="#">
+            <i class="fa-brands fa-twitter"></i>
+        </a>
+
+    </div>
+
+</div>
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header class="header">
+
+    <div class="container header-content">
+
+        <!-- LOGO -->
+        <div class="logo">
+
+            <img src="imgs/logo.png" alt="Animalia Logo">
+
+        </div>
+
+        <!-- NAVBAR -->
+
+        <nav class="navbar">
+
+            <ul>
+
+                <li>
+                    <a href="#" class="active">Home</a>
+                </li>
+                <li class="dropdown">
+
+                    <a href="#">
+                        Store
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </a>
+
+                    <ul class="dropdown-menu">
+
+                        <li>
+                            <a href="cat.html">Cats</a>
+                        </li>
+
+                        <li>
+                            <a href="dog.html">Dogs</a>
+                        </li>
+
+                        <li>
+                            <a href="bird.html">Birds</a>
+                        </li>
+
+                        <li>
+                            <a href="fish.html">Aquarium</a>
+                        </li>
+
+                    </ul>
+
+                </li>
+
+                <li>
+                    <a href="#">About</a>
+                </li>
+
+                <li>
+                    <a href="contact.html">
+                        Contact Us</a>
+                </li>
+
+            </ul>
+
+        </nav>
+
+        <!-- ACTIONS -->
+
+        <div class="header-actions">
+
+            <div class="search-box">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input type="text"
+                       placeholder="Search products...">
+
+            </div>
+
+            <a href="#" class="icon-btn" id="userBtn">
+
+                <i class="fa-solid fa-user"></i>
+
+            </a>
+            <a href="chart.html" class="icon-btn cart-btn">
+
+                <i class="fa-solid fa-cart-shopping"></i>
+
+
+            </a>
+
+        </div>
+
+    </div>
+
+</header>
+<!-- =========================
+     TOPBAR
+========================= -->
+
+<!-- =========================
+     HERO
+========================= -->
+
+<section class="bird-hero">
+
+    <div class="bird-hero-content">
+
+        <div class="bird-text">
+
+            <h1>
+                Bird Products
+            </h1>
+
+            <p>
+                Everything your birds need in one place
+            </p>
+
+        </div>
+
+        <div class="bird-image">
+
+            <img src="imgs/birdd.png"
+                 alt="Bird">
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =========================
+     CATEGORY TITLE
+========================= -->
+
+<div class="shop-title">
+
+    <span></span>
+
+    <h2>
+        Shop by Category
+    </h2>
+
+    <span></span>
+
+</div>
+
+<!-- =========================
+     CATEGORIES
+========================= -->
+
+<section class="bird-categories">
+
+    <!-- FOOD -->
+
+    <a href="bird-food.html"
+       class="bird-card">
+
+        <div class="bird-card-image">
+
+            <img src="imgs/birds food.png"
+                 alt="Bird Food">
+
+        </div>
+
+        <div class="bird-card-info">
+
+            <h3>
+                Bird Food
+            </h3>
+
+            <p>
+                Pellets • Snacks
+            </p>
+
+            <button>
+                Shop Now
+            </button>
+
+        </div>
+
+    </a>
+
+    <!-- CAGES -->
+
+    <a href="Bird-cages.html"
+       class="bird-card">
+
+        <div class="bird-card-image">
+
+            <img src="imgs/birds cage.jfif"
+                 alt="Bird Cage">
+
+        </div>
+
+        <div class="bird-card-info">
+
+            <h3>
+                Bird Cages
+            </h3>
+
+            <p>
+                Cages • Stands
+            </p>
+
+            <button>
+                Shop Now
+            </button>
+
+        </div>
+
+    </a>
+
+    <!-- ACCESSORIES -->
+
+    <a href="Bird-Accessories.html"
+       class="bird-card">
+
+        <div class="bird-card-image">
+
+            <img src="imgs/bird accessories feeder.png"
+                 alt="Accessories">
+
+        </div>
+
+        <div class="bird-card-info">
+
+            <h3>
+                Accessories
+            </h3>
+
+            <p>
+                Feeders • Cups
+            </p>
+
+            <button>
+                Shop Now
+            </button>
+
+        </div>
+
+    </a>
+
+    <!-- PERCHES -->
+
+    <a href="bird-perches.html"
+       class="bird-card">
+
+        <div class="bird-card-image">
+
+            <img src="imgs/bird swing animated.png"
+                 alt="Perches">
+
+        </div>
+
+        <div class="bird-card-info">
+
+            <h3>
+                Perches
+            </h3>
+
+            <p>
+                Wood • Swing
+            </p>
+
+            <button>
+                Shop Now
+            </button>
+
+        </div>
+
+    </a>
+
+</section>
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer class="footer">
+
+    <div class="footer-content">
+
+        <!-- ABOUT -->
+
+        <div class="footer-box">
+
+            <h3>
+                About
+            </h3>
+
+            <a href="#">
+                Privacy Policy
+            </a>
+
+            <a href="#">
+                Terms & Conditions
+            </a>
+
+            <a href="#">
+                Promotional Offers
+            </a>
+
+        </div>
+
+        <!-- HELP -->
+
+        <div class="footer-box">
+
+            <h3>
+                Help
+            </h3>
+
+            <a href="#">
+                Customer Help
+            </a>
+
+            <a href="#">
+                Contact Us
+            </a>
+
+            <a href="#">
+                Refund & Returns
+            </a>
+
+        </div>
+
+        <!-- FOLLOW -->
+
+        <div class="footer-box">
+
+            <h3>
+                Follow
+            </h3>
+
+            <a href="#">
+                Instagram
+            </a>
+
+            <a href="#">
+                TikTok
+            </a>
+
+            <a href="#">
+                Facebook
+            </a>
+
+            <a href="#">
+                Twitter
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- BOTTOM -->
+
+    <div class="footer-bottom">
+
+        © 2026 Animalia Pet Store — All Rights Reserved
+
+    </div>
+
+</footer>
+
+</body>
+</html>

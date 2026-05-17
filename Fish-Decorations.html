@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fish Tanks Decorations</title>
+    <link rel="stylesheet" href="all.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+            font-family:'Poppins',sans-serif;
+            background:#f8f3ed;
+            color:#4b3527;
+            overflow-x:hidden;
+        }
+
+        /* =========================
+           PAGE TITLE
+        ========================= */
+
+        .page-title{
+            text-align:center;
+            font-size:55px;
+            margin:50px 0;
+            color:#4b3527;
+            font-weight:800;
+        }
+
+        /* =========================
+           SECTION
+        ========================= */
+
+        .section{
+            width:92%;
+            max-width:1450px;
+            margin:auto;
+        }
+
+        /* =========================
+           PRODUCTS GRID
+        ========================= */
+
+        .products{
+
+            display:grid;
+
+            grid-template-columns:
+            repeat(auto-fit,minmax(260px,1fr));
+
+            gap:28px;
+
+            margin-bottom:60px;
+        }
+
+        /* =========================
+           PRODUCT CARD
+        ========================= */
+
+        .product-card{
+
+            background:white;
+
+            border-radius:30px;
+
+            padding:18px;
+
+            text-align:center;
+
+            box-shadow:
+                    0 8px 20px rgba(0,0,0,.07);
+
+            transition:.35s;
+
+            display:flex;
+
+            flex-direction:column;
+
+            justify-content:space-between;
+
+            min-height:540px;
+        }
+
+        .product-card:hover{
+            transform:translateY(-8px);
+        }
+
+        /* =========================
+           IMAGE BOX
+        ========================= */
+
+        .img-box{
+
+            width:100%;
+
+            height:230px;
+
+            border-radius:24px;
+
+            background:#f5ede4;
+
+            display:flex;
+
+            align-items:center;
+
+            justify-content:center;
+
+            overflow:hidden;
+
+            margin-bottom:18px;
+        }
+
+        .img-box img{
+
+            width:100%;
+
+            height:100%;
+
+            object-fit:contain;
+
+            transition:.4s;
+        }
+
+        .product-card:hover img{
+            transform:scale(1.05);
+        }
+
+        /* =========================
+           PRODUCT NAME
+        ========================= */
+
+        .product-card h3{
+
+            font-size:20px;
+
+            line-height:1.5;
+
+            color:#4b3527;
+
+            margin-bottom:12px;
+
+            min-height:65px;
+        }
+
+        /* =========================
+           PRICE
+        ========================= */
+
+        .price{
+
+            font-size:28px;
+
+            font-weight:700;
+
+            color:#8b5e3c;
+
+            margin-bottom:18px;
+        }
+
+        /* =========================
+           SIZES
+        ========================= */
+
+        .sizes{
+
+            display:flex;
+
+            justify-content:center;
+
+            gap:10px;
+
+            margin-bottom:18px;
+
+            flex-wrap:wrap;
+        }
+
+        .size{
+
+            padding:8px 16px;
+
+            border-radius:999px;
+
+            background:#f5ede4;
+
+            cursor:pointer;
+
+            transition:.3s;
+
+            font-size:14px;
+
+            font-weight:600;
+        }
+
+        .size:hover{
+            background:#d8c2ad;
+        }
+
+        .size.active{
+
+            background:#8b5e3c;
+
+            color:white;
+        }
+
+        /* =========================
+           QUANTITY
+        ========================= */
+
+        .quantity{
+            margin-bottom:18px;
+        }
+
+        .quantity label{
+
+            display:block;
+
+            margin-bottom:10px;
+
+            font-size:15px;
+
+            font-weight:600;
+
+            color:#6f5a4d;
+        }
+
+        .quantity input{
+
+            width:85px;
+
+            height:42px;
+
+            border:none;
+
+            outline:none;
+
+            border-radius:12px;
+
+            background:#f5ede4;
+
+            text-align:center;
+
+            font-size:17px;
+
+            font-weight:600;
+
+            color:#4b3527;
+        }
+
+        /* =========================
+           BUTTON
+        ========================= */
+
+        .product-card button{
+
+            width:100%;
+
+            border:none;
+
+            padding:14px;
+
+            border-radius:999px;
+
+            background:
+                    linear-gradient(to right,#4b3527,#8b5e3c);
+
+            color:white;
+
+            font-size:16px;
+
+            font-weight:700;
+
+            cursor:pointer;
+
+            transition:.3s;
+
+            margin-top:auto;
+        }
+
+        .product-card button:hover{
+
+            transform:translateY(-3px);
+
+            opacity:.92;
+        }
+
+        /* =========================
+           BACK BUTTON
+        ========================= */
+
+        .back-btn{
+
+            width:210px;
+
+            display:flex;
+
+            justify-content:center;
+
+            align-items:center;
+
+            margin:20px auto 70px;
+
+            text-decoration:none;
+
+            background:#4b3527;
+
+            color:white;
+
+            padding:16px;
+
+            border-radius:999px;
+
+            font-size:18px;
+
+            font-weight:600;
+
+            transition:.3s;
+        }
+
+        .back-btn:hover{
+
+            background:#8b5e3c;
+
+            transform:translateY(-4px);
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media(max-width:992px){
+
+            .page-title{
+                font-size:45px;
+            }
+
+            .products{
+                grid-template-columns:
+                        repeat(auto-fit,minmax(230px,1fr));
+            }
+        }
+
+        @media(max-width:768px){
+
+            .page-title{
+                font-size:38px;
+            }
+
+            .products{
+                grid-template-columns:1fr;
+            }
+
+            .img-box{
+                height:210px;
+            }
+
+            .product-card{
+                min-height:auto;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="topbar">
+
+    <div class="topbar-left">
+        <i class="fa-solid fa-phone"></i>
+        +970 59 876 5432
+    </div>
+
+    <div class="topbar-center">
+        <i class="fa-solid fa-truck"></i>
+        Free delivery on orders over $100
+    </div>
+
+    <div class="topbar-right">
+
+        <a href="#">
+            <i class="fa-brands fa-facebook-f"></i>
+        </a>
+
+        <a href="#">
+            <i class="fa-brands fa-instagram"></i>
+        </a>
+
+        <a href="#">
+            <i class="fa-brands fa-twitter"></i>
+        </a>
+
+    </div>
+
+</div>
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header class="header">
+
+    <div class="container header-content">
+
+        <!-- LOGO -->
+        <div class="logo">
+
+            <img src="imgs/logo.png" alt="Animalia Logo">
+
+        </div>
+
+        <!-- NAVBAR -->
+
+        <nav class="navbar">
+
+            <ul>
+
+                <li>
+                    <a href="#" class="active">Home</a>
+                </li>
+                <li class="dropdown">
+
+                    <a href="#">
+                        Store
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </a>
+
+                    <ul class="dropdown-menu">
+
+                        <li>
+                            <a href="cat.html">Cats</a>
+                        </li>
+
+                        <li>
+                            <a href="dog.html">Dogs</a>
+                        </li>
+
+                        <li>
+                            <a href="bird.html">Birds</a>
+                        </li>
+
+                        <li>
+                            <a href="fish.html">Aquarium</a>
+                        </li>
+
+                    </ul>
+
+                </li>
+
+                <li>
+                    <a href="#">About</a>
+                </li>
+
+                <li>
+                    <a href="contact.html">
+                        Contact Us</a>
+                </li>
+
+            </ul>
+
+        </nav>
+
+        <!-- ACTIONS -->
+
+        <div class="header-actions">
+
+            <div class="search-box">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input type="text"
+                       placeholder="Search products...">
+
+            </div>
+
+            <a href="#" class="icon-btn" id="userBtn">
+
+                <i class="fa-solid fa-user"></i>
+
+            </a>
+            <a href="chart.html" class="icon-btn cart-btn">
+
+                <i class="fa-solid fa-cart-shopping"></i>
+
+
+            </a>
+
+        </div>
+
+    </div>
+
+</header>
+
+<h1 class="page-title">Tank Decorations</h1>
+<section class="section">
+
+    <div class="products">
+
+        <!-- PRODUCT 1 -->
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Aquarium Decorative Shells.png">
+            </div>
+
+            <h3 class="product-name"
+                data-base="Decorative Shells">
+
+                Decorative Shells - Mini
+
+            </h3>
+
+            <p class="price">₪10</p>
+
+            <div class="sizes">
+
+                <span class="size active"
+                      data-name="Mini"
+                      data-price="10"
+                      data-img="imgs/Aquarium Decorative Shells.png">
+
+                    Mini
+
+                </span>
+
+                <span class="size"
+                      data-name="Small"
+                      data-price="15"
+                      data-img="imgs/Aquarium Decorative Small Shells.jfif">
+
+                    Small
+
+                </span>
+
+                <span class="size"
+                      data-name="Medium"
+                      data-price="20"
+                      data-img="imgs/Aquarium Decorative M Shells.jfif">
+
+                    Medium
+
+                </span>
+
+            </div>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <!-- PRODUCT 2 -->
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Aquarium_Gravel_Multi_Colour.webp">
+            </div>
+
+            <h3>Aquarium Gravel Multi Color</h3>
+
+            <p class="price">₪15</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <!-- PRODUCT 3 -->
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Artificial Green Plant.png">
+            </div>
+
+            <h3>Artificial Green Plant</h3>
+
+            <p class="price">₪5</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <!-- PRODUCT 4 -->
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Artificial Green Aquarium Plant.jpeg">
+            </div>
+
+            <h3>Artificial Green Aquarium Plant</h3>
+
+            <p class="price">₪8</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <!-- PRODUCT 5 -->
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Tall Artificial Aquarium Tree.png">
+            </div>
+
+            <h3>Tall Artificial Aquarium Tree</h3>
+
+            <p class="price">₪15</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <!-- PRODUCT 6 -->
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Mini Aquarium Lavender Decoration.png">
+            </div>
+
+            <h3>Mini Aquarium Lavender Plant</h3>
+
+            <p class="price">₪5</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <!-- PRODUCT 7 -->
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Artificial Pink & Purple Aquarium Plant.jpeg">
+            </div>
+
+            <h3>Artificial Pink & Purple Aquarium Plant</h3>
+
+            <p class="price">₪8</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <!-- PRODUCT 8 -->
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Artificial Pink Aquarium Plant.png">
+            </div>
+
+            <h3>Artificial Pink Aquarium Plant</h3>
+
+            <p class="price">₪10</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <!-- PRODUCT 9 -->
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Pink Coral Aquarium Ornament.jpg">
+            </div>
+
+            <h3>Pink Coral Aquarium Ornament</h3>
+
+            <p class="price">₪15</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <!-- PRODUCT 10 -->
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Decorative Broken Vase Aquarium Ornament.png">
+            </div>
+
+            <h3>Decorative Broken Vase Aquarium Ornament</h3>
+
+            <p class="price">₪30</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <!-- PRODUCT 11 -->
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Natural Style Rock Aquarium Ornament.png">
+            </div>
+
+            <h3>Natural Style Rock Aquarium Ornament</h3>
+
+            <p class="price">₪25</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <!-- PRODUCT 12 -->
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Aquarium Rock Mountain Ornament.png">
+            </div>
+
+            <h3>Aquarium Rock Mountain Ornament</h3>
+
+            <p class="price">₪30</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <!-- PRODUCT 13 -->
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Mini Bridge Aquarium Ornament.jpeg">
+            </div>
+
+            <h3>Mini Bridge Aquarium Ornament</h3>
+
+            <p class="price">₪30</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <!-- PRODUCT 14 -->
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Mini Castle Aquarium Ornament.png">
+            </div>
+
+            <h3>Mini Castle Aquarium Ornament</h3>
+
+            <p class="price">₪20</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <!-- PRODUCT 15 -->
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Vintage Motorcycle Aquarium Decoration.jpeg">
+            </div>
+
+            <h3>Vintage Motorcycle Aquarium Decoration</h3>
+
+            <p class="price">₪25</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <!-- PRODUCT 16 -->
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Sunken Ship Aquarium Decoration.png">
+            </div>
+
+            <h3>Sunken Ship Aquarium Decoration</h3>
+
+            <p class="price">₪40</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+    </div>
+
+</section>
+<a href="fish.html" class="back-btn">⬅ Back</a>
+
+<script>
+
+    document.querySelectorAll(".product-card").forEach(card => {
+
+        const sizes = card.querySelectorAll(".size");
+        const price = card.querySelector(".price");
+        const img = card.querySelector("img");
+        const name = card.querySelector(".product-name");
+
+        sizes.forEach(btn => {
+
+            btn.addEventListener("click", () => {
+
+                sizes.forEach(b =>
+                    b.classList.remove("active"));
+
+                btn.classList.add("active");
+
+                // PRICE
+
+                if(price && btn.dataset.price){
+                    price.textContent =
+                        "₪" + btn.dataset.price;
+                }
+
+                // IMAGE
+
+                if(img && btn.dataset.img){
+                    img.src = btn.dataset.img;
+                }
+
+                // NAME
+
+                if(name && btn.dataset.name){
+                    name.textContent =
+                        name.dataset.base +
+                        " - " +
+                        btn.dataset.name;
+                }
+
+            });
+
+        });
+
+    });
+
+</script>
+
+<footer class="footer">
+
+    <div class="footer-content">
+
+        <!-- ABOUT -->
+
+        <div class="footer-box">
+
+            <h3>About</h3>
+
+            <a href="#">Privacy Policy</a>
+
+            <a href="#">Terms & Conditions</a>
+
+            <a href="#">Promotional Offers</a>
+
+        </div>
+
+        <!-- HELP -->
+
+        <div class="footer-box">
+
+            <h3>Help</h3>
+
+            <a href="#">Customer Help</a>
+
+            <a href="#">Contact Us</a>
+
+            <a href="#">Refund & Returns</a>
+
+        </div>
+
+        <!-- FOLLOW -->
+
+        <div class="footer-box">
+
+            <h3>Follow</h3>
+
+            <a href="#">Instagram</a>
+
+            <a href="#">TikTok</a>
+
+            <a href="#">Facebook</a>
+
+            <a href="#">Twitter</a>
+
+        </div>
+
+
+
+        <!-- PAYMENT -->
+
+
+    </div>
+
+    </div>
+
+    <!-- BOTTOM -->
+
+    <div class="footer-bottom">
+
+        © 2026 Animalia Pet Store — All Rights Reserved
+
+    </div>
+
+</footer>
+
+</body>
+</html>

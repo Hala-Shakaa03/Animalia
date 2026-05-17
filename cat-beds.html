@@ -1,0 +1,990 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cat Beds</title>
+    <link rel="stylesheet" href="all.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+            font-family:'Poppins',sans-serif;
+            background:#f8f3ed;
+            color:#3e2f26;
+            overflow-x:hidden;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        header{
+            background:white;
+            padding:20px 7%;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            box-shadow:0 4px 15px rgba(0,0,0,.05);
+            position:sticky;
+            top:0;
+            z-index:999;
+        }
+
+        .logo{
+            font-size:38px;
+            font-weight:800;
+            color:#4b3527;
+        }
+
+        nav ul{
+            display:flex;
+            gap:30px;
+            list-style:none;
+        }
+
+        nav ul li{
+            position:relative;
+        }
+
+        nav ul li a{
+            text-decoration:none;
+            color:#4b3527;
+            font-weight:600;
+            transition:.3s;
+        }
+
+        nav ul li a:hover{
+            color:#8b5e3c;
+        }
+
+        /* =========================
+           DROPDOWN
+        ========================= */
+
+        .dropdown-menu{
+            position:absolute;
+            top:40px;
+            left:0;
+            background:white;
+            min-width:220px;
+            border-radius:18px;
+            box-shadow:0 10px 25px rgba(0,0,0,.08);
+            padding:12px 0;
+            display:none;
+            z-index:1000;
+        }
+
+        .dropdown-menu li{
+            width:100%;
+        }
+
+        .dropdown-menu li a{
+            display:block;
+            padding:12px 18px;
+        }
+
+        .dropdown:hover .dropdown-menu{
+            display:block;
+        }
+
+        .login-btn{
+            background:#8b5e3c;
+            color:white;
+            padding:10px 20px;
+            border-radius:999px;
+        }
+
+        .login-btn:hover{
+            background:#4b3527;
+            color:white;
+        }
+
+        /* =========================
+           PAGE TITLE
+        ========================= */
+
+        .page-title{
+
+            text-align:center;
+
+            font-size:60px;
+
+            margin:60px 0 20px;
+
+            color:#3e2414;
+
+            font-weight:800;
+        }
+
+        /* =========================
+           SECTION
+        ========================= */
+
+        .section{
+
+            width:90%;
+
+            max-width:1550px;
+
+            margin:auto;
+
+            padding-bottom:70px;
+        }
+
+        .section h2{
+
+            font-size:38px;
+
+            margin-bottom:35px;
+
+            color:#4b3527;
+        }
+
+        /* =========================
+           PRODUCTS GRID
+        ========================= */
+
+        .products{
+
+            display:grid;
+
+            grid-template-columns:
+    repeat(auto-fit,minmax(280px,1fr));
+
+            gap:32px;
+        }
+
+        /* =========================
+           PRODUCT CARD
+        ========================= */
+
+        .product-card{
+
+            background:white;
+
+            border-radius:32px;
+
+            padding:22px;
+
+            text-align:center;
+
+            box-shadow:
+                    0 10px 25px rgba(0,0,0,.05);
+
+            transition:.4s;
+
+            display:flex;
+
+            flex-direction:column;
+
+            justify-content:space-between;
+
+            min-height:620px;
+        }
+
+        .product-card:hover{
+
+            transform:
+                    translateY(-10px);
+
+            box-shadow:
+                    0 18px 35px rgba(0,0,0,.08);
+        }
+
+        /* =========================
+           IMAGE BOX
+        ========================= */
+
+        .img-box{
+
+            height:250px;
+
+            border-radius:28px;
+
+            background:
+                    linear-gradient(
+                            135deg,
+                            #f3e2d1,
+                            #faf6f1
+                    );
+
+            display:flex;
+
+            align-items:center;
+
+            justify-content:center;
+
+            overflow:hidden;
+
+            margin-bottom:20px;
+        }
+
+        .img-box img{
+
+            width:85%;
+
+            height:85%;
+
+            object-fit:contain;
+
+            transition:.4s;
+        }
+
+        .product-card:hover img{
+
+            transform:scale(1.08);
+        }
+
+        /* =========================
+           PRODUCT NAME
+        ========================= */
+
+        .product-card h3{
+
+            font-size:22px;
+
+            line-height:1.5;
+
+            margin-bottom:12px;
+
+            color:#4b3527;
+
+            min-height:70px;
+        }
+
+        /* =========================
+           PRICE
+        ========================= */
+
+        .price{
+
+            font-size:32px;
+
+            font-weight:800;
+
+            color:#8b5e3c;
+
+            margin-bottom:18px;
+        }
+
+        /* =========================
+           SIZE BUTTONS
+        ========================= */
+
+        .sizes{
+
+            display:flex;
+
+            justify-content:center;
+
+            gap:10px;
+
+            flex-wrap:wrap;
+
+            margin-bottom:20px;
+        }
+
+        .size{
+
+            padding:10px 18px;
+
+            border-radius:999px;
+
+            background:#f3ebe2;
+
+            cursor:pointer;
+
+            transition:.3s;
+
+            font-size:14px;
+
+            font-weight:600;
+
+            color:#4b3527;
+        }
+
+        .size:hover,
+        .size.active{
+
+            background:#8b5e3c;
+
+            color:white;
+        }
+
+        /* =========================
+           QUANTITY
+        ========================= */
+
+        .quantity{
+            margin-bottom:20px;
+        }
+
+        .quantity label{
+
+            display:block;
+
+            margin-bottom:10px;
+
+            font-size:15px;
+
+            font-weight:600;
+
+            color:#6f5a4d;
+        }
+
+        .quantity input{
+
+            width:90px;
+
+            height:45px;
+
+            border:none;
+
+            outline:none;
+
+            border-radius:14px;
+
+            background:#f7efe7;
+
+            text-align:center;
+
+            font-size:17px;
+
+            font-weight:600;
+
+            color:#4b3527;
+        }
+
+        /* =========================
+           BUTTON
+        ========================= */
+
+        .product-card button{
+
+            width:100%;
+
+            border:none;
+
+            background:
+                    linear-gradient(
+                            to right,
+                            #4b3527,
+                            #8b5e3c
+                    );
+
+            color:white;
+
+            padding:15px;
+
+            border-radius:999px;
+
+            font-size:16px;
+
+            font-weight:700;
+
+            cursor:pointer;
+
+            transition:.3s;
+
+            margin-top:auto;
+        }
+
+        .product-card button:hover{
+
+            transform:translateY(-4px);
+
+            opacity:.95;
+        }
+
+        /* =========================
+           BACK BUTTON
+        ========================= */
+
+        .back-btn{
+
+            width:230px;
+
+            display:flex;
+
+            justify-content:center;
+
+            align-items:center;
+
+            margin:20px auto 90px;
+
+            text-decoration:none;
+
+            background:
+                    linear-gradient(
+                            to right,
+                            #4b3527,
+                            #8b5e3c
+                    );
+
+            color:white;
+
+            padding:17px;
+
+            border-radius:999px;
+
+            font-size:18px;
+
+            font-weight:700;
+
+            transition:.35s;
+        }
+
+        .back-btn:hover{
+
+            transform:
+                    translateY(-4px);
+
+            box-shadow:
+                    0 10px 25px rgba(139,94,60,.25);
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media(max-width:992px){
+
+            .page-title{
+                font-size:48px;
+            }
+
+            .section h2{
+                font-size:30px;
+            }
+
+            .products{
+                grid-template-columns:
+        repeat(auto-fit,minmax(240px,1fr));
+            }
+
+            header{
+                flex-direction:column;
+                gap:20px;
+            }
+        }
+
+        @media(max-width:768px){
+
+            .page-title{
+                font-size:38px;
+            }
+
+            .products{
+                grid-template-columns:1fr;
+            }
+
+            .img-box{
+                height:220px;
+            }
+
+            .product-card{
+                min-height:auto;
+            }
+
+            nav ul{
+                flex-wrap:wrap;
+                justify-content:center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="topbar">
+
+    <div class="topbar-left">
+        <i class="fa-solid fa-phone"></i>
+        +970 59 876 5432
+    </div>
+
+    <div class="topbar-center">
+        <i class="fa-solid fa-truck"></i>
+        Free delivery on orders over $100
+    </div>
+
+    <div class="topbar-right">
+
+        <a href="#">
+            <i class="fa-brands fa-facebook-f"></i>
+        </a>
+
+        <a href="#">
+            <i class="fa-brands fa-instagram"></i>
+        </a>
+
+        <a href="#">
+            <i class="fa-brands fa-twitter"></i>
+        </a>
+
+    </div>
+
+</div>
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header class="header">
+
+    <div class="container header-content">
+
+        <!-- LOGO -->
+        <div class="logo">
+
+            <img src="imgs/logo.png" alt="Animalia Logo">
+
+        </div>
+
+        <!-- NAVBAR -->
+
+        <nav class="navbar">
+
+            <ul>
+
+                <li>
+                    <a href="#" class="active">Home</a>
+                </li>
+                <li class="dropdown">
+
+                    <a href="#">
+                        Store
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </a>
+
+                    <ul class="dropdown-menu">
+
+                        <li>
+                            <a href="cat.html">Cats</a>
+                        </li>
+
+                        <li>
+                            <a href="dog.html">Dogs</a>
+                        </li>
+
+                        <li>
+                            <a href="bird.html">Birds</a>
+                        </li>
+
+                        <li>
+                            <a href="fish.html">Aquarium</a>
+                        </li>
+
+                    </ul>
+
+                </li>
+
+                <li>
+                    <a href="#">About</a>
+                </li>
+
+                <li>
+                    <a href="contact.html">
+                        Contact Us</a>
+                </li>
+
+            </ul>
+
+        </nav>
+
+        <!-- ACTIONS -->
+
+        <div class="header-actions">
+
+            <div class="search-box">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input type="text"
+                       placeholder="Search products...">
+
+            </div>
+
+
+                <i class="fa-solid fa-user"></i>
+
+            </a>
+            <a href="chart.html" class="icon-btn cart-btn">
+
+                <i class="fa-solid fa-cart-shopping"></i>
+
+
+            </a>
+
+        </div>
+
+    </div>
+
+</header>
+<h1 class="page-title">Cat Beds</h1>
+
+<section class="section">
+    <h2>Cat Beds & Trees</h2>
+    <div class="products">
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Small%20Soft%20Yellow%20&%20Brown%20Polka%20Dots%20Cat%20Bed.jpeg" alt="Soft Yellow & Brown Polka Dots Cat Bed">
+            </div>
+            <h3>Soft Yellow & Brown Polka Dots Cat Bed</h3>
+            <p class="price">₪10</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+
+            <!-- IMAGE -->
+            <div class="img-box">
+                <img src="imgs/Round%20Fluffy%20Pink%20Cat%20Bed.png" id="bed-img">
+            </div>
+
+            <!-- NAME -->
+            <h3 class="product-name">Round Fluffy Cat Bed</h3>
+
+            <!-- PRICE -->
+            <p class="price">₪40</p>
+
+            <!-- SIZE BUTTONS -->
+            <div class="sizes">
+                <span class="size active" data-price="40">60cm</span>
+                <span class="size" data-price="50">70cm</span>
+                <span class="size" data-price="60">80cm</span>
+            </div>
+
+            <!-- QUANTITY -->
+            <div class="quantity">
+                <label>Quantity:</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Bunny%20Ears%20Cave%20Bed.jfif" alt="Bunny Ears Cave Bed">
+            </div>
+            <h3>Bunny Ears Cave Bed</h3>
+            <p class="price">₪35</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Banana%20Cat%20Bed.jpeg" alt="Banana Cat Bed">
+            </div>
+            <h3>Banana Cat Bed</h3>
+            <p class="price">₪25</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Cat%20Tree%20with%20Scratching%20Post.jpeg" alt="Cat Tree with Scratching Post">
+            </div>
+            <h3>Cat Tree with Scratching Post</h3>
+            <p class="price">₪100</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Multi-Level%20Cat%20Tree.png" alt="Multi-Level Cat Tree">
+            </div>
+            <h3>Multi-Level Cat Tree</h3>
+            <p class="price">₪120</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Multi-Level%20Cat%20Activity%20Tree.jfif" alt="Multi-Level Cat Activity Tree">
+            </div>
+            <h3>Multi-Level Cat Activity Tree</h3>
+            <p class="price">₪150</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+    </div>
+</section>
+
+<section class="section">
+    <h2>Cat Carriers & Travel Bags</h2>
+    <div class="products">
+
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Transparent%20Bubble%20Cat%20Backpack%20-%20Pink.png">
+            </div>
+
+            <h3 class="product-name" data-base="Transparent Bubble Cat Backpack">
+                Transparent Bubble Cat Backpack - Pink
+            </h3>
+
+            <p class="price">₪40</p>
+
+            <div class="sizes">
+        <span class="size active"
+              data-name="Pink"
+              data-img="imgs/Transparent Bubble Cat Backpack - Pink.png">Pink</span>
+
+                <span class="size"
+                      data-name="Gray"
+                      data-img="imgs/Transparent Bubble Cat Backpack - Gray.png">Gray</span>
+
+                <span class="size"
+                      data-name="Black"
+                      data-img="imgs/Transparent Bubble Cat Backpack - Black.png">Black</span>
+
+                <span class="size"
+                      data-name="Green"
+                      data-img="imgs/Transparent Bubble Cat Backpack - Green.png">Green</span>
+            </div>
+            <div class="quantity">
+                <label>Quantity:</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Soft%20Cat%20Carrier%20Backpack.jpg" alt="Soft Cat Carrier Backpack">
+            </div>
+            <h3>Soft Cat Carrier Backpack</h3>
+            <p class="price">₪40</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Cat%20Face%20Carrier%20Backpack%20–%2034×25×33%20cm.jpg" alt="Cat Face Carrier Backpack">
+            </div>
+            <h3>Cat Face Carrier Backpack</h3>
+            <p class="price">₪35</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Cute Portable Cat Carrier Bag.jpg" alt="Cute Portable Cat Carrier Bag">
+            </div>
+            <h3>Cute Portable Cat Carrier Bag</h3>
+            <p class="price">₪35</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Soft Cat Carrier Shoulder Bag.jpg" alt="Soft Cat Carrier Shoulder Bag">
+            </div>
+            <h3>Soft Cat Carrier Shoulder Bag</h3>
+            <p class="price">₪50</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Blue Transparent Cat Carrier Bag.jpeg" alt="Blue Transparent Cat Carrier Bag">
+            </div>
+            <h3>Blue Transparent Cat Carrier Bag</h3>
+            <p class="price">₪55</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Yellow Foldable Cat Carrier Box.jpeg" alt="Yellow Foldable Cat Carrier Box">
+            </div>
+            <h3>Yellow Foldable Cat Carrier Box</h3>
+            <p class="price">₪75</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Blue Hard-Sided Cat Carrier.jpg" alt="Blue Hard-Sided Cat Carrier">
+            </div>
+            <h3>Blue Hard-Sided Cat Carrier</h3>
+            <p class="price">₪35</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+    </div>
+</section>
+
+
+<a href="cat-supplies.html" class="back-btn">⬅ Back</a>
+
+<script>
+    document.querySelectorAll(".product-card").forEach(card => {
+
+        const sizes = card.querySelectorAll(".size");
+        const price = card.querySelector(".price");
+        const img = card.querySelector("img");
+        const name = card.querySelector(".product-name");
+
+        sizes.forEach(btn => {
+            btn.addEventListener("click", () => {
+
+                // active button
+                sizes.forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+
+                //
+                if(btn.dataset.price){
+                    price.textContent = "₪" + btn.dataset.price;
+                }
+
+                //
+                if(btn.dataset.img){
+                    img.src = btn.dataset.img;
+                }
+
+                //
+                if(name && btn.dataset.name){
+                    name.textContent = name.dataset.base + " - " + btn.dataset.name;
+                }
+
+            });
+        });
+
+    });
+</script>
+
+<footer class="footer">
+
+    <div class="footer-content">
+
+        <!-- ABOUT -->
+
+        <div class="footer-box">
+
+            <h3>About</h3>
+
+            <a href="#">Privacy Policy</a>
+
+            <a href="#">Terms & Conditions</a>
+
+            <a href="#">Promotional Offers</a>
+
+        </div>
+
+        <!-- HELP -->
+
+        <div class="footer-box">
+
+            <h3>Help</h3>
+
+            <a href="#">Customer Help</a>
+
+            <a href="#">Contact Us</a>
+
+            <a href="#">Refund & Returns</a>
+
+        </div>
+
+        <!-- FOLLOW -->
+
+        <div class="footer-box">
+
+            <h3>Follow</h3>
+
+            <a href="#">Instagram</a>
+
+            <a href="#">TikTok</a>
+
+            <a href="#">Facebook</a>
+
+            <a href="#">Twitter</a>
+
+        </div>
+
+
+
+        <!-- PAYMENT -->
+
+
+    </div>
+
+    </div>
+
+    <!-- BOTTOM -->
+
+    <div class="footer-bottom">
+
+        © 2026 Animalia Pet Store — All Rights Reserved
+
+    </div>
+
+</footer>
+</body>
+</html>

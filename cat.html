@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Cat Products</title>
+    <link rel="stylesheet" href="all.css">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- FONT AWESOME -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+            font-family:'Poppins',sans-serif;
+            background:#f8f3ed;
+            color:#4b3527;
+        }
+
+        /* =========================
+           PAGE TITLE
+        ========================= */
+
+        .page-title{
+            text-align:center;
+            font-size:60px;
+            margin:60px 0;
+            color:#3e2414;
+        }
+
+        /* =========================
+           DROPDOWN
+        ========================= */
+
+        .dropdown-menu{
+            position:absolute;
+            top:160%;
+            left:50%;
+            transform:translateX(-50%);
+            background:white;
+            min-width:240px;
+            border-radius:25px;
+            padding:18px 0;
+            box-shadow:0 15px 40px rgba(0,0,0,.08);
+
+            opacity:0;
+            visibility:hidden;
+
+            transition:.3s;
+            z-index:999;
+        }
+
+        .dropdown:hover .dropdown-menu{
+            opacity:1;
+            visibility:visible;
+            top:140%;
+        }
+
+        .dropdown-menu li{
+            width:100%;
+        }
+
+        .dropdown-menu li a{
+            display:block;
+            width:100%;
+            padding:16px 30px;
+            text-align:center;
+        }
+
+        .dropdown-menu li a::after{
+            display:none;
+        }
+
+        .dropdown-menu li a:hover{
+            background:#f8f3ed;
+        }
+
+        /* =========================
+           CATEGORIES
+        ========================= */
+
+        .categories{
+            width:90%;
+            max-width:1200px;
+            margin:auto;
+            display:grid;
+            grid-template-columns:repeat(2,1fr);
+            gap:40px;
+            padding-bottom:80px;
+        }
+
+        /* CARD */
+
+        .category-card{
+            background:white;
+            border-radius:35px;
+            overflow:hidden;
+            text-decoration:none;
+            text-align:center;
+            box-shadow:0 10px 30px rgba(0,0,0,.06);
+            transition:.4s;
+            position:relative;
+        }
+
+        .category-card:hover{
+            transform:translateY(-10px);
+        }
+
+        /* IMAGE */
+
+        .img-box{
+            height:320px;
+            background:linear-gradient(135deg,#f3e2d1,#f8f3ed);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            overflow:hidden;
+        }
+
+        .img-box img{
+            width:260px;
+            height:260px;
+            object-fit:contain;
+            transition:.4s;
+        }
+
+        .category-card:hover .img-box img{
+            transform:scale(1.08);
+        }
+
+        /* TEXT */
+
+        .category-card h2{
+            font-size:34px;
+            margin-top:25px;
+            color:#4b3527;
+        }
+
+        .category-card p{
+            color:#8b5e3c;
+            font-size:18px;
+            margin:15px 0 35px;
+        }
+
+        /* =========================
+           BACK BUTTON
+        ========================= */
+
+        .back-btn{
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            width:180px;
+            margin:0 auto 90px;
+            padding:18px;
+            border-radius:999px;
+            background:linear-gradient(to right,#4b3527,#8b5e3c);
+            color:white;
+            text-decoration:none;
+            font-size:18px;
+            font-weight:600;
+            transition:.3s;
+        }
+
+        .back-btn:hover{
+            transform:translateY(-5px);
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media(max-width:900px){
+
+            .categories{
+                grid-template-columns:1fr;
+            }
+
+            .page-title{
+                font-size:45px;
+            }
+        }
+
+        @media(max-width:600px){
+
+            .img-box{
+                height:250px;
+            }
+
+            .img-box img{
+                width:200px;
+                height:200px;
+            }
+
+            .category-card h2{
+                font-size:28px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<!-- =========================
+     TOPBAR
+========================= -->
+
+<div class="topbar">
+
+    <div class="topbar-left">
+        <i class="fa-solid fa-phone"></i>
+        +970 59 876 5432
+    </div>
+
+    <div class="topbar-center">
+        <i class="fa-solid fa-truck"></i>
+        Free delivery on orders over $100
+    </div>
+
+    <div class="topbar-right">
+
+        <a href="#">
+            <i class="fa-brands fa-facebook-f"></i>
+        </a>
+
+        <a href="#">
+            <i class="fa-brands fa-instagram"></i>
+        </a>
+
+        <a href="#">
+            <i class="fa-brands fa-twitter"></i>
+        </a>
+
+    </div>
+
+</div>
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header class="header">
+
+    <div class="container header-content">
+
+        <!-- LOGO -->
+
+        <div class="logo">
+
+            <img src="imgs/logo.png"
+                 alt="Animalia Logo">
+
+        </div>
+
+        <!-- NAVBAR -->
+
+        <nav class="navbar">
+
+            <ul>
+
+                <li>
+                    <a href="p1.php">
+                        Home
+                    </a>
+                </li>
+
+                <li class="dropdown">
+
+                    <a href="#">
+                        Store
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </a>
+
+                    <ul class="dropdown-menu">
+
+                        <li>
+                            <a href="cat.html">
+                                Cats
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="dog.html">
+                                Dogs
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="bird.html">
+                                Birds
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="fish.html">
+                                Aquarium
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </li>
+
+                <li>
+                    <a href="about.html">
+                        About
+                    </a>
+                </li>
+
+                <li>
+                    <a href="contact.html">
+                        Contact Us
+                    </a>
+                </li>
+
+            </ul>
+
+        </nav>
+
+        <!-- ACTIONS -->
+
+        <div class="header-actions">
+
+            <div class="search-box">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input type="text"
+                       placeholder="Search products...">
+
+            </div>
+
+            <a href="login.php"
+               class="icon-btn">
+
+                <i class="fa-solid fa-user"></i>
+
+            </a>
+
+            <a href="chart.html"
+               class="icon-btn cart-btn">
+
+                <i class="fa-solid fa-cart-shopping"></i>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</header>
+
+<!-- =========================
+     PAGE TITLE
+========================= -->
+
+<h1 class="page-title">
+    Cat Products
+</h1>
+
+<!-- =========================
+     CATEGORIES
+========================= -->
+
+<div class="categories">
+
+    <a href="cat-food.html"
+       class="category-card">
+
+        <div class="img-box">
+
+            <img src="imgs/cat food.png"
+                 alt="Cat Food">
+
+        </div>
+
+        <h2>
+            Cat Food
+        </h2>
+
+        <p>
+            Dry • Wet • Treats
+        </p>
+
+    </a>
+
+    <a href="cat-supplies.html"
+       class="category-card">
+
+        <div class="img-box">
+
+            <img src="imgs/cat supp.jfif"
+                 alt="Cat Supplies">
+
+        </div>
+
+        <h2>
+            Cat Supplies
+        </h2>
+
+        <p>
+            Toys • Beds • Boxes • Collars
+        </p>
+
+    </a>
+
+</div>
+
+<!-- BACK BUTTON -->
+
+<a href="p1.php"
+   class="back-btn">
+
+    ⬅ Back
+
+</a>
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer class="footer">
+
+    <div class="footer-content">
+
+        <!-- ABOUT -->
+
+        <div class="footer-box">
+
+            <h3>
+                About
+            </h3>
+
+            <a href="#">
+                Privacy Policy
+            </a>
+
+            <a href="#">
+                Terms & Conditions
+            </a>
+
+            <a href="#">
+                Promotional Offers
+            </a>
+
+        </div>
+
+        <!-- HELP -->
+
+        <div class="footer-box">
+
+            <h3>
+                Help
+            </h3>
+
+            <a href="#">
+                Customer Help
+            </a>
+
+            <a href="contact.html">
+                Contact Us
+            </a>
+
+            <a href="#">
+                Refund & Returns
+            </a>
+
+        </div>
+
+        <!-- FOLLOW -->
+
+        <div class="footer-box">
+
+            <h3>
+                Follow
+            </h3>
+
+            <a href="#">
+                Instagram
+            </a>
+
+            <a href="#">
+                TikTok
+            </a>
+
+            <a href="#">
+                Facebook
+            </a>
+
+            <a href="#">
+                Twitter
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- FOOTER BOTTOM -->
+
+    <div class="footer-bottom">
+
+        © 2026 Animalia Pet Store — All Rights Reserved
+
+    </div>
+
+</footer>
+
+</body>
+</html>

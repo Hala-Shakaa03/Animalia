@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fish Tanks</title>
+    <link rel="stylesheet" href="all.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<STYLE>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+    }
+
+    body{
+        font-family:'Poppins',sans-serif;
+        background:#f8f3ed;
+        color:#4b3527;
+        overflow-x:hidden;
+    }
+
+    /* =========================
+       PAGE TITLE
+    ========================= */
+
+    .page-title{
+        text-align:center;
+        font-size:60px;
+        margin:60px 0;
+        font-weight:800;
+        color:#4b3527;
+    }
+
+    /* =========================
+       SECTION
+    ========================= */
+
+    .section{
+        width:92%;
+        max-width:1500px;
+        margin:auto;
+    }
+
+    /* =========================
+       PRODUCTS GRID
+    ========================= */
+
+    .products{
+        display:grid;
+        grid-template-columns:repeat(4,1fr);
+        gap:30px;
+        margin-bottom:80px;
+    }
+
+    /* =========================
+       PRODUCT CARD
+    ========================= */
+
+    .product-card{
+        background:white;
+        border-radius:35px;
+        padding:22px;
+        text-align:center;
+        box-shadow:0 10px 30px rgba(0,0,0,.06);
+        transition:.4s;
+    }
+
+    .product-card:hover{
+        transform:translateY(-10px);
+    }
+
+    /* =========================
+       IMAGE
+    ========================= */
+
+    .img-box{
+        height:250px;
+        border-radius:28px;
+        background:linear-gradient(135deg,#f3e2d1,#faf7f3);
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        overflow:hidden;
+        margin-bottom:20px;
+    }
+
+    .img-box img{
+        width:320px;
+        height:320px;
+        object-fit:contain;
+        transition:.4s;
+    }
+
+    .product-card:hover img{
+        transform:scale(1.08);
+    }
+
+    /* =========================
+       NAME
+    ========================= */
+
+    .product-card h3{
+        font-size:23px;
+        line-height:1.4;
+        margin-bottom:12px;
+        min-height:65px;
+    }
+
+    /* =========================
+       PRICE
+    ========================= */
+
+    .price{
+        font-size:30px;
+        font-weight:700;
+        color:#8b5e3c;
+        margin-bottom:18px;
+    }
+
+    /* =========================
+       SIZES
+    ========================= */
+
+    .sizes{
+        display:flex;
+        justify-content:center;
+        gap:10px;
+        flex-wrap:wrap;
+        margin-bottom:20px;
+    }
+
+    .size{
+        padding:10px 15px;
+        border-radius:999px;
+        background:#f3e2d1;
+        cursor:pointer;
+        transition:.3s;
+        font-size:14px;
+        font-weight:600;
+    }
+
+    .size:hover{
+        background:#8b5e3c;
+        color:white;
+    }
+
+    .size.active{
+        background:#4b3527;
+        color:white;
+    }
+
+    /* =========================
+       QUANTITY
+    ========================= */
+
+    .quantity{
+        margin-bottom:20px;
+    }
+
+    .quantity label{
+        display:block;
+        margin-bottom:10px;
+        font-weight:600;
+        color:#6f5a4d;
+    }
+
+    .quantity input{
+        width:90px;
+        height:45px;
+        border:none;
+        outline:none;
+        border-radius:14px;
+        background:#f7efe7;
+        text-align:center;
+        font-size:16px;
+    }
+
+    /* =========================
+       BUTTON
+    ========================= */
+
+    .product-card button{
+        width:100%;
+        border:none;
+        padding:15px;
+        border-radius:999px;
+        background:linear-gradient(to right,#4b3527,#8b5e3c);
+        color:white;
+        font-size:16px;
+        font-weight:700;
+        cursor:pointer;
+        transition:.3s;
+    }
+
+    .product-card button:hover{
+        transform:translateY(-4px);
+    }
+
+    /* =========================
+       BACK BUTTON
+    ========================= */
+
+    .back-btn{
+        width:220px;
+        margin:40px auto 90px;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        text-decoration:none;
+        background:#4b3527;
+        color:white;
+        padding:18px;
+        border-radius:999px;
+        font-size:18px;
+        font-weight:600;
+        transition:.3s;
+    }
+
+    .back-btn:hover{
+        background:#8b5e3c;
+        transform:translateY(-5px);
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media(max-width:1200px){
+
+        .products{
+            grid-template-columns:repeat(3,1fr);
+        }
+    }
+
+    @media(max-width:900px){
+
+        .products{
+            grid-template-columns:repeat(2,1fr);
+        }
+    }
+
+    @media(max-width:650px){
+
+        .products{
+            grid-template-columns:1fr;
+        }
+
+        .page-title{
+            font-size:38px;
+        }
+    }.quantity input{
+         width:90px;
+         height:45px;
+
+         direction:ltr !important;
+         unicode-bidi:plaintext;
+
+         text-align:center;
+
+         border:none;
+         outline:none;
+
+         border-radius:14px;
+         background:#f7efe7;
+
+         font-size:18px;
+         font-weight:600;
+         color:#4b3527;
+     }
+</STYLE>
+
+<body>
+
+<div class="topbar">
+
+    <div class="topbar-left">
+        <i class="fa-solid fa-phone"></i>
+        +970 59 876 5432
+    </div>
+
+    <div class="topbar-center">
+        <i class="fa-solid fa-truck"></i>
+        Free delivery on orders over $100
+    </div>
+
+    <div class="topbar-right">
+
+        <a href="#">
+            <i class="fa-brands fa-facebook-f"></i>
+        </a>
+
+        <a href="#">
+            <i class="fa-brands fa-instagram"></i>
+        </a>
+
+        <a href="#">
+            <i class="fa-brands fa-twitter"></i>
+        </a>
+
+    </div>
+
+</div>
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header class="header">
+
+    <div class="container header-content">
+
+        <!-- LOGO -->
+        <div class="logo">
+
+            <img src="imgs/logo.png" alt="Animalia Logo">
+
+        </div>
+
+        <!-- NAVBAR -->
+
+        <nav class="navbar">
+
+            <ul>
+
+                <li>
+                    <a href="#" class="active">Home</a>
+                </li>
+                <li class="dropdown">
+
+                    <a href="#">
+                        Store
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </a>
+
+                    <ul class="dropdown-menu">
+
+                        <li>
+                            <a href="cat.html">Cats</a>
+                        </li>
+
+                        <li>
+                            <a href="dog.html">Dogs</a>
+                        </li>
+
+                        <li>
+                            <a href="bird.html">Birds</a>
+                        </li>
+
+                        <li>
+                            <a href="fish.html">Aquarium</a>
+                        </li>
+
+                    </ul>
+
+                </li>
+
+                <li>
+                    <a href="#">About</a>
+                </li>
+
+                <li>
+                    <a href="contact.html">
+                        Contact Us</a>
+                </li>
+
+            </ul>
+
+        </nav>
+
+        <!-- ACTIONS -->
+
+        <div class="header-actions">
+
+            <div class="search-box">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input type="text"
+                       placeholder="Search products...">
+
+            </div>
+
+            <a href="#" class="icon-btn" id="userBtn">
+
+                <i class="fa-solid fa-user"></i>
+
+            </a>
+            <a href="chart.html" class="icon-btn cart-btn">
+
+                <i class="fa-solid fa-cart-shopping"></i>
+
+
+            </a>
+
+        </div>
+
+    </div>
+
+</header>
+
+<h1 class="page-title">Fish Tanks & Bowls</h1>
+
+<section class="section">
+    <div class="products">
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Glass Fish Tank – 10 Gallon (38L).jfif" alt="Glass Fish Tank – 10 Gallon (38L)">
+            </div>
+            <h3>Glass Fish Tank – 10 Gallon (38L)</h3>
+            <p class="price">₪100</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Coverd Glass Fish Tank – 10 Gallon (38L).jfif" alt="Coverd Glass Fish Tank – 10 Gallon (38L)">
+            </div>
+            <h3>Covered Glass Fish Tank – 10 Gallon (38L)</h3>
+            <p class="price">₪120</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Blue Rectangle Plastic Fish Tank.jfif">
+            </div>
+            <h3 class="product-name" data-base="Blue Rectangle Plastic Fish Tank">
+                Rectangle Plastic Fish Tank - Blue
+            </h3>
+            <p class="price">₪5</p>
+            <div class="sizes">
+        <span class="size active"
+              data-name="Blue"
+              data-img="imgs/Blue Rectangle Plastic Fish Tank.jfif">Blue</span>
+                <span class="size"
+                      data-name="Pink"
+                      data-img="imgs/Pink Rectangle Plastik Fish Tank.png">Pink</span>
+                <span class="size"
+                      data-name="Red"
+                      data-img="imgs/Red Rectangle Plastik Fish Tank.png">Red</span>
+                <span class="size"
+                      data-name="Yellow"
+                      data-img="imgs/Yellow Rectangle Plastik Fish Tank.png">Yellow</span>
+            </div>
+            <div class="quantity">
+                <label>Quantity:</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Standard Fish Bowl - 200ML.jfif" alt="Standard Fish Bowl - 200ML">
+            </div>
+            <h3>Standard Fish Bowl - 200ML</h3>
+            <p class="price">₪20</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Two Fish Bowls With Small Legs - 200mL, 80mL.jfif" alt="Two Fish Bowls With Small Legs - 200mL, 80mL">
+            </div>
+            <h3>Two Fish Bowls With Small Legs - 200mL, 80mL</h3>
+            <p class="price">₪25</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Fish Bowl With Wooden Base.jfif" alt="Fish Bowl With Wooden Base">
+            </div>
+            <h3>Fish Bowl With Wooden Base</h3>
+            <p class="price">₪25</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Small Fish Bowl With Stand.jfif" alt="Small Fish Bowl With Stand">
+            </div>
+            <h3>Small Fish Bowl With Stand</h3>
+            <p class="price">₪20</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Fish Bowl With Decorative Stand.jpg" alt="Fish Bowl With Decorative Stand">
+            </div>
+            <h3>Fish Bowl With Decorative Stand.jpg</h3>
+            <p class="price">₪30</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Hanging Fish Bowl With Black Stand.jfif">
+            </div>
+            <h3 class="product-name" data-base="Hanging Fish Bowl With Stand">
+                Hanging Fish Bowl With Stand - Black
+            </h3>
+            <p class="price">₪25</p>
+            <div class="sizes">
+        <span class="size active"
+              data-name="Black"
+              data-img="imgs/Hanging Fish Bowl With Black Stand.jfif">Black</span>
+                <span class="size"
+                      data-name="White"
+                      data-img="imgs/Hanging Fish Bowl With White Stand .jfif">White</span>
+
+            </div>
+            <div class="quantity">
+                <label>Quantity:</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Wall Hanging Fish Bowl.jfif" alt="Wall Hanging Fish Bowl">
+            </div>
+            <h3>Wall Hanging Fish Bowl</h3>
+            <p class="price">₪35</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Fish Net - Black.jpg">
+            </div>
+
+            <h3 class="product-name" data-base="Black Fish Net">
+                Black Fish Net - 10cm
+            </h3>
+
+            <p class="price">₪5</p>
+
+            <div class="sizes">
+        <span class="size active"
+              data-name="10cm"
+              data-price="5"
+              data-img="imgs/Fish Net - Black.jpg">10cm</span>
+
+                <span class="size"
+                      data-name="15cm"
+                      data-price="7"
+                      data-img="imgs/Fish Net - Black.jpg">15cm</span>
+
+                <span class="size"
+                      data-name="20cm"
+                      data-price="9"
+                      data-img="imgs/Fish Net - Black.jpg">20cm</span>
+            </div>
+
+            <div class="quantity">
+                <label>Quantity:</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+
+    </div>
+</section>
+
+<a href="fish.html" class="back-btn">⬅ Back</a>
+
+<script>
+    document.querySelectorAll(".product-card").forEach(card => {
+
+        const sizes = card.querySelectorAll(".size");
+        const price = card.querySelector(".price");
+        const img = card.querySelector("img");
+        const name = card.querySelector(".product-name");
+
+        sizes.forEach(btn => {
+            btn.addEventListener("click", () => {
+
+                sizes.forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+
+                // السعر
+                if (price && btn.dataset.price) {
+                    price.textContent = "₪" + btn.dataset.price;
+                }
+
+                // الصورة
+                if (img && btn.dataset.img) {
+                    img.src = btn.dataset.img;
+                }
+
+                // الاسم + الطول
+                if (name && btn.dataset.name) {
+                    name.textContent = name.dataset.base + " - " + btn.dataset.name;
+                }
+
+            });
+        });
+
+    });
+</script>
+
+<footer class="footer">
+
+    <div class="footer-content">
+
+        <!-- ABOUT -->
+
+        <div class="footer-box">
+
+            <h3>About</h3>
+
+            <a href="#">Privacy Policy</a>
+
+            <a href="#">Terms & Conditions</a>
+
+            <a href="#">Promotional Offers</a>
+
+        </div>
+
+        <!-- HELP -->
+
+        <div class="footer-box">
+
+            <h3>Help</h3>
+
+            <a href="#">Customer Help</a>
+
+            <a href="#">Contact Us</a>
+
+            <a href="#">Refund & Returns</a>
+
+        </div>
+
+        <!-- FOLLOW -->
+
+        <div class="footer-box">
+
+            <h3>Follow</h3>
+
+            <a href="#">Instagram</a>
+
+            <a href="#">TikTok</a>
+
+            <a href="#">Facebook</a>
+
+            <a href="#">Twitter</a>
+
+        </div>
+
+
+
+        <!-- PAYMENT -->
+
+
+    </div>
+
+    </div>
+
+    <!-- BOTTOM -->
+
+    <div class="footer-bottom">
+
+        © 2026 Animalia Pet Store — All Rights Reserved
+
+    </div>
+
+</footer>
+
+</body>
+</html>

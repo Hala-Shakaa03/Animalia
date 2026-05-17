@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dog Supplies</title>
+    <link rel="stylesheet" href="all.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"></head>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+    }
+
+    body{
+        font-family:'Poppins',sans-serif;
+        background:#f8f3ed;
+        color:#4b3527;
+        overflow-x:hidden;
+    }
+
+    /* =========================
+       PAGE TITLE
+    ========================= */
+
+    h1{
+
+        text-align:center;
+
+        margin:60px 0;
+
+        font-size:64px;
+
+        color:#4b3527;
+
+        font-weight:800;
+
+        letter-spacing:1px;
+    }
+
+    /* =========================
+       CATEGORIES
+    ========================= */
+
+    .categories{
+
+        width:92%;
+
+        max-width:1450px;
+
+        margin:auto;
+
+        display:grid;
+
+        grid-template-columns:
+    repeat(auto-fit,minmax(300px,1fr));
+
+        gap:35px;
+
+        margin-bottom:80px;
+    }
+
+    /* =========================
+       CATEGORY CARD
+    ========================= */
+
+    .category-card{
+
+        position:relative;
+
+        background:rgba(255,255,255,.92);
+
+        backdrop-filter:blur(12px);
+
+        border-radius:35px;
+
+        overflow:hidden;
+
+        text-decoration:none;
+
+        color:#4b3527;
+
+        box-shadow:
+                0 10px 30px rgba(0,0,0,.06);
+
+        transition:.4s;
+    }
+
+    .category-card:hover{
+
+        transform:
+                translateY(-12px)
+                scale(1.02);
+
+        box-shadow:
+                0 20px 45px rgba(139,94,60,.18);
+    }
+
+    /* =========================
+       IMAGE BOX
+    ========================= */
+
+    .img-box{
+
+        width:100%;
+
+        height:300px;
+
+        background:
+                linear-gradient(
+                        135deg,
+                        #f7efe7,
+                        #efe2d2
+                );
+
+        display:flex;
+
+        justify-content:center;
+
+        align-items:center;
+
+        overflow:hidden;
+    }
+
+    .img-box img{
+
+        width:112%;
+
+        height:112%;
+
+        object-fit:contain;
+
+        transition:.5s;
+    }
+
+    .category-card:hover img{
+
+        transform:
+                scale(1.1)
+                rotate(-2deg);
+    }
+
+    /* =========================
+       CATEGORY TEXT
+    ========================= */
+
+    .category-card h2{
+
+        font-size:34px;
+
+        text-align:center;
+
+        margin-top:28px;
+
+        margin-bottom:12px;
+
+        font-weight:800;
+    }
+
+    .category-card p{
+
+        text-align:center;
+
+        color:#8b5e3c;
+
+        font-size:18px;
+
+        margin-bottom:38px;
+
+        font-weight:500;
+
+        line-height:1.7;
+    }
+
+    /* =========================
+       BACK BUTTON
+    ========================= */
+
+    .back-btn{
+
+        width:230px;
+
+        display:flex;
+
+        justify-content:center;
+
+        align-items:center;
+
+        margin:0 auto 90px;
+
+        text-decoration:none;
+
+        background:
+                linear-gradient(
+                        to right,
+                        #5b3822,
+                        #9b6a43
+                );
+
+        color:white;
+
+        padding:17px;
+
+        border-radius:999px;
+
+        font-size:18px;
+
+        font-weight:700;
+
+        transition:.35s;
+    }
+
+    .back-btn:hover{
+
+        transform:
+                translateY(-4px);
+
+        box-shadow:
+                0 10px 25px rgba(139,94,60,.25);
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media(max-width:992px){
+
+        h1{
+            font-size:50px;
+        }
+
+        .categories{
+            grid-template-columns:
+        repeat(auto-fit,minmax(250px,1fr));
+        }
+    }
+
+    @media(max-width:768px){
+
+        h1{
+            font-size:40px;
+        }
+
+        .categories{
+            grid-template-columns:1fr;
+        }
+
+        .img-box{
+            height:240px;
+        }
+
+        .category-card h2{
+            font-size:28px;
+        }
+
+        .category-card p{
+            font-size:16px;
+        }
+    }
+</style>
+<body>
+
+
+<div class="topbar">
+
+    <div class="topbar-left">
+        <i class="fa-solid fa-phone"></i>
+        +970 59 876 5432
+    </div>
+
+    <div class="topbar-center">
+        <i class="fa-solid fa-truck"></i>
+        Free delivery on orders over $100
+    </div>
+
+    <div class="topbar-right">
+
+        <a href="#">
+            <i class="fa-brands fa-facebook-f"></i>
+        </a>
+
+        <a href="#">
+            <i class="fa-brands fa-instagram"></i>
+        </a>
+
+        <a href="#">
+            <i class="fa-brands fa-twitter"></i>
+        </a>
+
+    </div>
+
+</div>
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header class="header">
+
+    <div class="container header-content">
+
+        <!-- LOGO -->
+        <div class="logo">
+
+            <img src="imgs/logo.png" alt="Animalia Logo">
+
+        </div>
+
+        <!-- NAVBAR -->
+
+        <nav class="navbar">
+
+            <ul>
+
+                <li>
+                    <a href="#" class="active">Home</a>
+                </li>
+                <li class="dropdown">
+
+                    <a href="#">
+                        Store
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </a>
+
+                    <ul class="dropdown-menu">
+
+                        <li>
+                            <a href="cat.html">Cats</a>
+                        </li>
+
+                        <li>
+                            <a href="dog.html">Dogs</a>
+                        </li>
+
+                        <li>
+                            <a href="bird.html">Birds</a>
+                        </li>
+
+                        <li>
+                            <a href="fish.html">Aquarium</a>
+                        </li>
+
+                    </ul>
+
+                </li>
+
+                <li>
+                    <a href="#">About</a>
+                </li>
+
+                <li>
+                    <a href="contact.html">
+                        Contact Us</a>
+                </li>
+
+            </ul>
+
+        </nav>
+
+        <!-- ACTIONS -->
+
+        <div class="header-actions">
+
+            <div class="search-box">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input type="text"
+                       placeholder="Search products...">
+
+            </div>
+
+            <a href="#" class="icon-btn" id="userBtn">
+
+                <i class="fa-solid fa-user"></i>
+
+            </a>
+            <a href="chart.html" class="icon-btn cart-btn">
+
+                <i class="fa-solid fa-cart-shopping"></i>
+
+
+            </a>
+
+        </div>
+
+    </div>
+
+</header>
+
+<h1 style="text-align:center; margin:30px;">Dog Supplies</h1>
+
+<div class="categories">
+
+    <a href="dog-toys.html" class="category-card">
+        <div class="img-box">
+            <img src="imgs/dog toy.png" alt="dog toy">
+        </div>
+        <h2>Dog Toys</h2>
+        <p>Balls • Plush • Bones</p>
+    </a>
+
+    <a href="dog-collars.html" class="category-card">
+        <div class="img-box">
+            <img src="imgs/dog collar.jfif" alt="dog collar">
+        </div>
+        <h2>Collars & Leashes</h2>
+        <p>With Leash • Without • Training</p>
+    </a>
+
+    <a href="dog-bowls.html" class="category-card">
+        <div class="img-box">
+            <img src="imgs/dog bowl.jfif" alt="dog bowl">
+        </div>
+        <h2>Bowls & Feeders </h2>
+        <p>Food Bowls • Water Dispensers</p>
+    </a>
+    <a href="dog-beds.html" class="category-card">
+        <div class="img-box">
+            <img src="imgs/dog bed.jfif" alt="dog bed">
+        </div>
+        <h2>Beds & Carriers</h2>
+        <p>Soft Beds • Carriers </p>
+    </a>
+<!--    <a href="dog-Grooming.html" class="category-card">-->
+<!--        <h2>Grooming</h2>-->
+<!--        <p>Shampoo • Wipes • Brushes</p>-->
+<!--    </a>-->
+
+</div>
+<a href="dog.html" class="back-btn">⬅ Back</a>
+<!--<button onclick="history.back()" class="back-btn">⬅ Back</button>-->
+
+<footer class="footer">
+
+    <div class="footer-content">
+
+        <!-- ABOUT -->
+
+        <div class="footer-box">
+
+            <h3>About</h3>
+
+            <a href="#">Privacy Policy</a>
+
+            <a href="#">Terms & Conditions</a>
+
+            <a href="#">Promotional Offers</a>
+
+        </div>
+
+        <!-- HELP -->
+
+        <div class="footer-box">
+
+            <h3>Help</h3>
+
+            <a href="#">Customer Help</a>
+
+            <a href="#">Contact Us</a>
+
+            <a href="#">Refund & Returns</a>
+
+        </div>
+
+        <!-- FOLLOW -->
+
+        <div class="footer-box">
+
+            <h3>Follow</h3>
+
+            <a href="#">Instagram</a>
+
+            <a href="#">TikTok</a>
+
+            <a href="#">Facebook</a>
+
+            <a href="#">Twitter</a>
+
+        </div>
+
+
+
+        <!-- PAYMENT -->
+
+
+    </div>
+
+    </div>
+
+    <!-- BOTTOM -->
+
+    <div class="footer-bottom">
+
+        © 2026 Animalia Pet Store — All Rights Reserved
+
+    </div>
+
+</footer>
+</body>
+</html>
