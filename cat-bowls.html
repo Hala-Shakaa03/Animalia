@@ -483,10 +483,11 @@
                 <i class="fa-solid fa-user"></i>
 
             </a>
-            <a href="chart.html" class="icon-btn cart-btn">
+            <a href="cart.html" class="icon-btn cart-btn">
 
                 <i class="fa-solid fa-cart-shopping"></i>
 
+                <span class="cart-number">0</span>
 
             </a>
 
@@ -778,5 +779,111 @@
     </div>
 
 </footer>
+<script>
+
+    /* =========================
+       ADD TO CART
+    ========================= */
+
+    document.querySelectorAll(".product-card button")
+        .forEach(function(button){
+
+            button.addEventListener("click", function(){
+
+                const card =
+                    button.closest(".product-card");
+
+                const name =
+                    card.querySelector("h3").innerText;
+
+                const priceText =
+                    card.querySelector(".price").innerText;
+
+                const price =
+                    parseFloat(
+                        priceText.replace("₪","")
+                    );
+
+                const image =
+                    card.querySelector("img")
+                        .getAttribute("src");
+
+                const quantity =
+                    parseInt(
+                        card.querySelector(".quantity input").value
+                    );
+
+                let cart =
+                    JSON.parse(localStorage.getItem("cart"))
+                    || [];
+
+                const existingItem =
+                    cart.find(item => item.name === name);
+
+                if(existingItem){
+
+                    existingItem.quantity += quantity;
+
+                }else{
+
+                    cart.push({
+
+                        name:name,
+                        price:price,
+                        image:image,
+                        quantity:quantity
+                    });
+                }
+
+                localStorage.setItem(
+                    "cart",
+                    JSON.stringify(cart)
+                );
+
+                alert("Product added to cart!");
+
+                updateCartNumber();
+            });
+        });
+
+    /* =========================
+       CART NUMBER
+    ========================= */
+
+    function updateCartNumber(){
+
+        let cart =
+            JSON.parse(localStorage.getItem("cart"))
+            || [];
+
+        let total = 0;
+
+        cart.forEach(item => {
+
+            total += item.quantity;
+        });
+
+        const cartBtn =
+            document.querySelector(".cart-btn");
+
+        let badge =
+            document.querySelector(".cart-number");
+
+        if(!badge){
+
+            badge =
+                document.createElement("span");
+
+            badge.classList.add("cart-number");
+
+            cartBtn.appendChild(badge);
+        }
+
+        badge.textContent = total;
+    }
+
+    updateCartNumber();
+
+</script>
 </body>
 </html>

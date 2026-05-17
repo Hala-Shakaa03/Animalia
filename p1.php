@@ -141,7 +141,7 @@ session_start();
                 <i class="fa-solid fa-user"></i>
 
             </a>
-            <a href="chart.html" class="icon-btn cart-btn">
+            <a href="cart.html" class="icon-btn cart-btn">
 
                 <i class="fa-solid fa-cart-shopping"></i>
 

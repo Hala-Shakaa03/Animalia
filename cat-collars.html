@@ -529,7 +529,7 @@
                 <i class="fa-solid fa-user"></i>
 
             </a>
-            <a href="chart.html" class="icon-btn cart-btn">
+            <a href="cart.html" class="icon-btn cart-btn">
 
                 <i class="fa-solid fa-cart-shopping"></i>
 
@@ -604,22 +604,31 @@
         </div>
 
         <div class="product-card">
+
             <div class="img-box">
-                <img src="imgs/cat%20vest.jpeg">
+                <img src="imgs/cat%20vest.jpeg" alt="Crochet Cat Vest">
             </div>
-            <h3>Crochet Cat Vest</h3>
+
+            <h3 class="product-name" data-base="Crochet Cat Vest">
+                Crochet Cat Vest - S
+            </h3>
+
             <p class="price">₪15</p>
+
             <div class="sizes">
-                <span class="size active">S</span>
-                <span class="size">M</span>
-                <span class="size">L</span>
-                <span class="size">XL</span>
+                <span class="size active" data-name="S">S</span>
+                <span class="size" data-name="M">M</span>
+                <span class="size" data-name="L">L</span>
+                <span class="size" data-name="XL">XL</span>
             </div>
+
             <div class="quantity">
                 <label>Quantity:</label>
                 <input type="number" value="1" min="1">
             </div>
+
             <button>Add to Cart</button>
+
         </div>
 
         <div class="product-card">
@@ -723,24 +732,24 @@
 
 
 <a href="cat-supplies.html" class="back-btn">⬅ Back</a>
-<script>
+<!--<script>-->
 
-    document.querySelectorAll(".product-card").forEach(card => {
-        const options = card.querySelectorAll(".size");
-        const name = card.querySelector(".product-name");
+<!--    document.querySelectorAll(".product-card").forEach(card => {-->
+<!--        const options = card.querySelectorAll(".size");-->
+<!--        const name = card.querySelector(".product-name");-->
 
-        options.forEach(btn => {
-            btn.addEventListener("click", () => {
-                options.forEach(b => b.classList.remove("active"));
-                btn.classList.add("active");
+<!--        options.forEach(btn => {-->
+<!--            btn.addEventListener("click", () => {-->
+<!--                options.forEach(b => b.classList.remove("active"));-->
+<!--                btn.classList.add("active");-->
 
-                if (name && btn.dataset.name) {
-                    name.textContent = name.dataset.base + " - " + btn.dataset.name;
-                }
-            });
-        });
-    });
-</script>
+<!--                if (name && btn.dataset.name) {-->
+<!--                    name.textContent = name.dataset.base + " - " + btn.dataset.name;-->
+<!--                }-->
+<!--            });-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
 
 <footer class="footer">
 
@@ -808,5 +817,144 @@
     </div>
 
 </footer>
+<script>
+
+    /* =========================
+       SIZE BUTTONS
+    ========================= */
+
+    document.querySelectorAll(".product-card").forEach(card => {
+
+        const options =
+            card.querySelectorAll(".size");
+
+        const name =
+            card.querySelector(".product-name");
+
+        options.forEach(btn => {
+
+            btn.addEventListener("click", () => {
+
+                options.forEach(b =>
+                    b.classList.remove("active")
+                );
+
+                btn.classList.add("active");
+
+                if(name){
+
+                    name.textContent =
+                        name.dataset.base +
+                        " - " +
+                        btn.innerText;
+                }
+            });
+        });
+    });
+
+    /* =========================
+       ADD TO CART
+    ========================= */
+
+    document.querySelectorAll(".product-card button")
+        .forEach(function(button){
+
+            button.addEventListener("click", function(){
+
+                const card =
+                    button.closest(".product-card");
+
+                const name =
+                    card.querySelector("h3").innerText;
+
+                const priceText =
+                    card.querySelector(".price").innerText;
+
+                const price =
+                    parseFloat(
+                        priceText.replace("₪","")
+                    );
+
+                const image =
+                    card.querySelector("img")
+                        .getAttribute("src");
+
+                const quantity =
+                    parseInt(
+                        card.querySelector(".quantity input").value
+                    );
+
+                let cart =
+                    JSON.parse(localStorage.getItem("cart"))
+                    || [];
+
+                const existingItem =
+                    cart.find(item => item.name === name);
+
+                if(existingItem){
+
+                    existingItem.quantity += quantity;
+
+                }else{
+
+                    cart.push({
+
+                        name:name,
+                        price:price,
+                        image:image,
+                        quantity:quantity
+                    });
+                }
+
+                localStorage.setItem(
+                    "cart",
+                    JSON.stringify(cart)
+                );
+
+                alert("Product added to cart!");
+
+                updateCartNumber();
+            });
+        });
+
+    /* =========================
+       CART NUMBER
+    ========================= */
+
+    function updateCartNumber(){
+
+        let cart =
+            JSON.parse(localStorage.getItem("cart"))
+            || [];
+
+        let total = 0;
+
+        cart.forEach(item => {
+
+            total += item.quantity;
+        });
+
+        const cartBtn =
+            document.querySelector(".cart-btn");
+
+        let badge =
+            document.querySelector(".cart-number");
+
+        if(!badge){
+
+            badge =
+                document.createElement("span");
+
+            badge.classList.add("cart-number");
+
+            cartBtn.appendChild(badge);
+        }
+
+        badge.textContent = total;
+    }
+
+    updateCartNumber();
+
+</script>
 </body>
 </html>

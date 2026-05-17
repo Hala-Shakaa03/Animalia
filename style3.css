@@ -370,3 +370,21 @@ body{
         width:100%;
     }
 }
+
+.remove-btn{
+    border:none;
+    background:#f8d7da;
+    color:#721c24;
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    cursor:pointer;
+    font-size:16px;
+    transition:.3s;
+}
+
+.remove-btn:hover{
+    background:#721c24;
+    color:white;
+    transform:scale(1.08);
+}
