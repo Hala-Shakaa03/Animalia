@@ -50,7 +50,7 @@ $subtotal = 0;
 
     <div class="topbar-center">
         <i class="fa-solid fa-truck"></i>
-        Free delivery on orders over $100
+        Free delivery on orders over ₪100
     </div>
 
     <div class="topbar-right">
@@ -121,6 +121,11 @@ $subtotal = 0;
         <div class="cart-items">
 
             <h2>Cart Items (<?php echo $totalItems; ?>)</h2>
+            <?php if(isset($_GET["order"]) && $_GET["order"] == "success") { ?>
+                <div class="success-message">
+                    Order placed successfully!
+                </div>
+            <?php } ?>
 
             <?php if (mysqli_num_rows($result) == 0) { ?>
 
@@ -191,9 +196,11 @@ $subtotal = 0;
                 <span>₪<?php echo $subtotal > 0 ? $subtotal + 6 : 0; ?></span>
             </div>
 
-            <button class="checkout-btn">
-                Proceed to Checkout
-            </button>
+            <?php if ($subtotal > 0) { ?>
+                <a href="checkout.php" class="checkout-btn">
+                    Proceed to Checkout
+                </a>
+            <?php } ?>
 
             <div class="why-shop">
 
@@ -208,7 +215,7 @@ $subtotal = 0;
                     </div>
                     <div>
                         <h3>Free Delivery</h3>
-                        <p>On orders over $100</p>
+                        <p>On orders over ₪100</p>
                     </div>
                 </div>
 

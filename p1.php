@@ -48,7 +48,7 @@ if (isset($_SESSION["user_id"])) {
 
     <div class="topbar-center">
         <i class="fa-solid fa-truck"></i>
-        Free delivery on orders over $100
+        Free delivery on orders over ₪100
     </div>
 
     <div class="topbar-right">
