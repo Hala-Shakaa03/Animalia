@@ -1,8 +1,24 @@
+<?php
+session_start();
+include "db.php";
+
+$cartCount = 0;
+
+if (isset($_SESSION["user_id"])) {
+    $user_id = $_SESSION["user_id"];
+
+    $countSql = "SELECT SUM(quantity) AS total FROM cart_items WHERE user_id='$user_id'";
+    $countResult = mysqli_query($conn, $countSql);
+    $countRow = mysqli_fetch_assoc($countResult);
+
+    $cartCount = $countRow["total"] ?? 0;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Dog Food</title>
+    <title>Birds Cages</title>
     <link rel="stylesheet" href="all.css">
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">    <style>
@@ -17,7 +33,7 @@
         body{
             font-family:'Poppins',sans-serif;
             background:#f8f3ed;
-            color:#4b3527;
+            color:#3e2f26;
             overflow-x:hidden;
         }
 
@@ -31,9 +47,9 @@
 
             font-size:64px;
 
-            margin:60px 0 35px;
+            margin:60px 0;
 
-            color:#4b3527;
+            color:#3e2414;
 
             font-weight:800;
 
@@ -46,52 +62,13 @@
 
         .section{
 
-            width:92%;
+            width:90%;
 
             max-width:1550px;
 
-            margin:0 auto 80px;
-        }
+            margin:auto;
 
-        /* SECTION TITLES */
-
-        .section h2{
-
-            font-size:38px;
-
-            color:#5b3822;
-
-            margin-bottom:30px;
-
-            font-weight:800;
-
-            position:relative;
-
-            padding-left:18px;
-        }
-
-        .section h2::before{
-
-            content:"";
-
-            position:absolute;
-
-            left:0;
-
-            top:4px;
-
-            width:6px;
-
-            height:40px;
-
-            border-radius:20px;
-
-            background:
-                    linear-gradient(
-                            to bottom,
-                            #8b5e3c,
-                            #c58b5c
-                    );
+            padding-bottom:90px;
         }
 
         /* =========================
@@ -105,7 +82,7 @@
             grid-template-columns:
     repeat(auto-fit,minmax(280px,1fr));
 
-            gap:35px;
+            gap:32px;
         }
 
         /* =========================
@@ -114,24 +91,16 @@
 
         .product-card{
 
-            position:relative;
+            background:white;
 
-            background:rgba(255,255,255,.92);
-
-            backdrop-filter:blur(12px);
-
-            border-radius:35px;
+            border-radius:32px;
 
             padding:22px;
 
             text-align:center;
 
-            overflow:hidden;
-
-            border:1px solid rgba(255,255,255,.4);
-
             box-shadow:
-                    0 10px 30px rgba(0,0,0,.06);
+                    0 10px 25px rgba(0,0,0,.05);
 
             transition:.4s;
 
@@ -141,17 +110,16 @@
 
             justify-content:space-between;
 
-            min-height:560px;
+            min-height:600px;
         }
 
         .product-card:hover{
 
             transform:
-                    translateY(-12px)
-                    scale(1.02);
+                    translateY(-10px);
 
             box-shadow:
-                    0 20px 45px rgba(139,94,60,.18);
+                    0 18px 35px rgba(0,0,0,.08);
         }
 
         /* =========================
@@ -160,8 +128,6 @@
 
         .img-box{
 
-            width:100%;
-
             height:250px;
 
             border-radius:28px;
@@ -169,8 +135,8 @@
             background:
                     linear-gradient(
                             135deg,
-                            #f7efe7,
-                            #efe2d2
+                            #f3e2d1,
+                            #faf6f1
                     );
 
             display:flex;
@@ -181,7 +147,7 @@
 
             overflow:hidden;
 
-            margin-bottom:22px;
+            margin-bottom:20px;
         }
 
         .img-box img{
@@ -192,33 +158,218 @@
 
             object-fit:contain;
 
-            transition:.5s;
+            transition:.4s;
         }
 
         .product-card:hover img{
 
-            transform:
-                    scale(1.1)
-                    rotate(-2deg);
+            transform:scale(1.08);
+        }
+        /* =========================
+           HERO SECTION
+        ========================= */
+
+        .bird-hero{
+
+            width:96%;
+
+            max-width:1500px;
+
+            margin:30px auto 70px;
         }
 
+        .bird-hero-content{
+
+            background:
+                    linear-gradient(
+                            to right,
+                            #4b2412,
+                            #a57b5b
+                    );
+
+            border-radius:40px;
+
+            padding:65px 45px;
+
+            display:flex;
+
+            align-items:center;
+
+            justify-content:space-between;
+
+            overflow:hidden;
+
+            position:relative;
+        }
+
+        .bird-hero-content::before{
+
+            content:"";
+
+            position:absolute;
+
+            width:300px;
+
+            height:300px;
+
+            border-radius:50%;
+
+            background:rgba(255,255,255,.06);
+
+            right:-80px;
+
+            top:-40px;
+        }
+
+        /* TEXT */
+
+        .bird-hero-text{
+
+            color:white;
+
+            z-index:2;
+
+            max-width:700px;
+        }
+
+        .bird-tag{
+
+            display:inline-block;
+
+            background:#f5c97b;
+
+            color:#3e2414;
+
+            padding:10px 20px;
+
+            border-radius:999px;
+
+            font-size:15px;
+
+            font-weight:700;
+
+            margin-bottom:28px;
+        }
+
+        .bird-hero-text h1{
+
+            font-size:72px;
+
+            line-height:1.15;
+
+            margin-bottom:20px;
+
+            font-weight:800;
+        }
+
+        .bird-hero-text p{
+
+            font-size:22px;
+
+            line-height:1.8;
+
+            color:#f5ede4;
+
+            max-width:620px;
+        }
+
+        /* IMAGE */
+
+        .bird-hero-image{
+
+            position:relative;
+
+            z-index:2;
+        }
+
+        .bird-hero-image img{
+
+            width:360px;
+
+            object-fit:contain;
+
+            animation:float 4s ease-in-out infinite;
+        }
+
+        /* ANIMATION */
+
+        @keyframes float{
+
+            0%,100%{
+                transform:translateY(0);
+            }
+
+            50%{
+                transform:translateY(-15px);
+            }
+        }
+
+        /* =========================
+           RESPONSIVE HERO
+        ========================= */
+
+        @media(max-width:1100px){
+
+            .bird-hero-content{
+
+                flex-direction:column;
+
+                text-align:center;
+
+                gap:40px;
+            }
+
+            .bird-hero-text p{
+                margin:auto;
+            }
+
+            .bird-hero-text h1{
+                font-size:55px;
+            }
+        }
+
+        @media(max-width:768px){
+
+            .bird-hero{
+
+                width:92%;
+            }
+
+            .bird-hero-content{
+
+                padding:45px 25px;
+            }
+
+            .bird-hero-text h1{
+
+                font-size:40px;
+            }
+
+            .bird-hero-text p{
+
+                font-size:18px;
+            }
+
+            .bird-hero-image img{
+
+                width:250px;
+            }
+        }
         /* =========================
            PRODUCT NAME
         ========================= */
 
         .product-card h3{
 
-            font-size:22px;
+            font-size:23px;
 
             line-height:1.5;
 
+            margin-bottom:12px;
+
             color:#4b3527;
 
-            margin-bottom:14px;
-
-            min-height:76px;
-
-            font-weight:700;
+            min-height:70px;
         }
 
         /* =========================
@@ -227,7 +378,7 @@
 
         .price{
 
-            font-size:34px;
+            font-size:32px;
 
             font-weight:800;
 
@@ -273,18 +424,11 @@
 
             text-align:center;
 
-            font-size:18px;
+            font-size:17px;
 
             font-weight:600;
 
             color:#4b3527;
-
-            transition:.3s;
-        }
-
-        .quantity input:focus{
-
-            background:#efe2d2;
         }
 
         /* =========================
@@ -297,18 +441,18 @@
 
             border:none;
 
-            padding:16px;
-
-            border-radius:999px;
-
             background:
                     linear-gradient(
                             to right,
-                            #5b3822,
-                            #9b6a43
+                            #4b3527,
+                            #8b5e3c
                     );
 
             color:white;
+
+            padding:15px;
+
+            border-radius:999px;
 
             font-size:16px;
 
@@ -316,20 +460,16 @@
 
             cursor:pointer;
 
-            transition:.35s;
+            transition:.3s;
 
             margin-top:auto;
-
-            letter-spacing:.5px;
         }
 
         .product-card button:hover{
 
-            transform:
-                    translateY(-4px);
+            transform:translateY(-4px);
 
-            box-shadow:
-                    0 10px 25px rgba(139,94,60,.25);
+            opacity:.95;
         }
 
         /* =========================
@@ -353,8 +493,8 @@
             background:
                     linear-gradient(
                             to right,
-                            #5b3822,
-                            #9b6a43
+                            #4b3527,
+                            #8b5e3c
                     );
 
             color:white;
@@ -389,10 +529,6 @@
                 font-size:50px;
             }
 
-            .section h2{
-                font-size:32px;
-            }
-
             .products{
                 grid-template-columns:
         repeat(auto-fit,minmax(240px,1fr));
@@ -403,10 +539,6 @@
 
             .page-title{
                 font-size:40px;
-            }
-
-            .section h2{
-                font-size:28px;
             }
 
             .products{
@@ -490,19 +622,19 @@
                     <ul class="dropdown-menu">
 
                         <li>
-                            <a href="cat.html">Cats</a>
+                            <a href="cat.php">Cats</a>
                         </li>
 
                         <li>
-                            <a href="dog.html">Dogs</a>
+                            <a href="dog.php">Dogs</a>
                         </li>
 
                         <li>
-                            <a href="bird.html">Birds</a>
+                            <a href="bird.php">Birds</a>
                         </li>
 
                         <li>
-                            <a href="fish.html">Aquarium</a>
+                            <a href="fish.php">Aquarium</a>
                         </li>
 
                     </ul>
@@ -514,7 +646,7 @@
                 </li>
 
                 <li>
-                    <a href="contact.html">
+                    <a href="contact.php">
                         Contact Us</a>
                 </li>
 
@@ -540,11 +672,9 @@
                 <i class="fa-solid fa-user"></i>
 
             </a>
-            <a href="cart.html" class="icon-btn cart-btn">
-
+            <a href="cart.php" class="icon-btn cart-btn">
                 <i class="fa-solid fa-cart-shopping"></i>
-
-
+                <span class="cart-number"><?php echo $cartCount; ?></span>
             </a>
 
         </div>
@@ -552,401 +682,212 @@
     </div>
 
 </header>
+<h1 class="page-title">Birds Cages & Nests</h1>
 
-<h1 class="page-title">Dog Food</h1>
+<section class="bird-hero">
 
-<!-- DRY FOOD -->
+    <div class="bird-hero-content">
+
+        <div class="bird-hero-text">
+
+            <span class="bird-tag">
+                Bird Accessories
+            </span>
+
+            <h1>
+                Feeders • Drinkers • Baths
+            </h1>
+
+            <p>
+                Premium accessories for your lovely birds
+                with elegant designs and high quality.
+            </p>
+
+        </div>
+
+        <div class="bird-hero-image">
+
+            <img src="imgs/birdd.png"
+                 alt="Bird">
+
+        </div>
+
+    </div>
+
+</section>
 <section class="section">
-    <h2>Dry Food</h2>
-
     <div class="products">
 
         <div class="product-card">
-
             <div class="img-box">
-                <img src="imgs/croque_adult_dog_lamb_3_kg.jpg" alt="Croque Lamb Dry Food 3kg">
+                <img src="imgs/Round Bird Cage With Plate.jfif" alt="Round Bird Cage With Plate">
             </div>
-
-            <h3>Croque Lamb Dry Food 3kg</h3>
+            <h3>Round Bird Cage With Plate</h3>
             <p class="price">₪35</p>
 
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
-
             <button>Add to Cart</button>
-
         </div>
 
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Hassoun Plastic Bird Cage.jpg" alt="Hassoun Plastic Bird Cage">
+            </div>
+            <h3>Hassoun Plastic Bird Cage</h3>
+            <p class="price">₪20</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
 
         <div class="product-card">
-
             <div class="img-box">
-                <img src="imgs/fincsi_adult_dog_chicken_3_kg.png" alt="Fincsi Chicken Dry Food 3kg">
+                <img src="imgs/Blue Round Top Brird Cage.jfif" alt="Blue Round Top Bird Cag">
             </div>
+            <h3>Blue Round Top Bird Cage</h3>
+            <p class="price">₪25</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
 
-            <h3>Fincsi Chicken Dry Food 3kg</h3>
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Bird Cage for Small Birds.jpg" alt="Red Bird Cage for Small Birds">
+            </div>
+            <h3>Red Bird Cage for Small Birds</h3>
+            <p class="price">₪25</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Villa Bird Cage.jpeg" alt="Villa Bird Cage">
+            </div>
+            <h3>Red Villa Shaped Bird Cage</h3>
             <p class="price">₪45</p>
-
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
-
             <button>Add to Cart</button>
-
         </div>
 
         <div class="product-card">
-
             <div class="img-box">
-                <img src="imgs/fincsi_adult_dog_beef_3_kg.jpg" alt="Fincsi Beef Dry Food 3kg">
+                <img src="imgs/Big Silver Bird Cage With Stand.jpeg" alt="Big Silver Bird Cage With Stand">
             </div>
-
-            <h3>Fincsi Beef Dry Food 3kg</h3>
-            <p class="price">₪45</p>
-
+            <h3>Big Silver Bird Cage With Stand</h3>
+            <p class="price">₪100</p>
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
-
             <button>Add to Cart</button>
-
         </div>
+
         <div class="product-card">
-
             <div class="img-box">
-                <img src="imgs/dog_dry_12kg.png" alt="Pedigree Dry Food 12kg">
+                <img src="imgs/Big Black Bird Cage With Stand.jpeg" alt="Big Black Bird Cage With Stand">
             </div>
-
-            <h3>Pedigree Poultry & Vegetables Dry Food 12kg</h3>
-            <p class="price">₪120</p>
-
+            <h3>Big Black Bird Cage With Stand</h3>
+            <p class="price">₪90</p>
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
-
             <button>Add to Cart</button>
-
-        </div>
-        <div class="product-card">
-
-            <div class="img-box">
-                <img src="imgs/Puppy_dry_3kg.jpeg" alt="Pedigree Puppy Dry Food 3kg">
-            </div>
-
-            <h3>Pedigree Puppy Dry Food 3kg</h3>
-            <p class="price">₪45</p>
-
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-
-            <button>Add to Cart</button>
-
-        </div>
-        <div class="product-card">
-
-            <div class="img-box">
-                <img src="imgs/Puppy_dry_Poultry_and_Vegetables_12kg.jpeg" alt="Pedigree Puppy Dry Food 12kg">
-            </div>
-
-            <h3>Pedigree Poultry & Vegetables Puppy Dry Food  12kg</h3>
-            <p class="price">₪120</p>
-
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-
-            <button>Add to Cart</button>
-
-        </div>
-    </div>
-</section>
-
-
-
-<!-- WET FOOD -->
-<section class="section">
-    <h2>Wet Food</h2>
-
-    <div class="products">
-
-        <div class="product-card">
-
-            <div class="img-box">
-                <img src="imgs/Simba_wet_adult.jpeg" alt="Simba Wet Food">
-            </div>
-
-            <h3>Simba Wet Food</h3>
-            <p class="price">₪4</p>
-
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-
-            <button>Add to Cart</button>
-
         </div>
 
         <div class="product-card">
-
             <div class="img-box">
-                <img src="imgs/C_Large_Puppy_Wet_TSiG.jbeg.webp" alt="Puppy Wet Food">
+                <img src="imgs/Hanging Straw Bird Nest.png" alt="Hanging Straw Bird Nest">
             </div>
-
-            <h3>Royal Canin Puppy Wet Food</h3>
-            <p class="price">₪6</p>
-
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-
-            <button>Add to Cart</button>
-
-        </div>
-
-        <div class="product-card">
-
-            <div class="img-box">
-                <img src="imgs/Pedigree_Wet_Food_Beef.png" alt="Pedigree Beef Wet Food">
-            </div>
-
-            <h3>Pedigree Beef Wet Food</h3>
-            <p class="price">₪5</p>
-
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-
-            <button>Add to Cart</button>
-
-        </div>
-        <div class="product-card">
-
-            <div class="img-box">
-                <img src="imgs/Pedigree_Puppy_wet_Food_Chicken_and_Beef.png" alt="Pedigree Chicken and Beef Puppy Wet Food">
-            </div>
-
-            <h3>Pedigree Chicken & Beef Puppy Wet Food</h3>
-            <p class="price">₪5</p>
-
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-
-            <button>Add to Cart</button>
-
-        </div>
-    </div>
-</section>
-
-
-
-<!-- TREATS -->
-<section class="section">
-    <h2>Treats</h2>
-
-    <div class="products">
-
-        <div class="product-card">
-
-            <div class="img-box">
-                <img src="imgs/peanut_butter_treats.webp" alt="Peanut Butter Treats">
-            </div>
-
-            <h3> Peanut Butter Biscuits</h3>
-            <p class="price">₪10</p>
-
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-
-            <button>Add to Cart</button>
-
-        </div>
-        <div class="product-card">
-
-            <div class="img-box">
-                <img src="imgs/softies-chicken-duck-dog-treats-scrumbles.webp" alt="Softies Chicken and Duck Treats">
-            </div>
-
-            <h3> Scrumbles Chicken and Duck Softies For Training</h3>
+            <h3>Hanging Straw Bird Nest</h3>
             <p class="price">₪15</p>
-
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
-
             <button>Add to Cart</button>
-
         </div>
 
         <div class="product-card">
-
             <div class="img-box">
-                <img src="imgs/chicken_and_milk_treats.png" alt="Puppy Chicken and Milk Air Dried Treats">
+                <img src="imgs/Bamboo Bird Nest.jpg" alt="Bamboo Bird Nest">
             </div>
-
-            <h3> Puppy Chicken and Duck Air Dried Strapz</h3>
-            <p class="price">₪15</p>
-
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-
-            <button>Add to Cart</button>
-
-        </div>
-
-        <div class="product-card">
-
-            <div class="img-box">
-                <img src="imgs/wanpy_chicken_treats.png" alt="Wanpy Chicken and Jerky Sushi Treats">
-            </div>
-
-            <h3> Wanpy Chicken, Jerky and Codfish Sushi Treats </h3>
-            <p class="price">₪10</p>
-
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-
-            <button>Add to Cart</button>
-
-        </div>
-
-        <div class="product-card">
-
-            <div class="img-box">
-                <img src="imgs/wanpy_duck_treats.png" alt="Wanpy Duck and Jerky Stripes Treats">
-            </div>
-
-            <h3> Wanpy Duck and Jerky Stripes</h3>
-            <p class="price">₪10</p>
-
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-
-            <button>Add to Cart</button>
-
-        </div>
-
-        <div class="product-card">
-
-            <div class="img-box">
-                <img src="imgs/bones_2_15cm.png" alt="Two 12cm Bones ">
-            </div>
-
-            <h3> Two Bones - 12cm</h3>
-            <p class="price">₪10</p>
-
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-
-            <button>Add to Cart</button>
-
-        </div>
-
-        <div class="product-card">
-
-            <div class="img-box">
-                    <img src="imgs/small_bones_5_5cm.png" alt="Five 5cm Bones ">
-            </div>
-
-            <h3> Five Bones - 5cm</h3>
+            <h3>Bamboo Bird Nest</h3>
             <p class="price">₪12</p>
-
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
-
             <button>Add to Cart</button>
-
-        </div>
-        <div class="product-card">
-
-            <div class="img-box">
-                <img src="imgs/healthy_bones_2_11cm.png" alt="Two 11cm Healthy Bones ">
-            </div>
-
-            <h3> Two Healthy Bones- 11cm</h3>
-            <p class="price">₪12</p>
-
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-
-            <button>Add to Cart</button>
-
         </div>
 
         <div class="product-card">
-
             <div class="img-box">
-                <img src="imgs/healthy_bones_5_7cm.png" alt="Five 7cm Healthy Bones ">
+                <img src="imgs/3-Hole Finch Nest.jpg" alt="3-Hole Finch Nest">
             </div>
-
-            <h3> Five Healthy Bones- 7cm</h3>
-            <p class="price">₪15</p>
-
+            <h3>3-Hole Finch Nest</h3>
+            <p class="price">₪20</p>
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
-
             <button>Add to Cart</button>
-
         </div>
 
     </div>
 </section>
 
+<a href="bird.php" class="back-btn">⬅ Back</a>
 
+<script>
+    document.querySelectorAll(".product-card").forEach(card => {
 
-<!-- MOST POPULAR -->
-<!--<section class="section">-->
-<!--    <h2>⭐ Most Popular</h2>-->
+        const sizes = card.querySelectorAll(".size");
+        const price = card.querySelector(".price");
+        const img = card.querySelector("img");
+        const name = card.querySelector(".product-name");
 
-<!--    <div class="products">-->
+        sizes.forEach(btn => {
+            btn.addEventListener("click", () => {
 
-<!--        <div class="product-card">-->
+                sizes.forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
 
-<!--            <div class="img-box">-->
-<!--                <img src="imgs/best_seller_dry_food.png" alt="Best Seller">-->
-<!--            </div>-->
+                // السعر
+                if (price && btn.dataset.price) {
+                    price.textContent = "₪" + btn.dataset.price;
+                }
 
-<!--            <h3>Best Seller Dry Food</h3>-->
-<!--            <p class="price">₪50</p>-->
+                // الصورة
+                if (img && btn.dataset.img) {
+                    img.src = btn.dataset.img;
+                }
 
-<!--            <button>Add to Cart</button>-->
+                // الاسم + الطول
+                if (name && btn.dataset.name) {
+                    name.textContent = name.dataset.base + " - " + btn.dataset.name;
+                }
 
-<!--        </div>-->
+            });
+        });
 
-<!--    </div>-->
-<!--</section>-->
-
-
-<a href="dog.html" class="back-btn">⬅ Back</a>
+    });
+</script>
 
 <footer class="footer">
 
@@ -1014,6 +955,80 @@
     </div>
 
 </footer>
+<script>
 
+    /* =========================
+       ADD TO CART - BACKEND
+    ========================= */
+
+    document.querySelectorAll(".product-card button")
+        .forEach(function(button){
+
+            button.setAttribute("type", "button");
+
+            button.addEventListener("click", function(){
+
+                const card = button.closest(".product-card");
+
+                const name = card.querySelector("h3").innerText;
+
+                const priceText = card.querySelector(".price").innerText;
+
+                const price = parseFloat(priceText.replace("₪",""));
+
+                const image = card.querySelector("img").getAttribute("src");
+
+                const quantity = parseInt(card.querySelector(".quantity input").value);
+
+                fetch("add_to_cart.php", {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+
+                    body:
+                        "name=" + encodeURIComponent(name)
+                        + "&price=" + price
+                        + "&image=" + encodeURIComponent(image)
+                        + "&quantity=" + quantity
+                })
+
+                    .then(response => response.text())
+
+                    .then(data => {
+
+                        data = data.trim();
+
+                        if(data === "login"){
+
+                            alert("Please login first!");
+                            window.location.href = "login.php";
+
+                        }else{
+
+                            alert("Product added to cart!");
+
+                            const cartNumber =
+                                document.querySelector(".cart-number");
+
+                            if(cartNumber){
+
+                                let currentNumber =
+                                    parseInt(cartNumber.textContent || 0);
+
+                                cartNumber.textContent =
+                                    currentNumber + quantity;
+                            }
+                        }
+
+                    });
+
+            });
+
+        });
+
+</script>
 </body>
 </html>

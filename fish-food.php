@@ -1,12 +1,29 @@
+<?php
+session_start();
+include "db.php";
+
+$cartCount = 0;
+
+if (isset($_SESSION["user_id"])) {
+    $user_id = $_SESSION["user_id"];
+
+    $countSql = "SELECT SUM(quantity) AS total FROM cart_items WHERE user_id='$user_id'";
+    $countResult = mysqli_query($conn, $countSql);
+    $countRow = mysqli_fetch_assoc($countResult);
+
+    $cartCount = $countRow["total"] ?? 0;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Fish Tank Filters</title>
+    <title>Fish Food</title>
     <link rel="stylesheet" href="all.css">
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
+
 
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
@@ -302,26 +319,31 @@
             }
         }
 
-        @media(max-width:768px) {
+        @media(max-width:768px){
 
-            .page-title {
-                font-size: 38px;
+            .page-title{
+                font-size:38px;
             }
 
-            .products {
+            .products{
                 grid-template-columns:1fr;
             }
 
-            .img-box {
-                height: 210px;
+            .img-box{
+                height:210px;
             }
 
-            .product-card {
-                min-height: auto;
+            .product-card{
+                min-height:auto;
             }
         }
     </style>
+
 </head>
+
+<body>
+
+
 
 <div class="topbar">
 
@@ -387,19 +409,19 @@
                     <ul class="dropdown-menu">
 
                         <li>
-                            <a href="cat.html">Cats</a>
+                            <a href="cat.php">Cats</a>
                         </li>
 
                         <li>
-                            <a href="dog.html">Dogs</a>
+                            <a href="dog.php">Dogs</a>
                         </li>
 
                         <li>
-                            <a href="bird.html">Birds</a>
+                            <a href="bird.php">Birds</a>
                         </li>
 
                         <li>
-                            <a href="fish.html">Aquarium</a>
+                            <a href="fish.php">Aquarium</a>
                         </li>
 
                     </ul>
@@ -411,7 +433,7 @@
                 </li>
 
                 <li>
-                    <a href="contact.html">
+                    <a href="contact.php">
                         Contact Us</a>
                 </li>
 
@@ -437,11 +459,9 @@
                 <i class="fa-solid fa-user"></i>
 
             </a>
-            <a href="cart.html" class="icon-btn cart-btn">
-
+            <a href="cart.php" class="icon-btn cart-btn">
                 <i class="fa-solid fa-cart-shopping"></i>
-
-
+                <span class="cart-number"><?php echo $cartCount; ?></span>
             </a>
 
         </div>
@@ -449,112 +469,18 @@
     </div>
 
 </header>
-
-<body>
-
-<h1 class="page-title">Fish Tank Filters</h1>
+<h1 class="page-title">Fish Food</h1>
 
 <section class="section">
     <div class="products">
 
         <div class="product-card">
             <div class="img-box">
-                <img src="imgs/Fish Tank Air Pump (2 Outlets).jpeg" alt="Fish Tank Air Pump (2 Outlets)">
+                <img src="imgs/Tokyu Floating Fish Food.jpg" alt="Tokyu Floating Fish Food">
             </div>
-            <h3>Fish Tank Air Pump - 2 Outlets</h3>
-            <p class="price">₪35</p>
-
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/Aquarium Submersible Water Pump.jpeg" alt="Aquarium Submersible Water Pump">
-            </div>
-            <h3>Aquarium Submersible Water Pump</h3>
-            <p class="price">₪40</p>
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/Fish Tank Silicone Air Tubing (15m).jpg" alt="Fish Tank Silicone Air Tubing (15m)">
-            </div>
-            <h3>Fish Tank Silicone Air Tubing - 15m</h3>
-            <p class="price">₪15</p>
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/Fish Tank Silicone Air Tubing (50m).png" alt="Fish Tank Silicone Air Tubing (50m)">
-            </div>
-            <h3>Fish Tank Silicone Air Tubing - 50m</h3>
-            <p class="price">₪50</p>
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/Internal Aquarium Filter.jpg" alt="Internal Aquarium Filter">
-            </div>
-            <h3>Internal Aquarium Filter</h3>
-            <p class="price">₪50</p>
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/Aquarium Filter Sponge.png" alt="Aquarium Filter Sponge">
-            </div>
-            <h3>Aquarium Filter Sponge</h3>
-            <p class="price">₪15</p>
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/Aquarium Glass Cleaner Sponge.jpg" alt="Aquarium Glass Cleaner Sponge">
-            </div>
-            <h3>Aquarium Glass Cleaner Sponge</h3>
-            <p class="price">₪10</p>
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/Cylindrical Air Stone.png" alt="Cylindrical Air Stone">
-            </div>
-            <h3>Cylindrical Air Stone</h3>
+            <h3>Tokyu Floating Fish Food - 100g</h3>
             <p class="price">₪5</p>
+
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
@@ -564,9 +490,35 @@
 
         <div class="product-card">
             <div class="img-box">
-                <img src="imgs/Aquarium Air Stone (Dome Shape).jpg" alt="Aquarium Air Stone Dome Shape">
+                <img src="imgs/Tetra Fish Food Pond Flakes for Small Fishes.jfif" alt="Tetra Fish Food Pond Flakes for Small Fishes">
             </div>
-            <h3>Dome Shaped Aquarium Air Stone </h3>
+            <h3>Tetra Fish Food Pond Flakes for Small Fishes</h3>
+            <p class="price">₪8</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Tetra Fish Food Tropical Flakes.jfif" alt="Tetra Fish Food Tropical Flakes">
+            </div>
+            <h3>Tetra Fish Food Tropical Flakes</h3>
+            <p class="price">₪7</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/King British Goldfish Flakes.jfif" alt="King British Goldfish Flakes">
+            </div>
+            <h3>King British Goldfish Flakes</h3>
             <p class="price">₪10</p>
             <div class="quantity">
                 <label>Quantity</label>
@@ -577,10 +529,10 @@
 
         <div class="product-card">
             <div class="img-box">
-                <img src="imgs/Shell-Shaped Air Stone.jpeg" alt="Shell-Shaped Air Stone">
+                <img src="imgs/King British Goldfish Floating Pellets.jfif" alt="King British Goldfish Floating Pellets">
             </div>
-            <h3>Shell Shaped Air Stone </h3>
-            <p class="price">₪8</p>
+            <h3>King British Goldfish Floating Pellets</h3>
+            <p class="price">₪12</p>
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
@@ -590,10 +542,10 @@
 
         <div class="product-card">
             <div class="img-box">
-                <img src="imgs/Turtle-Shaped Air Stone.jpeg" alt="Turtle-Shaped Air Stone">
+                <img src="imgs/TUNAI%20Fish%20Food%2026%25%20protein%20450g.jfif" alt="TUNAI Fish Food 26% protein 450g">
             </div>
-            <h3>Turtle Shaped Air Stone</h3>
-            <p class="price">₪8</p>
+            <h3>TUNAI Fish Food 26% protein - 450g</h3>
+            <p class="price">₪30</p>
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
@@ -601,10 +553,22 @@
             <button>Add to Cart</button>
         </div>
 
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Nosh 1Kg Fish Food.jpg" alt="Nosh 1Kg Fish Food">
+            </div>
+            <h3>Nosh Fish Food - 1Kg</h3>
+            <p class="price">₪50</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
     </div>
 </section>
 
-<a href="fish.html" class="back-btn">⬅ Back</a>
+<a href="fish.php" class="back-btn">⬅ Back</a>
 
 <footer class="footer">
 
@@ -672,6 +636,80 @@
     </div>
 
 </footer>
+<script>
 
+    /* =========================
+       ADD TO CART - BACKEND
+    ========================= */
+
+    document.querySelectorAll(".product-card button")
+        .forEach(function(button){
+
+            button.setAttribute("type", "button");
+
+            button.addEventListener("click", function(){
+
+                const card = button.closest(".product-card");
+
+                const name = card.querySelector("h3").innerText;
+
+                const priceText = card.querySelector(".price").innerText;
+
+                const price = parseFloat(priceText.replace("₪",""));
+
+                const image = card.querySelector("img").getAttribute("src");
+
+                const quantity = parseInt(card.querySelector(".quantity input").value);
+
+                fetch("add_to_cart.php", {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+
+                    body:
+                        "name=" + encodeURIComponent(name)
+                        + "&price=" + price
+                        + "&image=" + encodeURIComponent(image)
+                        + "&quantity=" + quantity
+                })
+
+                    .then(response => response.text())
+
+                    .then(data => {
+
+                        data = data.trim();
+
+                        if(data === "login"){
+
+                            alert("Please login first!");
+                            window.location.href = "login.php";
+
+                        }else{
+
+                            alert("Product added to cart!");
+
+                            const cartNumber =
+                                document.querySelector(".cart-number");
+
+                            if(cartNumber){
+
+                                let currentNumber =
+                                    parseInt(cartNumber.textContent || 0);
+
+                                cartNumber.textContent =
+                                    currentNumber + quantity;
+                            }
+                        }
+
+                    });
+
+            });
+
+        });
+
+</script>
 </body>
 </html>

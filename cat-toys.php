@@ -1,13 +1,29 @@
+<?php
+session_start();
+include "db.php";
+
+$cartCount = 0;
+
+if (isset($_SESSION["user_id"])) {
+    $user_id = $_SESSION["user_id"];
+
+    $countSql = "SELECT SUM(quantity) AS total FROM cart_items WHERE user_id='$user_id'";
+    $countResult = mysqli_query($conn, $countSql);
+    $countRow = mysqli_fetch_assoc($countResult);
+
+    $cartCount = $countRow["total"] ?? 0;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Dog Bowls</title>
+    <title>Cat Toys</title>
     <link rel="stylesheet" href="all.css">
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-</head>
 <style>
+
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
     *{
@@ -31,13 +47,15 @@
 
         text-align:center;
 
-        font-size:60px;
+        font-size:64px;
 
         margin:60px 0;
 
         color:#4b3527;
 
         font-weight:800;
+
+        letter-spacing:1px;
     }
 
     /* =========================
@@ -48,9 +66,9 @@
 
         width:92%;
 
-        max-width:1500px;
+        max-width:1550px;
 
-        margin:0 auto 70px;
+        margin:0 auto 80px;
     }
 
     /* =========================
@@ -62,9 +80,9 @@
         display:grid;
 
         grid-template-columns:
-    repeat(auto-fit,minmax(270px,1fr));
+    repeat(auto-fit,minmax(280px,1fr));
 
-        gap:32px;
+        gap:35px;
     }
 
     /* =========================
@@ -75,9 +93,7 @@
 
         position:relative;
 
-        background:rgba(255,255,255,.92);
-
-        backdrop-filter:blur(12px);
+        background:rgba(255,255,255,.95);
 
         border-radius:35px;
 
@@ -86,8 +102,6 @@
         text-align:center;
 
         overflow:hidden;
-
-        border:1px solid rgba(255,255,255,.4);
 
         box-shadow:
                 0 10px 30px rgba(0,0,0,.06);
@@ -100,7 +114,7 @@
 
         justify-content:space-between;
 
-        min-height:540px;
+        min-height:560px;
     }
 
     .product-card:hover{
@@ -121,7 +135,7 @@
 
         width:100%;
 
-        height:240px;
+        height:250px;
 
         border-radius:28px;
 
@@ -145,9 +159,9 @@
 
     .img-box img{
 
-        width:105%;
+        width:85%;
 
-        height:105%;
+        height:85%;
 
         object-fit:contain;
 
@@ -157,7 +171,7 @@
     .product-card:hover img{
 
         transform:
-                scale(1.1)
+                scale(1.08)
                 rotate(-2deg);
     }
 
@@ -175,7 +189,7 @@
 
         margin-bottom:14px;
 
-        min-height:72px;
+        min-height:76px;
 
         font-weight:700;
     }
@@ -237,6 +251,13 @@
         font-weight:600;
 
         color:#4b3527;
+
+        transition:.3s;
+    }
+
+    .quantity input:focus{
+
+        background:#efe2d2;
     }
 
     /* =========================
@@ -290,7 +311,7 @@
 
     .back-btn{
 
-        width:220px;
+        width:230px;
 
         display:flex;
 
@@ -298,7 +319,7 @@
 
         align-items:center;
 
-        margin:20px auto 80px;
+        margin:20px auto 90px;
 
         text-decoration:none;
 
@@ -338,7 +359,7 @@
     @media(max-width:992px){
 
         .page-title{
-            font-size:46px;
+            font-size:50px;
         }
 
         .products{
@@ -347,25 +368,29 @@
         }
     }
 
-    @media(max-width:768px){
+    @media(max-width:768px) {
 
-        .page-title{
-            font-size:38px;
+        .page-title {
+            font-size: 40px;
         }
 
-        .products{
+        .products {
             grid-template-columns:1fr;
         }
 
-        .img-box{
-            height:220px;
+        .img-box {
+            height: 220px;
         }
 
-        .product-card{
-            min-height:auto;
+        .product-card {
+            min-height: auto;
         }
     }
+
+
 </style>
+</head>
+
 <body>
 
 <div class="topbar">
@@ -432,19 +457,19 @@
                     <ul class="dropdown-menu">
 
                         <li>
-                            <a href="cat.html">Cats</a>
+                            <a href="cat.php">Cats</a>
                         </li>
 
                         <li>
-                            <a href="dog.html">Dogs</a>
+                            <a href="dog.php">Dogs</a>
                         </li>
 
                         <li>
-                            <a href="bird.html">Birds</a>
+                            <a href="bird.php">Birds</a>
                         </li>
 
                         <li>
-                            <a href="fish.html">Aquarium</a>
+                            <a href="fish.php">Aquarium</a>
                         </li>
 
                     </ul>
@@ -456,7 +481,7 @@
                 </li>
 
                 <li>
-                    <a href="contact.html">
+                    <a href="contact.php">
                         Contact Us</a>
                 </li>
 
@@ -482,11 +507,9 @@
                 <i class="fa-solid fa-user"></i>
 
             </a>
-            <a href="cart.html" class="icon-btn cart-btn">
-
+            <a href="cart.php" class="icon-btn cart-btn">
                 <i class="fa-solid fa-cart-shopping"></i>
-
-
+                <span class="cart-number"><?php echo $cartCount; ?></span>
             </a>
 
         </div>
@@ -495,123 +518,356 @@
 
 </header>
 
-<h1 class="page-title">Dog Bowls</h1>
+<h1 class="page-title">Cat Toys</h1>
 
+<!-- DRY FOOD -->
 <section class="section">
-<!--    <h2>Food Bowls</h2>-->
+<!--    <h2>Dry Food</h2>-->
+
     <div class="products">
 
         <div class="product-card">
+
             <div class="img-box">
-                <img src="imgs/Plastic Dog Food Bowl.jpeg" alt="Plastic Dog Food Bowl">
+                <img src="imgs/mouse.webp" alt="Mouse With Feather Tail Toy">
             </div>
-            <h3>Plastic Dog Food Bowl</h3>
+
+            <h3>Mouse With Feather Tail</h3>
+            <p class="price">₪2</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/mouse-cat-toy-in-pastel%20tones.webp" alt="Mouse Plush Toy">
+            </div>
+
+            <h3>Mouse Plush Toy </h3>
+            <p class="price">₪3</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/bouncing%20ball%20with%20mouse.jpg" alt="Bouncing Ball With Mouse">
+            </div>
+
+            <h3>Bouncing Ball With Mouse</h3>
             <p class="price">₪5</p>
 
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
+
             <button>Add to Cart</button>
+
         </div>
 
         <div class="product-card">
+
             <div class="img-box">
-                <img src="imgs/Stainless Steel Dog Bowl.jpg" alt="Stainless Steel Dog Bowl">
+                <img src="imgs/balls.jpg" alt="Bouncing Balls">
             </div>
-            <h3>Non-Slip Base Stainless Steel Dog Bowl</h3>
+
+            <h3>Two Bouncing Balls</h3>
+            <p class="price">₪3</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/scratching%20balls.png" alt="Scratching Balls">
+            </div>
+
+            <h3>Two Scratching Balls</h3>
+            <p class="price">₪5</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/scratching%20ball%20with%20feathers.jpg" alt="Scratching Ball With Feather">
+            </div>
+
+            <h3>Scratching Ball With Feathers On Both Sides</h3>
+            <p class="price">₪5</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/catnip%20ball.png" alt="Catnip Ball">
+            </div>
+
+            <h3>Catnip Ball</h3>
+            <p class="price">₪5</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/wooden%20stick%20with%20mouse%20and%20feathers.png" alt="Mouse Wooden Stick">
+            </div>
+
+            <h3>Wooden Stick With Mouse & Feathers</h3>
             <p class="price">₪8</p>
+
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
+
             <button>Add to Cart</button>
+
+        </div>
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/stick%20with%20mouse.jpg" alt="Stick With Mouse">
+            </div>
+
+            <h3>Stick With Mouse</h3>
+            <p class="price">₪7</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
         </div>
 
         <div class="product-card">
+
             <div class="img-box">
-                <img src="imgs/Double Plastic Dog Bowl.jpg" alt="Double Plastic Dog Bowl">
+                <img src="imgs/wooden%20stick%20with%20ball%20and%20feathers.png" alt="Ball Wooden Stick">
             </div>
-            <h3>Double Plastic Dog Bowl</h3>
+
+            <h3>Wooden Stick With Ball</h3>
+            <p class="price">₪7</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/feather%20fishing.png" alt="Feather Fishing Rod">
+            </div>
+
+            <h3>Fishing Rod with Feathers</h3>
             <p class="price">₪10</p>
+
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
-            <button>Add to Cart</button>
-        </div>
 
+            <button>Add to Cart</button>
+
+        </div>
         <div class="product-card">
+
             <div class="img-box">
-                <img src="imgs/Double Stainless Steel Dog Bowl.jpg" alt="Double Stainless Steel Dog Bowl">
+                <img src="imgs/tower%20with%20balls%20and%20feathers.jpg" alt="Tower Maze With Balls and Feathers">
             </div>
-            <h3>Double Stainless Steel Dog Bowl</h3>
+
+            <h3>Tower Maze With Balls & Feathers</h3>
+            <p class="price">₪17</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/tower%20with%20balls.jpg" alt="Tower Maze With Balls">
+            </div>
+
+            <h3>Tower Maze With Balls</h3>
             <p class="price">₪15</p>
+
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
+
             <button>Add to Cart</button>
+
         </div>
 
         <div class="product-card">
+
             <div class="img-box">
-                <img src="imgs/Dog Food Dispenser with Water Tank.png" alt="Dog Food Dispenser with Water Tank">
+                <img src="imgs/cat%20maze.png" alt="Cat Maze">
             </div>
-            <h3>Dog Food Dispenser with Water Tank</h3>
-            <p class="price">₪18</p>
+
+            <h3>Cat Maze</h3>
+            <p class="price">₪25</p>
+
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
+
             <button>Add to Cart</button>
+
         </div>
 
         <div class="product-card">
+
             <div class="img-box">
-                <img src="imgs/Dog Water Dispenser with Tank.png" alt="Dog Water Dispenser with Tank">
+                <img src="imgs/scratching%20house.jpg" alt="Scratching Wooden House">
             </div>
-            <h3>Dog Water Dispenser with Tank</h3>
-            <p class="price">₪18</p>
+
+            <h3>Scratching Wooden House</h3>
+            <p class="price">₪30</p>
+
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
+
             <button>Add to Cart</button>
+
         </div>
 
         <div class="product-card">
+
             <div class="img-box">
-                <img src="imgs/Automatic Dog Food Feeder.jpeg" alt="Automatic Dog Food Feeder">
+                <img src="imgs/scratching%20toy-2.jpeg" alt="Scratching Toy">
             </div>
-            <h3>Automatic Dog Food Feeder</h3>
-            <p class="price">₪20</p>
+
+            <h3>Scratching Toy</h3>
+            <p class="price">₪25</p>
+
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
+
             <button>Add to Cart</button>
+
         </div>
 
         <div class="product-card">
+
             <div class="img-box">
-                <img src="imgs/Automatic Dog Water Feeder.png" alt="Automatic Dog Water Feeder">
+                <img src="imgs/scratching%20toy%20and%20home.webp" alt="Scratching Toy With House">
             </div>
-            <h3>Automatic Dog Water Dispenser</h3>
-            <p class="price">₪20</p>
+
+            <h3>Scratching Toy With House</h3>
+            <p class="price">₪70</p>
+
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
+
             <button>Add to Cart</button>
+
         </div>
 
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/sunflower%20scratching%20toy%20with%20balls.webp" alt="Sun Flower Scratching Toy">
+            </div>
+
+            <h3>Sun Flower Scratching Toy</h3>
+            <p class="price">₪50</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/trampoline%20tent.jpg" alt="Tent">
+            </div>
+
+            <h3>Tent</h3>
+            <p class="price">₪50</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
 
     </div>
 </section>
 
 
-<a href="dog-supplies.html" class="back-btn">⬅ Back</a>
+<a href="cat-supplies.php" class="back-btn">⬅ Back</a>
 
 <footer class="footer">
 
@@ -679,6 +935,77 @@
     </div>
 
 </footer>
+<script>
 
+    /* =========================
+       ADD TO CART - BACKEND
+    ========================= */
+
+    document.querySelectorAll(".product-card button")
+        .forEach(function(button){
+
+            button.setAttribute("type", "button");
+
+            button.addEventListener("click", function(){
+
+                const card = button.closest(".product-card");
+
+                const name = card.querySelector("h3").innerText;
+
+                const priceText = card.querySelector(".price").innerText;
+
+                const price = parseFloat(priceText.replace("₪",""));
+
+                const image = card.querySelector("img").getAttribute("src");
+
+                const quantity = parseInt(card.querySelector(".quantity input").value);
+
+                fetch("add_to_cart.php", {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+
+                    body:
+                        "name=" + encodeURIComponent(name)
+                        + "&price=" + price
+                        + "&image=" + encodeURIComponent(image)
+                        + "&quantity=" + quantity
+                })
+
+                    .then(response => response.text())
+
+                    .then(data => {
+
+                        data = data.trim();
+
+                        if(data === "login"){
+
+                            alert("Please login first!");
+                            window.location.href = "login.php";
+
+                        }else{
+
+                            alert("Product added to cart!");
+
+                            const cartNumber = document.querySelector(".cart-number");
+
+                            if(cartNumber){
+
+                                let currentNumber = parseInt(cartNumber.textContent || 0);
+
+                                cartNumber.textContent = currentNumber + quantity;
+                            }
+                        }
+
+                    });
+
+            });
+
+        });
+
+</script>
 </body>
 </html>

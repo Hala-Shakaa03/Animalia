@@ -1,3 +1,19 @@
+<?php
+session_start();
+include "db.php";
+
+$cartCount = 0;
+
+if (isset($_SESSION["user_id"])) {
+    $user_id = $_SESSION["user_id"];
+
+    $countSql = "SELECT SUM(quantity) AS total FROM cart_items WHERE user_id='$user_id'";
+    $countResult = mysqli_query($conn, $countSql);
+    $countRow = mysqli_fetch_assoc($countResult);
+
+    $cartCount = $countRow["total"] ?? 0;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -502,19 +518,19 @@
                     <ul class="dropdown-menu">
 
                         <li>
-                            <a href="cat.html">Cats</a>
+                            <a href="cat.php">Cats</a>
                         </li>
 
                         <li>
-                            <a href="dog.html">Dogs</a>
+                            <a href="dog.php">Dogs</a>
                         </li>
 
                         <li>
-                            <a href="bird.html">Birds</a>
+                            <a href="bird.php">Birds</a>
                         </li>
 
                         <li>
-                            <a href="fish.html">Aquarium</a>
+                            <a href="fish.php">Aquarium</a>
                         </li>
 
                     </ul>
@@ -526,7 +542,7 @@
                 </li>
 
                 <li>
-                    <a href="contact.html">
+                    <a href="contact.php">
                         Contact Us</a>
                 </li>
 
@@ -552,12 +568,9 @@
                 <i class="fa-solid fa-user"></i>
 
             </a>
-            <a href="cart.html" class="icon-btn cart-btn">
-
+            <a href="cart.php" class="icon-btn cart-btn">
                 <i class="fa-solid fa-cart-shopping"></i>
-
-                <span class="cart-number">0</span>
-
+                <span class="cart-number"><?php echo $cartCount; ?></span>
             </a>
 
         </div>
@@ -1265,7 +1278,7 @@
     </div>
 </section>
 
-<a href="cat-supplies.html" class="back-btn">⬅ Back</a>
+<a href="cat-supplies.php" class="back-btn">⬅ Back</a>
 
 <footer class="footer">
 
@@ -1350,27 +1363,20 @@
 
             btn.addEventListener("click", () => {
 
-                sizes.forEach(b =>
-                    b.classList.remove("active")
-                );
+                sizes.forEach(b => b.classList.remove("active"));
 
                 btn.classList.add("active");
 
                 if(btn.dataset.price){
-                    price.textContent =
-                        "₪" + btn.dataset.price;
+                    price.textContent = "₪" + btn.dataset.price;
                 }
 
                 if(btn.dataset.img){
-                    img.src =
-                        btn.dataset.img;
+                    img.src = btn.dataset.img;
                 }
 
                 if(name && btn.dataset.name){
-                    name.textContent =
-                        name.dataset.base +
-                        " - " +
-                        btn.dataset.name;
+                    name.textContent = name.dataset.base + " - " + btn.dataset.name;
                 }
 
             });
@@ -1379,108 +1385,75 @@
 
     });
 
+
     /* =========================
-       ADD TO CART
+       ADD TO CART - BACKEND
     ========================= */
 
     document.querySelectorAll(".product-card button")
         .forEach(function(button){
 
+            button.setAttribute("type", "button");
+
             button.addEventListener("click", function(){
 
-                const card =
-                    button.closest(".product-card");
+                const card = button.closest(".product-card");
 
-                const name =
-                    card.querySelector("h3").innerText;
+                const name = card.querySelector("h3").innerText;
 
-                const priceText =
-                    card.querySelector(".price").innerText;
+                const priceText = card.querySelector(".price").innerText;
 
-                const price =
-                    parseFloat(
-                        priceText.replace("₪","")
-                    );
+                const price = parseFloat(priceText.replace("₪",""));
 
-                const image =
-                    card.querySelector("img")
-                        .getAttribute("src");
+                const image = card.querySelector("img").getAttribute("src");
 
-                const quantity =
-                    parseInt(
-                        card.querySelector(".quantity input").value
-                    );
+                const quantity = parseInt(card.querySelector(".quantity input").value);
 
-                let cart =
-                    JSON.parse(localStorage.getItem("cart"))
-                    || [];
+                fetch("add_to_cart.php", {
 
-                const existingItem =
-                    cart.find(item => item.name === name);
+                    method: "POST",
 
-                if(existingItem){
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
 
-                    existingItem.quantity += quantity;
+                    body:
+                        "name=" + encodeURIComponent(name)
+                        + "&price=" + price
+                        + "&image=" + encodeURIComponent(image)
+                        + "&quantity=" + quantity
+                })
 
-                }else{
+                    .then(response => response.text())
 
-                    cart.push({
+                    .then(data => {
 
-                        name:name,
-                        price:price,
-                        image:image,
-                        quantity:quantity
+                        data = data.trim();
+
+                        if(data === "login"){
+
+                            alert("Please login first!");
+                            window.location.href = "login.php";
+
+                        }else{
+
+                            alert("Product added to cart!");
+
+                            const cartNumber = document.querySelector(".cart-number");
+
+                            if(cartNumber){
+
+                                let currentNumber = parseInt(cartNumber.textContent || 0);
+
+                                cartNumber.textContent = currentNumber + quantity;
+                            }
+                        }
+
                     });
-                }
 
-                localStorage.setItem(
-                    "cart",
-                    JSON.stringify(cart)
-                );
-
-                alert("Product added to cart!");
-
-                updateCartNumber();
             });
+
         });
-
-    /* =========================
-       CART NUMBER
-    ========================= */
-
-    function updateCartNumber(){
-
-        let cart =
-            JSON.parse(localStorage.getItem("cart"))
-            || [];
-
-        let total = 0;
-
-        cart.forEach(item => {
-
-            total += item.quantity;
-        });
-
-        const cartBtn =
-            document.querySelector(".cart-btn");
-
-        let badge =
-            document.querySelector(".cart-number");
-
-        if(!badge){
-
-            badge =
-                document.createElement("span");
-
-            badge.classList.add("cart-number");
-
-            cartBtn.appendChild(badge);
-        }
-
-        badge.textContent = total;
-    }
-
-    updateCartNumber();
 
 </script>
 

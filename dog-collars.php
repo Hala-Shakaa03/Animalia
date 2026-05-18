@@ -1,12 +1,27 @@
+<?php
+session_start();
+include "db.php";
+
+$cartCount = 0;
+
+if (isset($_SESSION["user_id"])) {
+    $user_id = $_SESSION["user_id"];
+
+    $countSql = "SELECT SUM(quantity) AS total FROM cart_items WHERE user_id='$user_id'";
+    $countResult = mysqli_query($conn, $countSql);
+    $countRow = mysqli_fetch_assoc($countResult);
+
+    $cartCount = $countRow["total"] ?? 0;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Cat Bowls</title>
+    <title>Collars and Clothes</title>
     <link rel="stylesheet" href="all.css">
     <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <style>
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">    <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
         *{
@@ -37,6 +52,8 @@
             color:#4b3527;
 
             font-weight:800;
+
+            letter-spacing:1px;
         }
 
         /* =========================
@@ -47,9 +64,9 @@
 
             width:92%;
 
-            max-width:1500px;
+            max-width:1550px;
 
-            margin:0 auto 70px;
+            margin:0 auto 80px;
         }
 
         /* =========================
@@ -61,9 +78,9 @@
             display:grid;
 
             grid-template-columns:
-    repeat(auto-fit,minmax(270px,1fr));
+    repeat(auto-fit,minmax(280px,1fr));
 
-            gap:32px;
+            gap:35px;
         }
 
         /* =========================
@@ -99,7 +116,7 @@
 
             justify-content:space-between;
 
-            min-height:540px;
+            min-height:560px;
         }
 
         .product-card:hover{
@@ -120,7 +137,7 @@
 
             width:100%;
 
-            height:240px;
+            height:250px;
 
             border-radius:28px;
 
@@ -140,13 +157,15 @@
             overflow:hidden;
 
             margin-bottom:22px;
+
+            position:relative;
         }
 
         .img-box img{
 
-            width:85%;
+            width:102%;
 
-            height:85%;
+            height:105%;
 
             object-fit:contain;
 
@@ -174,7 +193,7 @@
 
             margin-bottom:14px;
 
-            min-height:72px;
+            min-height:76px;
 
             font-weight:700;
         }
@@ -236,6 +255,13 @@
             font-weight:600;
 
             color:#4b3527;
+
+            transition:.3s;
+        }
+
+        .quantity input:focus{
+
+            background:#efe2d2;
         }
 
         /* =========================
@@ -289,7 +315,7 @@
 
         .back-btn{
 
-            width:220px;
+            width:230px;
 
             display:flex;
 
@@ -297,7 +323,7 @@
 
             align-items:center;
 
-            margin:20px auto 80px;
+            margin:20px auto 90px;
 
             text-decoration:none;
 
@@ -337,7 +363,7 @@
         @media(max-width:992px){
 
             .page-title{
-                font-size:46px;
+                font-size:48px;
             }
 
             .products{
@@ -433,19 +459,19 @@
                     <ul class="dropdown-menu">
 
                         <li>
-                            <a href="cat.html">Cats</a>
+                            <a href="cat.php">Cats</a>
                         </li>
 
                         <li>
-                            <a href="dog.html">Dogs</a>
+                            <a href="dog.php">Dogs</a>
                         </li>
 
                         <li>
-                            <a href="bird.html">Birds</a>
+                            <a href="bird.php">Birds</a>
                         </li>
 
                         <li>
-                            <a href="fish.html">Aquarium</a>
+                            <a href="fish.php">Aquarium</a>
                         </li>
 
                     </ul>
@@ -457,7 +483,7 @@
                 </li>
 
                 <li>
-                    <a href="contact.html">
+                    <a href="contact.php">
                         Contact Us</a>
                 </li>
 
@@ -483,12 +509,9 @@
                 <i class="fa-solid fa-user"></i>
 
             </a>
-            <a href="cart.html" class="icon-btn cart-btn">
-
+            <a href="cart.php" class="icon-btn cart-btn">
                 <i class="fa-solid fa-cart-shopping"></i>
-
-                <span class="cart-number">0</span>
-
+                <span class="cart-number"><?php echo $cartCount; ?></span>
             </a>
 
         </div>
@@ -497,96 +520,16 @@
 
 </header>
 
-<h1 class="page-title">Cat Bowls</h1>
+<h1 class="page-title">Collars & Clothes</h1>
 
 <section class="section">
-    <h2>Food Bowls</h2>
     <div class="products">
 
         <div class="product-card">
             <div class="img-box">
-                <img src="imgs/Pink%20Food%20Bowls.jpg" alt="Round Deep Plastic Pink Cat Food Bowl">
+                <img src="imgs/Black Studded Dog Collar – 50cm.jpeg" alt="Black Studded Dog Collar – 50cm">
             </div>
-            <h3>Round Deep Plastic Pink Cat Food Bowl</h3>
-            <p class="price">₪5</p>
-
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/orange%20bowl.png" alt="Round Deep Plastic Orange Cat Food Bowl">
-            </div>
-            <h3>Round Deep Plastic Orange Cat Food Bowl</h3>
-            <p class="price">₪5</p>
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/Non-Slip%20Wide%20Base%20Plastic%20Pet%20Bowl.png" alt="Non-Slip Wide Base Blue Cat Bowl">
-            </div>
-            <h3>Non-Slip Wide Base Blue Cat Food Bowl</h3>
-            <p class="price">₪5</p>
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/Rounded%20Square%20Plastic%20Pet%20Bowl.jpeg" alt="Rounded Square Plastic Cat Bowl">
-            </div>
-            <h3>Rounded Square Plastic Cat Bowl</h3>
-            <p class="price">₪5</p>
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/Slow%20Feeder%20Cat%20Bowl.jpeg" alt="Slow Feeder Cat Bowl">
-            </div>
-            <h3>Slow Feeder Cat Bowl</h3>
-            <p class="price">₪7</p>
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/Non-Slip%20Base%20Stainless%20Steel%20Cat%20Bowl.jpg" alt="Non-Slip Base Stainless Steel Cat Bowl">
-            </div>
-            <h3>Non-Slip Base Stainless Steel Cat Bowl</h3>
-            <p class="price">₪8</p>
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/Double%20Cat%20Food%20&%20Water%20Bowl.png" alt="Double Cat Food & Water Bowl">
-            </div>
-            <h3>Double Plastic Cat Food & Water Bowl</h3>
+            <h3>Black Studded Dog Collar – 50cm </h3>
             <p class="price">₪10</p>
             <div class="quantity">
                 <label>Quantity</label>
@@ -597,9 +540,100 @@
 
         <div class="product-card">
             <div class="img-box">
-                <img src="imgs/Stainless%20Steel%20Double%20Cat%20Bowl.jpeg" alt="Stainless Steel Double Cat Bowl">
+                <img src="imgs/Black Dog Collar.jfif" alt="Black Dog Collar – 50cm">
             </div>
-            <h3>Stainless Steel Double Cat Bowl</h3>
+            <h3>Black Dog Collar – 50cm </h3>
+            <p class="price">₪10</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Pink Dog Collar.jfif" alt="Pink Dog Collar – 50cm">
+            </div>
+            <h3>Pink Dog Collar – 50cm </h3>
+            <p class="price">₪10</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Burgandy Dog Collar.jfif" alt="Burgandy Dog Collar – 50cm">
+            </div>
+            <h3>Burgundy Dog Collar – 50cm </h3>
+            <p class="price">₪10</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Braided Dog Leash with Collar – 115cm.jpeg" alt="Braided Dog Leash with Collar – 115cm">
+            </div>
+            <h3>Braided Dog Leash with Collar – 115cm </h3>
+            <p class="price">₪20</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Soft Handle Dog Leash – 120cm.jpeg" alt="Soft Handle Dog Leash – 120cm">
+            </div>
+            <h3>Soft Handle Dog Leash – 120cm</h3>
+            <p class="price">₪20</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Pink Dog Harness & Leash Set.jpeg" alt="Pink Dog Harness & Leash Set">
+            </div>
+            <h3>Pink Dog Harness & Leash Set</h3>
+            <p class="price">₪25</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Military Dog Harness & Leash Set.jpeg" alt="Military Dog Harness & Leash Set">
+            </div>
+            <h3>Military Dog Harness & Leash Set</h3>
+            <p class="price">₪30</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Red Retractable Dog Leash – 3M.jpg" alt="Red Retractable Dog Leash – 3M">
+            </div>
+            <h3>Red Retractable Dog Leash – 3M</h3>
             <p class="price">₪15</p>
             <div class="quantity">
                 <label>Quantity</label>
@@ -610,9 +644,48 @@
 
         <div class="product-card">
             <div class="img-box">
-                <img src="imgs/Rectangular%20Gravity%20Cat%20Feeder.jpg" alt="Rectangular Gravity Cat Feeder">
+                <img src="imgs/Pink Retractable Dog Leash.png" alt="Pink Retractable Dog Leash">
             </div>
-            <h3>Rectangular Gravity Cat Feeder</h3>
+            <h3>Pink Retractable Dog Leash - 3M</h3>
+            <p class="price">₪15</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Automatic Dog Leash.png" alt="Automatic Dog Leash">
+            </div>
+            <h3>Automatic Dog Leash - 3M</h3>
+            <p class="price">₪17</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Metal Dog Training Collar – 50cm.jpg" alt="Metal Dog Training Collar – 50cm">
+            </div>
+            <h3>Metal Dog Training Collar – 50cm</h3>
+            <p class="price">₪12</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Metal Dog Chain Leash – 150cm.png" alt="Metal Dog Chain Leash – 150cm">
+            </div>
+            <h3>Metal Dog Chain Leash – 150cm</h3>
             <p class="price">₪20</p>
             <div class="quantity">
                 <label>Quantity</label>
@@ -623,10 +696,10 @@
 
         <div class="product-card">
             <div class="img-box">
-                <img src="imgs/Automatic%20Gravity%20Pet%20Feeder%20Round.jpg" alt="Tower Maze With Balls and Feathers">
+                <img src="imgs/Heavy Duty Metal Dog Chain – 160cm.png" alt="Heavy Duty Metal Dog Chain – 160cm">
             </div>
-            <h3>Rounded Gravity Cat Feeder</h3>
-            <p class="price">₪18</p>
+            <h3>Heavy Duty Metal Dog Chain – 160cm</h3>
+            <p class="price">₪25</p>
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
@@ -635,19 +708,12 @@
         </div>
 
 
-    </div>
-</section>
-
-<section class="section">
-    <h2>Water Dispensers</h2>
-    <div class="products">
-
         <div class="product-card">
             <div class="img-box">
-                <img src="imgs/Round%20Gravity%20Water%20Dispenser.png" alt="Round Gravity Water Dispenser">
+                <img src="imgs/Knitted Dog Sweater.png" alt="Knitted Dog Sweater">
             </div>
-            <h3>Round Gravity Water Dispenser</h3>
-            <p class="price">₪18</p>
+            <h3>Knitted Dog Red Sweater</h3>
+            <p class="price">₪15</p>
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
@@ -657,9 +723,9 @@
 
         <div class="product-card">
             <div class="img-box">
-                <img src="imgs/Square%20Gravity%20Water%20Dispenser.jpg" alt="Rectangle Gravity Water Dispenser">
+                <img src="imgs/Soft Dog Hoodie.png" alt="Soft Dog Hoodie">
             </div>
-            <h3>Rectangle Gravity Water Dispenser</h3>
+            <h3>Soft Dog Gray Hoodie</h3>
             <p class="price">₪20</p>
             <div class="quantity">
                 <label>Quantity</label>
@@ -670,10 +736,10 @@
 
         <div class="product-card">
             <div class="img-box">
-                <img src="imgs/Automatic%20Water%20Dispenser%20with%20Food%20Bowl.jpg" alt="Automatic Water Dispenser with Food Bowl">
+                <img src="imgs/Puffer Dog Jacket.png" alt="Puffer Dog Jacket">
             </div>
-            <h3>Automatic Water Dispenser with Food Bowl</h3>
-            <p class="price">₪45</p>
+            <h3>Puffer Dog Purple Jacket</h3>
+            <p class="price">₪30</p>
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
@@ -683,10 +749,10 @@
 
         <div class="product-card">
             <div class="img-box">
-                <img src="imgs/Automatic%20Cat%20Water%20Fountain.jpg" alt="Automatic Cat Water Fountain">
+                <img src="imgs/Waterproof Reflective Dog Coat.png" alt="Waterproof Reflective Dog Coat">
             </div>
-            <h3>Automatic Square Cat Water Fountain</h3>
-            <p class="price">₪40</p>
+            <h3>Waterproof Reflective Dog Red Coat</h3>
+            <p class="price">₪35</p>
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
@@ -696,10 +762,10 @@
 
         <div class="product-card">
             <div class="img-box">
-                <img src="imgs/Ceramic%20Round%20Cat%20Water%20Fountain.jpg" alt="Ceramic Round Cat Water Fountain">
+                <img src="imgs/Pink Princess Dog Dress Set.png" alt="Pink Princess Dog Dress Set">
             </div>
-            <h3>Ceramic Round Cat Water Fountain</h3>
-            <p class="price">₪50</p>
+            <h3>Pink Princess Dog Dress Set</h3>
+            <p class="price">₪15</p>
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
@@ -711,7 +777,8 @@
 </section>
 
 
-<a href="cat-supplies.html" class="back-btn">⬅ Back</a>
+<a href="dog-supplies.php" class="back-btn">⬅ Back</a>
+
 
 <footer class="footer">
 
@@ -782,108 +849,78 @@
 <script>
 
     /* =========================
-       ADD TO CART
+       ADD TO CART - BACKEND
     ========================= */
 
     document.querySelectorAll(".product-card button")
         .forEach(function(button){
 
+            button.setAttribute("type", "button");
+
             button.addEventListener("click", function(){
 
-                const card =
-                    button.closest(".product-card");
+                const card = button.closest(".product-card");
 
-                const name =
-                    card.querySelector("h3").innerText;
+                const name = card.querySelector("h3").innerText;
 
-                const priceText =
-                    card.querySelector(".price").innerText;
+                const priceText = card.querySelector(".price").innerText;
 
-                const price =
-                    parseFloat(
-                        priceText.replace("₪","")
-                    );
+                const price = parseFloat(priceText.replace("₪",""));
 
-                const image =
-                    card.querySelector("img")
-                        .getAttribute("src");
+                const image = card.querySelector("img").getAttribute("src");
 
-                const quantity =
-                    parseInt(
-                        card.querySelector(".quantity input").value
-                    );
+                const quantity = parseInt(card.querySelector(".quantity input").value);
 
-                let cart =
-                    JSON.parse(localStorage.getItem("cart"))
-                    || [];
+                fetch("add_to_cart.php", {
 
-                const existingItem =
-                    cart.find(item => item.name === name);
+                    method: "POST",
 
-                if(existingItem){
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
 
-                    existingItem.quantity += quantity;
+                    body:
+                        "name=" + encodeURIComponent(name)
+                        + "&price=" + price
+                        + "&image=" + encodeURIComponent(image)
+                        + "&quantity=" + quantity
+                })
 
-                }else{
+                    .then(response => response.text())
 
-                    cart.push({
+                    .then(data => {
 
-                        name:name,
-                        price:price,
-                        image:image,
-                        quantity:quantity
+                        data = data.trim();
+
+                        if(data === "login"){
+
+                            alert("Please login first!");
+                            window.location.href = "login.php";
+
+                        }else{
+
+                            alert("Product added to cart!");
+
+                            const cartNumber =
+                                document.querySelector(".cart-number");
+
+                            if(cartNumber){
+
+                                let currentNumber =
+                                    parseInt(cartNumber.textContent || 0);
+
+                                cartNumber.textContent =
+                                    currentNumber + quantity;
+                            }
+                        }
+
                     });
-                }
 
-                localStorage.setItem(
-                    "cart",
-                    JSON.stringify(cart)
-                );
-
-                alert("Product added to cart!");
-
-                updateCartNumber();
             });
+
         });
-
-    /* =========================
-       CART NUMBER
-    ========================= */
-
-    function updateCartNumber(){
-
-        let cart =
-            JSON.parse(localStorage.getItem("cart"))
-            || [];
-
-        let total = 0;
-
-        cart.forEach(item => {
-
-            total += item.quantity;
-        });
-
-        const cartBtn =
-            document.querySelector(".cart-btn");
-
-        let badge =
-            document.querySelector(".cart-number");
-
-        if(!badge){
-
-            badge =
-                document.createElement("span");
-
-            badge.classList.add("cart-number");
-
-            cartBtn.appendChild(badge);
-        }
-
-        badge.textContent = total;
-    }
-
-    updateCartNumber();
 
 </script>
+
 </body>
 </html>

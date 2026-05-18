@@ -1,3 +1,19 @@
+<?php
+session_start();
+include "db.php";
+
+$cartCount = 0;
+
+if (isset($_SESSION["user_id"])) {
+    $user_id = $_SESSION["user_id"];
+
+    $countSql = "SELECT SUM(quantity) AS total FROM cart_items WHERE user_id='$user_id'";
+    $countResult = mysqli_query($conn, $countSql);
+    $countRow = mysqli_fetch_assoc($countResult);
+
+    $cartCount = $countRow["total"] ?? 0;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -328,19 +344,19 @@
                     <ul class="dropdown-menu">
 
                         <li>
-                            <a href="cat.html">Cats</a>
+                            <a href="cat.php">Cats</a>
                         </li>
 
                         <li>
-                            <a href="dog.html">Dogs</a>
+                            <a href="dog.php">Dogs</a>
                         </li>
 
                         <li>
-                            <a href="bird.html">Birds</a>
+                            <a href="bird.php">Birds</a>
                         </li>
 
                         <li>
-                            <a href="fish.html">Aquarium</a>
+                            <a href="fish.php">Aquarium</a>
                         </li>
 
                     </ul>
@@ -352,7 +368,7 @@
                 </li>
 
                 <li>
-                    <a href="contact.html">
+                    <a href="contact.php">
                         Contact Us</a>
                 </li>
 
@@ -378,11 +394,9 @@
                 <i class="fa-solid fa-user"></i>
 
             </a>
-            <a href="cart.html" class="icon-btn cart-btn">
-
+            <a href="cart.php" class="icon-btn cart-btn">
                 <i class="fa-solid fa-cart-shopping"></i>
-
-
+                <span class="cart-number"><?php echo $cartCount; ?></span>
             </a>
 
         </div>
@@ -393,7 +407,7 @@
 <h1 style="text-align:center; margin:30px;">Cat Supplies</h1>
 <div class="categories">
 
-    <a href="cat-toys.html" class="category-card">
+    <a href="cat-toys.php" class="category-card">
         <div class="img-box">
             <img src="imgs/cat toy.jfif" alt="Cat Toys">
         </div>
@@ -401,7 +415,7 @@
         <p>Balls • Plush • Bones</p>
     </a>
 
-    <a href="cat-collars.html" class="category-card">
+    <a href="cat-collars.php" class="category-card">
         <div class="img-box">
             <img src="imgs/cat collar.png" alt="Cat collar">
         </div>
@@ -409,14 +423,14 @@
         <p>With Leash • Without • Clothes</p>
     </a>
 
-    <a href="cat-litter.html" class="category-card">
+    <a href="cat-litter.php" class="category-card">
         <div class="img-box">
             <img src="imgs/cat liter.jfif" alt="Cat Litter">
         </div>
         <h2>Litter & Litter Boxes</h2>
         <p>Litter • Boxes • Mats</p>
     </a>
-    <a href="cat-bowls.html" class="category-card">
+    <a href="cat-bowls.php" class="category-card">
         <div class="img-box">
             <img src="imgs/cat bowl.png" alt="Cat Bowl">
         </div>
@@ -430,7 +444,7 @@
 <!--        <h2>Grooming</h2>-->
 <!--        <p>Shampoo • Wipes • Brushes</p>-->
 <!--    </a>-->
-    <a href="cat-beds.html" class="category-card">
+    <a href="cat-beds.php" class="category-card">
         <div class="img-box">
             <img src="imgs/cat bed.jfif" alt="Cat Bed">
         </div>
@@ -440,7 +454,7 @@
 
 
 </div>
-<a href="cat.html" class="back-btn">⬅ Back</a>
+<a href="cat.php" class="back-btn">⬅ Back</a>
 
 <footer class="footer">
 

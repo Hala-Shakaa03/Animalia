@@ -1,13 +1,28 @@
+<?php
+session_start();
+include "db.php";
+
+$cartCount = 0;
+
+if (isset($_SESSION["user_id"])) {
+    $user_id = $_SESSION["user_id"];
+
+    $countSql = "SELECT SUM(quantity) AS total FROM cart_items WHERE user_id='$user_id'";
+    $countResult = mysqli_query($conn, $countSql);
+    $countRow = mysqli_fetch_assoc($countResult);
+
+    $cartCount = $countRow["total"] ?? 0;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Cat Toys</title>
+    <title>Perches & Stands</title>
     <link rel="stylesheet" href="all.css">
     <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"></head>
 <style>
-
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
     *{
@@ -19,7 +34,7 @@
     body{
         font-family:'Poppins',sans-serif;
         background:#f8f3ed;
-        color:#4b3527;
+        color:#3e2f26;
         overflow-x:hidden;
     }
 
@@ -31,11 +46,11 @@
 
         text-align:center;
 
-        font-size:64px;
+        font-size:65px;
 
         margin:60px 0;
 
-        color:#4b3527;
+        color:#3e2414;
 
         font-weight:800;
 
@@ -48,11 +63,13 @@
 
     .section{
 
-        width:92%;
+        width:90%;
 
         max-width:1550px;
 
-        margin:0 auto 80px;
+        margin:auto;
+
+        padding-bottom:90px;
     }
 
     /* =========================
@@ -66,7 +83,7 @@
         grid-template-columns:
     repeat(auto-fit,minmax(280px,1fr));
 
-        gap:35px;
+        gap:32px;
     }
 
     /* =========================
@@ -75,20 +92,16 @@
 
     .product-card{
 
-        position:relative;
+        background:white;
 
-        background:rgba(255,255,255,.95);
-
-        border-radius:35px;
+        border-radius:32px;
 
         padding:22px;
 
         text-align:center;
 
-        overflow:hidden;
-
         box-shadow:
-                0 10px 30px rgba(0,0,0,.06);
+                0 10px 25px rgba(0,0,0,.05);
 
         transition:.4s;
 
@@ -98,17 +111,16 @@
 
         justify-content:space-between;
 
-        min-height:560px;
+        min-height:580px;
     }
 
     .product-card:hover{
 
         transform:
-                translateY(-12px)
-                scale(1.02);
+                translateY(-10px);
 
         box-shadow:
-                0 20px 45px rgba(139,94,60,.18);
+                0 18px 35px rgba(0,0,0,.08);
     }
 
     /* =========================
@@ -117,8 +129,6 @@
 
     .img-box{
 
-        width:100%;
-
         height:250px;
 
         border-radius:28px;
@@ -126,8 +136,8 @@
         background:
                 linear-gradient(
                         135deg,
-                        #f7efe7,
-                        #efe2d2
+                        #f3e2d1,
+                        #faf6f1
                 );
 
         display:flex;
@@ -138,7 +148,7 @@
 
         overflow:hidden;
 
-        margin-bottom:22px;
+        margin-bottom:20px;
     }
 
     .img-box img{
@@ -149,14 +159,12 @@
 
         object-fit:contain;
 
-        transition:.5s;
+        transition:.4s;
     }
 
     .product-card:hover img{
 
-        transform:
-                scale(1.08)
-                rotate(-2deg);
+        transform:scale(1.08);
     }
 
     /* =========================
@@ -169,13 +177,11 @@
 
         line-height:1.5;
 
+        margin-bottom:12px;
+
         color:#4b3527;
 
-        margin-bottom:14px;
-
-        min-height:76px;
-
-        font-weight:700;
+        min-height:70px;
     }
 
     /* =========================
@@ -184,7 +190,7 @@
 
     .price{
 
-        font-size:34px;
+        font-size:32px;
 
         font-weight:800;
 
@@ -230,18 +236,11 @@
 
         text-align:center;
 
-        font-size:18px;
+        font-size:17px;
 
         font-weight:600;
 
         color:#4b3527;
-
-        transition:.3s;
-    }
-
-    .quantity input:focus{
-
-        background:#efe2d2;
     }
 
     /* =========================
@@ -254,18 +253,18 @@
 
         border:none;
 
-        padding:16px;
-
-        border-radius:999px;
-
         background:
                 linear-gradient(
                         to right,
-                        #5b3822,
-                        #9b6a43
+                        #4b3527,
+                        #8b5e3c
                 );
 
         color:white;
+
+        padding:15px;
+
+        border-radius:999px;
 
         font-size:16px;
 
@@ -273,20 +272,16 @@
 
         cursor:pointer;
 
-        transition:.35s;
+        transition:.3s;
 
         margin-top:auto;
-
-        letter-spacing:.5px;
     }
 
     .product-card button:hover{
 
-        transform:
-                translateY(-4px);
+        transform:translateY(-4px);
 
-        box-shadow:
-                0 10px 25px rgba(139,94,60,.25);
+        opacity:.95;
     }
 
     /* =========================
@@ -310,8 +305,8 @@
         background:
                 linear-gradient(
                         to right,
-                        #5b3822,
-                        #9b6a43
+                        #4b3527,
+                        #8b5e3c
                 );
 
         color:white;
@@ -352,31 +347,25 @@
         }
     }
 
-    @media(max-width:768px) {
+    @media(max-width:768px){
 
-        .page-title {
-            font-size: 40px;
+        .page-title{
+            font-size:40px;
         }
 
-        .products {
+        .products{
             grid-template-columns:1fr;
         }
 
-        .img-box {
-            height: 220px;
+        .img-box{
+            height:220px;
         }
 
-        .product-card {
-            min-height: auto;
+        .product-card{
+            min-height:auto;
         }
     }
-
-
 </style>
-</head>
-
-<body>
-
 <div class="topbar">
 
     <div class="topbar-left">
@@ -441,19 +430,19 @@
                     <ul class="dropdown-menu">
 
                         <li>
-                            <a href="cat.html">Cats</a>
+                            <a href="cat.php">Cats</a>
                         </li>
 
                         <li>
-                            <a href="dog.html">Dogs</a>
+                            <a href="dog.php">Dogs</a>
                         </li>
 
                         <li>
-                            <a href="bird.html">Birds</a>
+                            <a href="bird.php">Birds</a>
                         </li>
 
                         <li>
-                            <a href="fish.html">Aquarium</a>
+                            <a href="fish.php">Aquarium</a>
                         </li>
 
                     </ul>
@@ -465,7 +454,7 @@
                 </li>
 
                 <li>
-                    <a href="contact.html">
+                    <a href="contact.php">
                         Contact Us</a>
                 </li>
 
@@ -491,11 +480,9 @@
                 <i class="fa-solid fa-user"></i>
 
             </a>
-            <a href="cart.html" class="icon-btn cart-btn">
-
+            <a href="cart.php" class="icon-btn cart-btn">
                 <i class="fa-solid fa-cart-shopping"></i>
-
-
+                <span class="cart-number"><?php echo $cartCount; ?></span>
             </a>
 
         </div>
@@ -503,357 +490,148 @@
     </div>
 
 </header>
+<body>
 
-<h1 class="page-title">Cat Toys</h1>
+<h1 class="page-title">Perches & Stands</h1>
 
-<!-- DRY FOOD -->
 <section class="section">
-<!--    <h2>Dry Food</h2>-->
-
     <div class="products">
 
         <div class="product-card">
-
             <div class="img-box">
-                <img src="imgs/mouse.webp" alt="Mouse With Feather Tail Toy">
+                <img src="imgs/Natural Branch Bird Perch.jpg" alt="Natural Branch Bird Perch">
             </div>
-
-            <h3>Mouse With Feather Tail</h3>
-            <p class="price">₪2</p>
-
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-
-            <button>Add to Cart</button>
-
-        </div>
-
-
-        <div class="product-card">
-
-            <div class="img-box">
-                <img src="imgs/mouse-cat-toy-in-pastel%20tones.webp" alt="Mouse Plush Toy">
-            </div>
-
-            <h3>Mouse Plush Toy </h3>
-            <p class="price">₪3</p>
-
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-
-            <button>Add to Cart</button>
-
-        </div>
-
-        <div class="product-card">
-
-            <div class="img-box">
-                <img src="imgs/bouncing%20ball%20with%20mouse.jpg" alt="Bouncing Ball With Mouse">
-            </div>
-
-            <h3>Bouncing Ball With Mouse</h3>
-            <p class="price">₪5</p>
-
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-
-            <button>Add to Cart</button>
-
-        </div>
-
-        <div class="product-card">
-
-            <div class="img-box">
-                <img src="imgs/balls.jpg" alt="Bouncing Balls">
-            </div>
-
-            <h3>Two Bouncing Balls</h3>
-            <p class="price">₪3</p>
-
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-
-            <button>Add to Cart</button>
-
-        </div>
-        <div class="product-card">
-
-            <div class="img-box">
-                <img src="imgs/scratching%20balls.png" alt="Scratching Balls">
-            </div>
-
-            <h3>Two Scratching Balls</h3>
-            <p class="price">₪5</p>
-
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-
-            <button>Add to Cart</button>
-
-        </div>
-        <div class="product-card">
-
-            <div class="img-box">
-                <img src="imgs/scratching%20ball%20with%20feathers.jpg" alt="Scratching Ball With Feather">
-            </div>
-
-            <h3>Scratching Ball With Feathers On Both Sides</h3>
-            <p class="price">₪5</p>
-
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-
-            <button>Add to Cart</button>
-
-        </div>
-
-        <div class="product-card">
-
-            <div class="img-box">
-                <img src="imgs/catnip%20ball.png" alt="Catnip Ball">
-            </div>
-
-            <h3>Catnip Ball</h3>
-            <p class="price">₪5</p>
-
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-
-            <button>Add to Cart</button>
-
-        </div>
-        <div class="product-card">
-
-            <div class="img-box">
-                <img src="imgs/wooden%20stick%20with%20mouse%20and%20feathers.png" alt="Mouse Wooden Stick">
-            </div>
-
-            <h3>Wooden Stick With Mouse & Feathers</h3>
-            <p class="price">₪8</p>
-
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-
-            <button>Add to Cart</button>
-
-        </div>
-        <div class="product-card">
-
-            <div class="img-box">
-                <img src="imgs/stick%20with%20mouse.jpg" alt="Stick With Mouse">
-            </div>
-
-            <h3>Stick With Mouse</h3>
-            <p class="price">₪7</p>
-
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-
-            <button>Add to Cart</button>
-
-        </div>
-
-        <div class="product-card">
-
-            <div class="img-box">
-                <img src="imgs/wooden%20stick%20with%20ball%20and%20feathers.png" alt="Ball Wooden Stick">
-            </div>
-
-            <h3>Wooden Stick With Ball</h3>
-            <p class="price">₪7</p>
-
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-
-            <button>Add to Cart</button>
-
-        </div>
-
-        <div class="product-card">
-
-            <div class="img-box">
-                <img src="imgs/feather%20fishing.png" alt="Feather Fishing Rod">
-            </div>
-
-            <h3>Fishing Rod with Feathers</h3>
-            <p class="price">₪10</p>
-
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-
-            <button>Add to Cart</button>
-
-        </div>
-        <div class="product-card">
-
-            <div class="img-box">
-                <img src="imgs/tower%20with%20balls%20and%20feathers.jpg" alt="Tower Maze With Balls and Feathers">
-            </div>
-
-            <h3>Tower Maze With Balls & Feathers</h3>
-            <p class="price">₪17</p>
-
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-
-            <button>Add to Cart</button>
-
-        </div>
-        <div class="product-card">
-
-            <div class="img-box">
-                <img src="imgs/tower%20with%20balls.jpg" alt="Tower Maze With Balls">
-            </div>
-
-            <h3>Tower Maze With Balls</h3>
+            <h3>Natural Branch Bird Perch</h3>
             <p class="price">₪15</p>
 
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
-
             <button>Add to Cart</button>
-
         </div>
 
         <div class="product-card">
-
             <div class="img-box">
-                <img src="imgs/cat%20maze.png" alt="Cat Maze">
+                <img src="imgs/Natural Wooden Bird Perch.png" alt="Natural Wooden Bird Perch">
             </div>
-
-            <h3>Cat Maze</h3>
-            <p class="price">₪25</p>
-
+            <h3>Natural Wooden Bird Perch</h3>
+            <p class="price">₪15</p>
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
-
             <button>Add to Cart</button>
-
         </div>
 
         <div class="product-card">
-
             <div class="img-box">
-                <img src="imgs/scratching%20house.jpg" alt="Scratching Wooden House">
+                <img src="imgs/Simple Hanging Bird Perch.png" alt="Simple Hanging Bird Perch">
             </div>
-
-            <h3>Scratching Wooden House</h3>
-            <p class="price">₪30</p>
-
+            <h3>Simple Hanging Bird Perch</h3>
+            <p class="price">₪10</p>
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
-
             <button>Add to Cart</button>
-
         </div>
 
         <div class="product-card">
-
             <div class="img-box">
-                <img src="imgs/scratching%20toy-2.jpeg" alt="Scratching Toy">
+                <img src="imgs/Round Bamboo Bird Swing.png" alt="Round Bamboo Bird Swing">
             </div>
-
-            <h3>Scratching Toy</h3>
-            <p class="price">₪25</p>
-
+            <h3>Round Bamboo Bird Swing</h3>
+            <p class="price">₪10</p>
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
-
             <button>Add to Cart</button>
-
         </div>
 
         <div class="product-card">
-
             <div class="img-box">
-                <img src="imgs/scratching%20toy%20and%20home.webp" alt="Scratching Toy With House">
+                <img src="imgs/Hanging Wooden Bird Swing.jpg" alt="Hanging Wooden Bird Swing">
             </div>
-
-            <h3>Scratching Toy With House</h3>
-            <p class="price">₪70</p>
-
+            <h3>Hanging Wooden Bird Swing</h3>
+            <p class="price">₪12</p>
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
-
             <button>Add to Cart</button>
-
         </div>
 
         <div class="product-card">
-
             <div class="img-box">
-                <img src="imgs/sunflower%20scratching%20toy%20with%20balls.webp" alt="Sun Flower Scratching Toy">
+                <img src="imgs/Colorful Wooden Bird Swing.jpg" alt="Colorful Wooden Bird Swing">
             </div>
-
-            <h3>Sun Flower Scratching Toy</h3>
-            <p class="price">₪50</p>
-
+            <h3>Colorful Wooden Bird Swing</h3>
+            <p class="price">₪20</p>
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
-
             <button>Add to Cart</button>
-
         </div>
 
         <div class="product-card">
-
             <div class="img-box">
-                <img src="imgs/trampoline%20tent.jpg" alt="Tent">
+                <img src="imgs/Rainbow Beads Bird Swing.png" alt="Rainbow Beads Bird Swing">
             </div>
-
-            <h3>Tent</h3>
-            <p class="price">₪50</p>
-
+            <h3>Rainbow Beads Bird Swing</h3>
+            <p class="price">₪15</p>
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
-
             <button>Add to Cart</button>
+        </div>
 
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Hanging Wooden Bridge Perch.png" alt="Hanging Wooden Bridge Perch">
+            </div>
+            <h3>Hanging Wooden Bridge Perch</h3>
+            <p class="price">₪15</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Colorful Wooden Bird Ladder.jpeg" alt="Colorful Wooden Bird Ladder">
+            </div>
+            <h3>Colorful Wooden Bird Ladder</h3>
+            <p class="price">₪12</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Wooden Bird Ladder Perch.jpg" alt="Wooden Bird Ladder Perch">
+            </div>
+            <h3>Wooden Bird Ladder Perch</h3>
+            <p class="price">₪10</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
         </div>
 
     </div>
 </section>
 
-
-<a href="cat-supplies.html" class="back-btn">⬅ Back</a>
+<a href="bird.php" class="back-btn">⬅ Back</a>
 
 <footer class="footer">
 
@@ -923,92 +701,77 @@
 </footer>
 <script>
 
-    document.querySelectorAll(".product-card button").forEach(function(button){
+    /* =========================
+       ADD TO CART - BACKEND
+    ========================= */
 
-        button.addEventListener("click", function(){
+    document.querySelectorAll(".product-card button")
+        .forEach(function(button){
 
-            const card = button.closest(".product-card");
+            button.setAttribute("type", "button");
 
-            const name =
-                card.querySelector("h3").innerText;
+            button.addEventListener("click", function(){
 
-            const priceText =
-                card.querySelector(".price").innerText;
+                const card = button.closest(".product-card");
 
-            const price =
-                parseFloat(priceText.replace("₪",""));
+                const name = card.querySelector("h3").innerText;
 
-            const image =
-                card.querySelector("img").getAttribute("src");
+                const priceText = card.querySelector(".price").innerText;
 
-            const quantity =
-                parseInt(
-                    card.querySelector(".quantity input").value
-                );
+                const price = parseFloat(priceText.replace("₪",""));
 
-            let cart =
-                JSON.parse(localStorage.getItem("cart")) || [];
+                const image = card.querySelector("img").getAttribute("src");
 
-            const existingItem =
-                cart.find(item => item.name === name);
+                const quantity = parseInt(card.querySelector(".quantity input").value);
 
-            if(existingItem){
+                fetch("add_to_cart.php", {
 
-                existingItem.quantity += quantity;
+                    method: "POST",
 
-            }else{
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
 
-                cart.push({
+                    body:
+                        "name=" + encodeURIComponent(name)
+                        + "&price=" + price
+                        + "&image=" + encodeURIComponent(image)
+                        + "&quantity=" + quantity
+                })
 
-                    name:name,
-                    price:price,
-                    image:image,
-                    quantity:quantity
-                });
-            }
+                    .then(response => response.text())
 
-            localStorage.setItem(
-                "cart",
-                JSON.stringify(cart)
-            );
+                    .then(data => {
 
-            alert("Product added to cart!");
+                        data = data.trim();
 
-            updateCartNumber();
+                        if(data === "login"){
+
+                            alert("Please login first!");
+                            window.location.href = "login.php";
+
+                        }else{
+
+                            alert("Product added to cart!");
+
+                            const cartNumber =
+                                document.querySelector(".cart-number");
+
+                            if(cartNumber){
+
+                                let currentNumber =
+                                    parseInt(cartNumber.textContent || 0);
+
+                                cartNumber.textContent =
+                                    currentNumber + quantity;
+                            }
+                        }
+
+                    });
+
+            });
+
         });
-    });
-
-    function updateCartNumber(){
-
-        let cart =
-            JSON.parse(localStorage.getItem("cart")) || [];
-
-        let total = 0;
-
-        cart.forEach(item => {
-
-            total += item.quantity;
-        });
-
-        const cartBtn =
-            document.querySelector(".cart-btn");
-
-        let badge =
-            document.querySelector(".cart-number");
-
-        if(!badge){
-
-            badge = document.createElement("span");
-
-            badge.classList.add("cart-number");
-
-            cartBtn.appendChild(badge);
-        }
-
-        badge.textContent = total;
-    }
-
-    updateCartNumber();
 
 </script>
 </body>

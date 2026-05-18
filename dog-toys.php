@@ -1,14 +1,28 @@
+<?php
+session_start();
+include "db.php";
+
+$cartCount = 0;
+
+if (isset($_SESSION["user_id"])) {
+    $user_id = $_SESSION["user_id"];
+
+    $countSql = "SELECT SUM(quantity) AS total FROM cart_items WHERE user_id='$user_id'";
+    $countResult = mysqli_query($conn, $countSql);
+    $countRow = mysqli_fetch_assoc($countResult);
+
+    $cartCount = $countRow["total"] ?? 0;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fish Tanks Decorations</title>
+    <title>Dog Toys</title>
     <link rel="stylesheet" href="all.css">
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
-
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
         *{
@@ -29,11 +43,18 @@
         ========================= */
 
         .page-title{
+
             text-align:center;
-            font-size:55px;
-            margin:50px 0;
+
+            font-size:64px;
+
+            margin:60px 0;
+
             color:#4b3527;
+
             font-weight:800;
+
+            letter-spacing:1px;
         }
 
         /* =========================
@@ -41,9 +62,12 @@
         ========================= */
 
         .section{
+
             width:92%;
-            max-width:1450px;
-            margin:auto;
+
+            max-width:1550px;
+
+            margin:0 auto 80px;
         }
 
         /* =========================
@@ -55,11 +79,9 @@
             display:grid;
 
             grid-template-columns:
-            repeat(auto-fit,minmax(260px,1fr));
+    repeat(auto-fit,minmax(280px,1fr));
 
-            gap:28px;
-
-            margin-bottom:60px;
+            gap:35px;
         }
 
         /* =========================
@@ -68,18 +90,26 @@
 
         .product-card{
 
-            background:white;
+            position:relative;
 
-            border-radius:30px;
+            background:rgba(255,255,255,.92);
 
-            padding:18px;
+            backdrop-filter:blur(12px);
+
+            border-radius:35px;
+
+            padding:22px;
 
             text-align:center;
 
-            box-shadow:
-                    0 8px 20px rgba(0,0,0,.07);
+            overflow:hidden;
 
-            transition:.35s;
+            border:1px solid rgba(255,255,255,.4);
+
+            box-shadow:
+                    0 10px 30px rgba(0,0,0,.06);
+
+            transition:.4s;
 
             display:flex;
 
@@ -87,11 +117,17 @@
 
             justify-content:space-between;
 
-            min-height:540px;
+            min-height:560px;
         }
 
         .product-card:hover{
-            transform:translateY(-8px);
+
+            transform:
+                    translateY(-12px)
+                    scale(1.02);
+
+            box-shadow:
+                    0 20px 45px rgba(139,94,60,.18);
         }
 
         /* =========================
@@ -102,11 +138,16 @@
 
             width:100%;
 
-            height:230px;
+            height:250px;
 
-            border-radius:24px;
+            border-radius:28px;
 
-            background:#f5ede4;
+            background:
+                    linear-gradient(
+                            135deg,
+                            #f7efe7,
+                            #efe2d2
+                    );
 
             display:flex;
 
@@ -116,22 +157,25 @@
 
             overflow:hidden;
 
-            margin-bottom:18px;
+            margin-bottom:22px;
         }
 
         .img-box img{
 
-            width:100%;
+            width:108%;
 
-            height:100%;
+            height:108%;
 
             object-fit:contain;
 
-            transition:.4s;
+            transition:.5s;
         }
 
         .product-card:hover img{
-            transform:scale(1.05);
+
+            transform:
+                    scale(1.1)
+                    rotate(-2deg);
         }
 
         /* =========================
@@ -140,15 +184,17 @@
 
         .product-card h3{
 
-            font-size:20px;
+            font-size:22px;
 
             line-height:1.5;
 
             color:#4b3527;
 
-            margin-bottom:12px;
+            margin-bottom:14px;
 
-            min-height:65px;
+            min-height:76px;
+
+            font-weight:700;
         }
 
         /* =========================
@@ -157,58 +203,13 @@
 
         .price{
 
-            font-size:28px;
+            font-size:34px;
 
-            font-weight:700;
+            font-weight:800;
 
             color:#8b5e3c;
 
-            margin-bottom:18px;
-        }
-
-        /* =========================
-           SIZES
-        ========================= */
-
-        .sizes{
-
-            display:flex;
-
-            justify-content:center;
-
-            gap:10px;
-
-            margin-bottom:18px;
-
-            flex-wrap:wrap;
-        }
-
-        .size{
-
-            padding:8px 16px;
-
-            border-radius:999px;
-
-            background:#f5ede4;
-
-            cursor:pointer;
-
-            transition:.3s;
-
-            font-size:14px;
-
-            font-weight:600;
-        }
-
-        .size:hover{
-            background:#d8c2ad;
-        }
-
-        .size.active{
-
-            background:#8b5e3c;
-
-            color:white;
+            margin-bottom:20px;
         }
 
         /* =========================
@@ -216,7 +217,7 @@
         ========================= */
 
         .quantity{
-            margin-bottom:18px;
+            margin-bottom:20px;
         }
 
         .quantity label{
@@ -234,25 +235,32 @@
 
         .quantity input{
 
-            width:85px;
+            width:90px;
 
-            height:42px;
+            height:45px;
 
             border:none;
 
             outline:none;
 
-            border-radius:12px;
+            border-radius:14px;
 
-            background:#f5ede4;
+            background:#f7efe7;
 
             text-align:center;
 
-            font-size:17px;
+            font-size:18px;
 
             font-weight:600;
 
             color:#4b3527;
+
+            transition:.3s;
+        }
+
+        .quantity input:focus{
+
+            background:#efe2d2;
         }
 
         /* =========================
@@ -265,12 +273,16 @@
 
             border:none;
 
-            padding:14px;
+            padding:16px;
 
             border-radius:999px;
 
             background:
-                    linear-gradient(to right,#4b3527,#8b5e3c);
+                    linear-gradient(
+                            to right,
+                            #5b3822,
+                            #9b6a43
+                    );
 
             color:white;
 
@@ -280,16 +292,20 @@
 
             cursor:pointer;
 
-            transition:.3s;
+            transition:.35s;
 
             margin-top:auto;
+
+            letter-spacing:.5px;
         }
 
         .product-card button:hover{
 
-            transform:translateY(-3px);
+            transform:
+                    translateY(-4px);
 
-            opacity:.92;
+            box-shadow:
+                    0 10px 25px rgba(139,94,60,.25);
         }
 
         /* =========================
@@ -298,7 +314,7 @@
 
         .back-btn{
 
-            width:210px;
+            width:230px;
 
             display:flex;
 
@@ -306,30 +322,37 @@
 
             align-items:center;
 
-            margin:20px auto 70px;
+            margin:20px auto 90px;
 
             text-decoration:none;
 
-            background:#4b3527;
+            background:
+                    linear-gradient(
+                            to right,
+                            #5b3822,
+                            #9b6a43
+                    );
 
             color:white;
 
-            padding:16px;
+            padding:17px;
 
             border-radius:999px;
 
             font-size:18px;
 
-            font-weight:600;
+            font-weight:700;
 
-            transition:.3s;
+            transition:.35s;
         }
 
         .back-btn:hover{
 
-            background:#8b5e3c;
+            transform:
+                    translateY(-4px);
 
-            transform:translateY(-4px);
+            box-shadow:
+                    0 10px 25px rgba(139,94,60,.25);
         }
 
         /* =========================
@@ -339,19 +362,19 @@
         @media(max-width:992px){
 
             .page-title{
-                font-size:45px;
+                font-size:50px;
             }
 
             .products{
                 grid-template-columns:
-                        repeat(auto-fit,minmax(230px,1fr));
+        repeat(auto-fit,minmax(240px,1fr));
             }
         }
 
         @media(max-width:768px){
 
             .page-title{
-                font-size:38px;
+                font-size:40px;
             }
 
             .products{
@@ -359,16 +382,14 @@
             }
 
             .img-box{
-                height:210px;
+                height:220px;
             }
 
             .product-card{
                 min-height:auto;
             }
         }
-
     </style>
-
 </head>
 
 <body>
@@ -437,19 +458,19 @@
                     <ul class="dropdown-menu">
 
                         <li>
-                            <a href="cat.html">Cats</a>
+                            <a href="cat.php">Cats</a>
                         </li>
 
                         <li>
-                            <a href="dog.html">Dogs</a>
+                            <a href="dog.php">Dogs</a>
                         </li>
 
                         <li>
-                            <a href="bird.html">Birds</a>
+                            <a href="bird.php">Birds</a>
                         </li>
 
                         <li>
-                            <a href="fish.html">Aquarium</a>
+                            <a href="fish.php">Aquarium</a>
                         </li>
 
                     </ul>
@@ -461,7 +482,7 @@
                 </li>
 
                 <li>
-                    <a href="contact.html">
+                    <a href="contact.php">
                         Contact Us</a>
                 </li>
 
@@ -487,11 +508,9 @@
                 <i class="fa-solid fa-user"></i>
 
             </a>
-            <a href="cart.html" class="icon-btn cart-btn">
-
+            <a href="cart.php" class="icon-btn cart-btn">
                 <i class="fa-solid fa-cart-shopping"></i>
-
-
+                <span class="cart-number"><?php echo $cartCount; ?></span>
             </a>
 
         </div>
@@ -500,216 +519,112 @@
 
 </header>
 
-<h1 class="page-title">Tank Decorations</h1>
-<section class="section">
+<h1 class="page-title">Dog Toys</h1>
 
+<section class="section">
     <div class="products">
 
-        <!-- PRODUCT 1 -->
         <div class="product-card">
-
             <div class="img-box">
-                <img src="imgs/Aquarium Decorative Shells.png">
+                <img src="imgs/Blue Rope Ball Dog Toy.jfif" alt="Blue Rope Ball Dog Toy">
             </div>
-
-            <h3 class="product-name"
-                data-base="Decorative Shells">
-
-                Decorative Shells - Mini
-
-            </h3>
-
-            <p class="price">₪10</p>
-
-            <div class="sizes">
-
-                <span class="size active"
-                      data-name="Mini"
-                      data-price="10"
-                      data-img="imgs/Aquarium Decorative Shells.png">
-
-                    Mini
-
-                </span>
-
-                <span class="size"
-                      data-name="Small"
-                      data-price="15"
-                      data-img="imgs/Aquarium Decorative Small Shells.jfif">
-
-                    Small
-
-                </span>
-
-                <span class="size"
-                      data-name="Medium"
-                      data-price="20"
-                      data-img="imgs/Aquarium Decorative M Shells.jfif">
-
-                    Medium
-
-                </span>
-
-            </div>
-
+            <h3>Blue Rope Ball Dog Toy</h3>
+            <p class="price">₪3</p>
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
-
             <button>Add to Cart</button>
-
         </div>
 
-        <!-- PRODUCT 2 -->
         <div class="product-card">
-
             <div class="img-box">
-                <img src="imgs/Aquarium_Gravel_Multi_Colour.webp">
+                <img src="imgs/Red Rope Knot Dog Toy.jfif" alt="Red Rope Knot Dog Toy">
             </div>
-
-            <h3>Aquarium Gravel Multi Color</h3>
-
-            <p class="price">₪15</p>
-
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-
-            <button>Add to Cart</button>
-
-        </div>
-
-        <!-- PRODUCT 3 -->
-        <div class="product-card">
-
-            <div class="img-box">
-                <img src="imgs/Artificial Green Plant.png">
-            </div>
-
-            <h3>Artificial Green Plant</h3>
-
+            <h3>Red Rope Knot Dog Toy</h3>
             <p class="price">₪5</p>
-
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
-
             <button>Add to Cart</button>
-
         </div>
 
-        <!-- PRODUCT 4 -->
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Rope Tug Ball Dog Toy.jfif" alt="Rope Tug Ball Dog Toy">
+            </div>
+            <h3>Rope Tug Ball Dog Toy</h3>
+            <p class="price">₪6</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
         <div class="product-card">
 
             <div class="img-box">
-                <img src="imgs/Artificial Green Aquarium Plant.jpeg">
+                <img src="imgs/Interwoven Rubber Ball Dog Toy.jfif" alt="Interwoven Rubber Ball Dog Toy">
             </div>
 
-            <h3>Artificial Green Aquarium Plant</h3>
-
+            <h3>Interwoven Rubber Ball Dog Toy</h3>
             <p class="price">₪8</p>
 
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
-
             <button>Add to Cart</button>
-
         </div>
 
-        <!-- PRODUCT 5 -->
         <div class="product-card">
-
             <div class="img-box">
-                <img src="imgs/Tall Artificial Aquarium Tree.png">
+                <img src="imgs/Rubber Paw Print Dog Ball.jfif" alt="Rubber Paw Print Dog Ball">
             </div>
-
-            <h3>Tall Artificial Aquarium Tree</h3>
-
-            <p class="price">₪15</p>
-
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-
-            <button>Add to Cart</button>
-
-        </div>
-
-        <!-- PRODUCT 6 -->
-        <div class="product-card">
-
-            <div class="img-box">
-                <img src="imgs/Mini Aquarium Lavender Decoration.png">
-            </div>
-
-            <h3>Mini Aquarium Lavender Plant</h3>
-
-            <p class="price">₪5</p>
-
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-
-            <button>Add to Cart</button>
-
-        </div>
-
-        <!-- PRODUCT 7 -->
-        <div class="product-card">
-
-            <div class="img-box">
-                <img src="imgs/Artificial Pink & Purple Aquarium Plant.jpeg">
-            </div>
-
-            <h3>Artificial Pink & Purple Aquarium Plant</h3>
-
-            <p class="price">₪8</p>
-
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-
-            <button>Add to Cart</button>
-
-        </div>
-
-        <!-- PRODUCT 8 -->
-        <div class="product-card">
-
-            <div class="img-box">
-                <img src="imgs/Artificial Pink Aquarium Plant.png">
-            </div>
-
-            <h3>Artificial Pink Aquarium Plant</h3>
-
+            <h3>Rubber Paw Print Dog Ball</h3>
             <p class="price">₪10</p>
-
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
-
             <button>Add to Cart</button>
-
         </div>
 
-        <!-- PRODUCT 9 -->
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Chuckit! Ultra Ball Dog Toy.jfif" alt="Chuckit! Ultra Ball Dog Toy">
+            </div>
+            <h3>Chuckit! Ultra Ball Dog Toy</h3>
+            <p class="price">₪12</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Squeaky Tennis Dog Ball.jfif" alt="Squeaky Tennis Dog Ball">
+            </div>
+            <h3>Squeaky Tennis Dog Ball</h3>
+            <p class="price">₪14</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
         <div class="product-card">
 
             <div class="img-box">
-                <img src="imgs/Pink Coral Aquarium Ornament.jpg">
+                <img src="imgs/Rubber Squeaky Bone Toy.jfif" alt="Rubber Squeaky Bone Toy">
             </div>
 
-            <h3>Pink Coral Aquarium Ornament</h3>
-
+            <h3>Rubber Squeaky Bone Toy</h3>
             <p class="price">₪15</p>
 
             <div class="quantity">
@@ -718,201 +633,91 @@
             </div>
 
             <button>Add to Cart</button>
-
         </div>
 
-        <!-- PRODUCT 10 -->
         <div class="product-card">
-
             <div class="img-box">
-                <img src="imgs/Decorative Broken Vase Aquarium Ornament.png">
+                <img src="imgs/Rubber Chew Bone Dog Toy.jfif" alt="Rubber Chew Bone Dog Toy">
             </div>
-
-            <h3>Decorative Broken Vase Aquarium Ornament</h3>
-
-            <p class="price">₪30</p>
-
+            <h3>Rubber Chew Bone Dog Toy</h3>
+            <p class="price">₪17</p>
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
-
             <button>Add to Cart</button>
-
         </div>
 
-        <!-- PRODUCT 11 -->
         <div class="product-card">
-
             <div class="img-box">
-                <img src="imgs/Natural Style Rock Aquarium Ornament.png">
+                <img src="imgs/Wooden Stick Chew Dog Toy.jfif" alt="Wooden Stick Chew Dog Toy">
             </div>
-
-            <h3>Natural Style Rock Aquarium Ornament</h3>
-
-            <p class="price">₪25</p>
-
+            <h3>Wooden Stick Chew Dog Toy</h3>
+            <p class="price">₪12</p>
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
-
             <button>Add to Cart</button>
-
         </div>
 
-        <!-- PRODUCT 12 -->
         <div class="product-card">
-
             <div class="img-box">
-                <img src="imgs/Aquarium Rock Mountain Ornament.png">
+                <img src="imgs/Dog Frisbee Fetch Toy.jfif" alt="Dog Frisbee Fetch Toy">
             </div>
-
-            <h3>Aquarium Rock Mountain Ornament</h3>
-
-            <p class="price">₪30</p>
-
+            <h3>Dog Frisbee Fetch Toy</h3>
+            <p class="price">₪15</p>
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
-
             <button>Add to Cart</button>
-
         </div>
 
-        <!-- PRODUCT 13 -->
         <div class="product-card">
-
             <div class="img-box">
-                <img src="imgs/Mini Bridge Aquarium Ornament.jpeg">
+                <img src="imgs/Interactive Dog Puzzle Feeder.jfif" alt="Interactive Dog Puzzle Feeder">
             </div>
-
-            <h3>Mini Bridge Aquarium Ornament</h3>
-
-            <p class="price">₪30</p>
-
+            <h3>Interactive Dog Puzzle Feeder</h3>
+            <p class="price">₪16</p>
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
-
             <button>Add to Cart</button>
-
         </div>
 
-        <!-- PRODUCT 14 -->
         <div class="product-card">
-
             <div class="img-box">
-                <img src="imgs/Mini Castle Aquarium Ornament.png">
+                <img src="imgs/Burger Plush Dog Toy.jfif" alt="Burger Plush Dog Toy">
             </div>
-
-            <h3>Mini Castle Aquarium Ornament</h3>
-
-            <p class="price">₪20</p>
-
+            <h3>Burger Plush Dog Toy</h3>
+            <p class="price">₪5</p>
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
-
             <button>Add to Cart</button>
-
         </div>
 
-        <!-- PRODUCT 15 -->
         <div class="product-card">
-
             <div class="img-box">
-                <img src="imgs/Vintage Motorcycle Aquarium Decoration.jpeg">
+                <img src="imgs/Duck Plush Squeaky Dog Toy.jfif" alt="Duck Plush Squeaky Dog Toy">
             </div>
-
-            <h3>Vintage Motorcycle Aquarium Decoration</h3>
-
-            <p class="price">₪25</p>
-
+            <h3>Duck Plush Squeaky Dog Toy</h3>
+            <p class="price">₪7</p>
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
-
             <button>Add to Cart</button>
-
-        </div>
-
-        <!-- PRODUCT 16 -->
-        <div class="product-card">
-
-            <div class="img-box">
-                <img src="imgs/Sunken Ship Aquarium Decoration.png">
-            </div>
-
-            <h3>Sunken Ship Aquarium Decoration</h3>
-
-            <p class="price">₪40</p>
-
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-
-            <button>Add to Cart</button>
-
         </div>
 
     </div>
-
 </section>
-<a href="fish.html" class="back-btn">⬅ Back</a>
 
-<script>
 
-    document.querySelectorAll(".product-card").forEach(card => {
-
-        const sizes = card.querySelectorAll(".size");
-        const price = card.querySelector(".price");
-        const img = card.querySelector("img");
-        const name = card.querySelector(".product-name");
-
-        sizes.forEach(btn => {
-
-            btn.addEventListener("click", () => {
-
-                sizes.forEach(b =>
-                    b.classList.remove("active"));
-
-                btn.classList.add("active");
-
-                // PRICE
-
-                if(price && btn.dataset.price){
-                    price.textContent =
-                        "₪" + btn.dataset.price;
-                }
-
-                // IMAGE
-
-                if(img && btn.dataset.img){
-                    img.src = btn.dataset.img;
-                }
-
-                // NAME
-
-                if(name && btn.dataset.name){
-                    name.textContent =
-                        name.dataset.base +
-                        " - " +
-                        btn.dataset.name;
-                }
-
-            });
-
-        });
-
-    });
-
-</script>
+<a href="dog-supplies.php" class="back-btn">⬅ Back</a>
 
 <footer class="footer">
 
@@ -980,6 +785,80 @@
     </div>
 
 </footer>
+<script>
 
+    /* =========================
+       ADD TO CART - BACKEND
+    ========================= */
+
+    document.querySelectorAll(".product-card button")
+        .forEach(function(button){
+
+            button.setAttribute("type", "button");
+
+            button.addEventListener("click", function(){
+
+                const card = button.closest(".product-card");
+
+                const name = card.querySelector("h3").innerText;
+
+                const priceText = card.querySelector(".price").innerText;
+
+                const price = parseFloat(priceText.replace("₪",""));
+
+                const image = card.querySelector("img").getAttribute("src");
+
+                const quantity = parseInt(card.querySelector(".quantity input").value);
+
+                fetch("add_to_cart.php", {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+
+                    body:
+                        "name=" + encodeURIComponent(name)
+                        + "&price=" + price
+                        + "&image=" + encodeURIComponent(image)
+                        + "&quantity=" + quantity
+                })
+
+                    .then(response => response.text())
+
+                    .then(data => {
+
+                        data = data.trim();
+
+                        if(data === "login"){
+
+                            alert("Please login first!");
+                            window.location.href = "login.php";
+
+                        }else{
+
+                            alert("Product added to cart!");
+
+                            const cartNumber =
+                                document.querySelector(".cart-number");
+
+                            if(cartNumber){
+
+                                let currentNumber =
+                                    parseInt(cartNumber.textContent || 0);
+
+                                cartNumber.textContent =
+                                    currentNumber + quantity;
+                            }
+                        }
+
+                    });
+
+            });
+
+        });
+
+</script>
 </body>
 </html>

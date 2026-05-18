@@ -1,3 +1,19 @@
+<?php
+session_start();
+include "db.php";
+
+$cartCount = 0;
+
+if (isset($_SESSION["user_id"])) {
+    $user_id = $_SESSION["user_id"];
+
+    $countSql = "SELECT SUM(quantity) AS total FROM cart_items WHERE user_id='$user_id'";
+    $countResult = mysqli_query($conn, $countSql);
+    $countRow = mysqli_fetch_assoc($countResult);
+
+    $cartCount = $countRow["total"] ?? 0;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -292,15 +308,15 @@
                     <ul class="dropdown-menu">
 
                         <li>
-                            <a href="cat.html">Cats</a>
+                            <a href="cat.php">Cats</a>
                         </li>
 
                         <li>
-                            <a href="dog.html">Dogs</a>
+                            <a href="dog.php">Dogs</a>
                         </li>
 
                         <li>
-                            <a href="bird.html">Birds</a>
+                            <a href="bird.php">Birds</a>
                         </li>
 
                         <li>
@@ -316,7 +332,7 @@
                 </li>
 
                 <li>
-                    <a href="contact.html">
+                    <a href="contact.php">
                         Contact Us</a>
                 </li>
 
@@ -342,11 +358,9 @@
                 <i class="fa-solid fa-user"></i>
 
             </a>
-            <a href="cart.html" class="icon-btn cart-btn">
-
+            <a href="cart.php" class="icon-btn cart-btn">
                 <i class="fa-solid fa-cart-shopping"></i>
-
-
+                <span class="cart-number"><?php echo $cartCount; ?></span>
             </a>
 
         </div>
@@ -359,7 +373,7 @@
 
 <div class="categories">
 
-    <a href="fish-food.html" class="category-card">
+    <a href="fish-food.php" class="category-card">
         <div class="img-box">
             <img src="imgs/fish food.jpg" alt="Fish Food">
         </div>
@@ -367,7 +381,7 @@
         <p>Flakes • Floating</p>
     </a>
 
-    <a href="Fish-Tanks.html" class="category-card">
+    <a href="Fish-Tanks.php" class="category-card">
         <div class="img-box">
             <img src="imgs/Animated Fish Bowl.jfif" alt="Fish Tanks">
         </div>
@@ -375,7 +389,7 @@
         <p>Tanks • Bowls • Nets   </p>
     </a>
 
-    <a href="Fish-Decorations.html" class="category-card">
+    <a href="Fish-Decorations.php" class="category-card">
         <div class="img-box">
             <img src="imgs/Animated Aquarium Decorative.jfif" alt="Animated Aquarium Decorative">
         </div>
@@ -383,7 +397,7 @@
         <p>Accessories • Rocks • Lights </p>
     </a>
 
-    <a href="Fish-Filters.html" class="category-card">
+    <a href="Fish-Filters.php" class="category-card">
         <div class="img-box">
             <img src="imgs/Animated Tank Filter.jfif" alt="Animated Tank Filter">
         </div>

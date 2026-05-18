@@ -1,11 +1,28 @@
+<?php
+session_start();
+include "db.php";
+
+$cartCount = 0;
+
+if (isset($_SESSION["user_id"])) {
+    $user_id = $_SESSION["user_id"];
+
+    $countSql = "SELECT SUM(quantity) AS total FROM cart_items WHERE user_id='$user_id'";
+    $countResult = mysqli_query($conn, $countSql);
+    $countRow = mysqli_fetch_assoc($countResult);
+
+    $cartCount = $countRow["total"] ?? 0;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Perches & Stands</title>
+    <title>Dog Bowls</title>
     <link rel="stylesheet" href="all.css">
     <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"></head>
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
@@ -18,7 +35,7 @@
     body{
         font-family:'Poppins',sans-serif;
         background:#f8f3ed;
-        color:#3e2f26;
+        color:#4b3527;
         overflow-x:hidden;
     }
 
@@ -30,15 +47,13 @@
 
         text-align:center;
 
-        font-size:65px;
+        font-size:60px;
 
         margin:60px 0;
 
-        color:#3e2414;
+        color:#4b3527;
 
         font-weight:800;
-
-        letter-spacing:1px;
     }
 
     /* =========================
@@ -47,13 +62,11 @@
 
     .section{
 
-        width:90%;
+        width:92%;
 
-        max-width:1550px;
+        max-width:1500px;
 
-        margin:auto;
-
-        padding-bottom:90px;
+        margin:0 auto 70px;
     }
 
     /* =========================
@@ -65,7 +78,7 @@
         display:grid;
 
         grid-template-columns:
-    repeat(auto-fit,minmax(280px,1fr));
+    repeat(auto-fit,minmax(270px,1fr));
 
         gap:32px;
     }
@@ -76,16 +89,24 @@
 
     .product-card{
 
-        background:white;
+        position:relative;
 
-        border-radius:32px;
+        background:rgba(255,255,255,.92);
+
+        backdrop-filter:blur(12px);
+
+        border-radius:35px;
 
         padding:22px;
 
         text-align:center;
 
+        overflow:hidden;
+
+        border:1px solid rgba(255,255,255,.4);
+
         box-shadow:
-                0 10px 25px rgba(0,0,0,.05);
+                0 10px 30px rgba(0,0,0,.06);
 
         transition:.4s;
 
@@ -95,16 +116,17 @@
 
         justify-content:space-between;
 
-        min-height:580px;
+        min-height:540px;
     }
 
     .product-card:hover{
 
         transform:
-                translateY(-10px);
+                translateY(-12px)
+                scale(1.02);
 
         box-shadow:
-                0 18px 35px rgba(0,0,0,.08);
+                0 20px 45px rgba(139,94,60,.18);
     }
 
     /* =========================
@@ -113,15 +135,17 @@
 
     .img-box{
 
-        height:250px;
+        width:100%;
+
+        height:240px;
 
         border-radius:28px;
 
         background:
                 linear-gradient(
                         135deg,
-                        #f3e2d1,
-                        #faf6f1
+                        #f7efe7,
+                        #efe2d2
                 );
 
         display:flex;
@@ -132,23 +156,25 @@
 
         overflow:hidden;
 
-        margin-bottom:20px;
+        margin-bottom:22px;
     }
 
     .img-box img{
 
-        width:85%;
+        width:105%;
 
-        height:85%;
+        height:105%;
 
         object-fit:contain;
 
-        transition:.4s;
+        transition:.5s;
     }
 
     .product-card:hover img{
 
-        transform:scale(1.08);
+        transform:
+                scale(1.1)
+                rotate(-2deg);
     }
 
     /* =========================
@@ -161,11 +187,13 @@
 
         line-height:1.5;
 
-        margin-bottom:12px;
-
         color:#4b3527;
 
-        min-height:70px;
+        margin-bottom:14px;
+
+        min-height:72px;
+
+        font-weight:700;
     }
 
     /* =========================
@@ -174,7 +202,7 @@
 
     .price{
 
-        font-size:32px;
+        font-size:34px;
 
         font-weight:800;
 
@@ -220,7 +248,7 @@
 
         text-align:center;
 
-        font-size:17px;
+        font-size:18px;
 
         font-weight:600;
 
@@ -237,18 +265,18 @@
 
         border:none;
 
+        padding:16px;
+
+        border-radius:999px;
+
         background:
                 linear-gradient(
                         to right,
-                        #4b3527,
-                        #8b5e3c
+                        #5b3822,
+                        #9b6a43
                 );
 
         color:white;
-
-        padding:15px;
-
-        border-radius:999px;
 
         font-size:16px;
 
@@ -256,16 +284,20 @@
 
         cursor:pointer;
 
-        transition:.3s;
+        transition:.35s;
 
         margin-top:auto;
+
+        letter-spacing:.5px;
     }
 
     .product-card button:hover{
 
-        transform:translateY(-4px);
+        transform:
+                translateY(-4px);
 
-        opacity:.95;
+        box-shadow:
+                0 10px 25px rgba(139,94,60,.25);
     }
 
     /* =========================
@@ -274,7 +306,7 @@
 
     .back-btn{
 
-        width:230px;
+        width:220px;
 
         display:flex;
 
@@ -282,15 +314,15 @@
 
         align-items:center;
 
-        margin:20px auto 90px;
+        margin:20px auto 80px;
 
         text-decoration:none;
 
         background:
                 linear-gradient(
                         to right,
-                        #4b3527,
-                        #8b5e3c
+                        #5b3822,
+                        #9b6a43
                 );
 
         color:white;
@@ -322,7 +354,7 @@
     @media(max-width:992px){
 
         .page-title{
-            font-size:50px;
+            font-size:46px;
         }
 
         .products{
@@ -334,7 +366,7 @@
     @media(max-width:768px){
 
         .page-title{
-            font-size:40px;
+            font-size:38px;
         }
 
         .products{
@@ -350,6 +382,8 @@
         }
     }
 </style>
+<body>
+
 <div class="topbar">
 
     <div class="topbar-left">
@@ -414,19 +448,19 @@
                     <ul class="dropdown-menu">
 
                         <li>
-                            <a href="cat.html">Cats</a>
+                            <a href="cat.php">Cats</a>
                         </li>
 
                         <li>
-                            <a href="dog.html">Dogs</a>
+                            <a href="dog.php">Dogs</a>
                         </li>
 
                         <li>
-                            <a href="bird.html">Birds</a>
+                            <a href="bird.php">Birds</a>
                         </li>
 
                         <li>
-                            <a href="fish.html">Aquarium</a>
+                            <a href="fish.php">Aquarium</a>
                         </li>
 
                     </ul>
@@ -438,7 +472,7 @@
                 </li>
 
                 <li>
-                    <a href="contact.html">
+                    <a href="contact.php">
                         Contact Us</a>
                 </li>
 
@@ -464,11 +498,9 @@
                 <i class="fa-solid fa-user"></i>
 
             </a>
-            <a href="cart.html" class="icon-btn cart-btn">
-
+            <a href="cart.php" class="icon-btn cart-btn">
                 <i class="fa-solid fa-cart-shopping"></i>
-
-
+                <span class="cart-number"><?php echo $cartCount; ?></span>
             </a>
 
         </div>
@@ -476,19 +508,19 @@
     </div>
 
 </header>
-<body>
 
-<h1 class="page-title">Perches & Stands</h1>
+<h1 class="page-title">Dog Bowls</h1>
 
 <section class="section">
+<!--    <h2>Food Bowls</h2>-->
     <div class="products">
 
         <div class="product-card">
             <div class="img-box">
-                <img src="imgs/Natural Branch Bird Perch.jpg" alt="Natural Branch Bird Perch">
+                <img src="imgs/Plastic Dog Food Bowl.jpeg" alt="Plastic Dog Food Bowl">
             </div>
-            <h3>Natural Branch Bird Perch</h3>
-            <p class="price">₪15</p>
+            <h3>Plastic Dog Food Bowl</h3>
+            <p class="price">₪5</p>
 
             <div class="quantity">
                 <label>Quantity</label>
@@ -499,10 +531,10 @@
 
         <div class="product-card">
             <div class="img-box">
-                <img src="imgs/Natural Wooden Bird Perch.png" alt="Natural Wooden Bird Perch">
+                <img src="imgs/Stainless Steel Dog Bowl.jpg" alt="Stainless Steel Dog Bowl">
             </div>
-            <h3>Natural Wooden Bird Perch</h3>
-            <p class="price">₪15</p>
+            <h3>Non-Slip Base Stainless Steel Dog Bowl</h3>
+            <p class="price">₪8</p>
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
@@ -512,9 +544,9 @@
 
         <div class="product-card">
             <div class="img-box">
-                <img src="imgs/Simple Hanging Bird Perch.png" alt="Simple Hanging Bird Perch">
+                <img src="imgs/Double Plastic Dog Bowl.jpg" alt="Double Plastic Dog Bowl">
             </div>
-            <h3>Simple Hanging Bird Perch</h3>
+            <h3>Double Plastic Dog Bowl</h3>
             <p class="price">₪10</p>
             <div class="quantity">
                 <label>Quantity</label>
@@ -525,10 +557,10 @@
 
         <div class="product-card">
             <div class="img-box">
-                <img src="imgs/Round Bamboo Bird Swing.png" alt="Round Bamboo Bird Swing">
+                <img src="imgs/Double Stainless Steel Dog Bowl.jpg" alt="Double Stainless Steel Dog Bowl">
             </div>
-            <h3>Round Bamboo Bird Swing</h3>
-            <p class="price">₪10</p>
+            <h3>Double Stainless Steel Dog Bowl</h3>
+            <p class="price">₪15</p>
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
@@ -538,10 +570,10 @@
 
         <div class="product-card">
             <div class="img-box">
-                <img src="imgs/Hanging Wooden Bird Swing.jpg" alt="Hanging Wooden Bird Swing">
+                <img src="imgs/Dog Food Dispenser with Water Tank.png" alt="Dog Food Dispenser with Water Tank">
             </div>
-            <h3>Hanging Wooden Bird Swing</h3>
-            <p class="price">₪12</p>
+            <h3>Dog Food Dispenser with Water Tank</h3>
+            <p class="price">₪18</p>
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
@@ -551,9 +583,22 @@
 
         <div class="product-card">
             <div class="img-box">
-                <img src="imgs/Colorful Wooden Bird Swing.jpg" alt="Colorful Wooden Bird Swing">
+                <img src="imgs/Dog Water Dispenser with Tank.png" alt="Dog Water Dispenser with Tank">
             </div>
-            <h3>Colorful Wooden Bird Swing</h3>
+            <h3>Dog Water Dispenser with Tank</h3>
+            <p class="price">₪18</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Automatic Dog Food Feeder.jpeg" alt="Automatic Dog Food Feeder">
+            </div>
+            <h3>Automatic Dog Food Feeder</h3>
             <p class="price">₪20</p>
             <div class="quantity">
                 <label>Quantity</label>
@@ -564,10 +609,10 @@
 
         <div class="product-card">
             <div class="img-box">
-                <img src="imgs/Rainbow Beads Bird Swing.png" alt="Rainbow Beads Bird Swing">
+                <img src="imgs/Automatic Dog Water Feeder.png" alt="Automatic Dog Water Feeder">
             </div>
-            <h3>Rainbow Beads Bird Swing</h3>
-            <p class="price">₪15</p>
+            <h3>Automatic Dog Water Dispenser</h3>
+            <p class="price">₪20</p>
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
@@ -575,49 +620,12 @@
             <button>Add to Cart</button>
         </div>
 
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/Hanging Wooden Bridge Perch.png" alt="Hanging Wooden Bridge Perch">
-            </div>
-            <h3>Hanging Wooden Bridge Perch</h3>
-            <p class="price">₪15</p>
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/Colorful Wooden Bird Ladder.jpeg" alt="Colorful Wooden Bird Ladder">
-            </div>
-            <h3>Colorful Wooden Bird Ladder</h3>
-            <p class="price">₪12</p>
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/Wooden Bird Ladder Perch.jpg" alt="Wooden Bird Ladder Perch">
-            </div>
-            <h3>Wooden Bird Ladder Perch</h3>
-            <p class="price">₪10</p>
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
 
     </div>
 </section>
 
-<a href="bird.html" class="back-btn">⬅ Back</a>
+
+<a href="dog-supplies.php" class="back-btn">⬅ Back</a>
 
 <footer class="footer">
 
@@ -685,5 +693,80 @@
     </div>
 
 </footer>
+<script>
+
+    /* =========================
+       ADD TO CART - BACKEND
+    ========================= */
+
+    document.querySelectorAll(".product-card button")
+        .forEach(function(button){
+
+            button.setAttribute("type", "button");
+
+            button.addEventListener("click", function(){
+
+                const card = button.closest(".product-card");
+
+                const name = card.querySelector("h3").innerText;
+
+                const priceText = card.querySelector(".price").innerText;
+
+                const price = parseFloat(priceText.replace("₪",""));
+
+                const image = card.querySelector("img").getAttribute("src");
+
+                const quantity = parseInt(card.querySelector(".quantity input").value);
+
+                fetch("add_to_cart.php", {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+
+                    body:
+                        "name=" + encodeURIComponent(name)
+                        + "&price=" + price
+                        + "&image=" + encodeURIComponent(image)
+                        + "&quantity=" + quantity
+                })
+
+                    .then(response => response.text())
+
+                    .then(data => {
+
+                        data = data.trim();
+
+                        if(data === "login"){
+
+                            alert("Please login first!");
+                            window.location.href = "login.php";
+
+                        }else{
+
+                            alert("Product added to cart!");
+
+                            const cartNumber =
+                                document.querySelector(".cart-number");
+
+                            if(cartNumber){
+
+                                let currentNumber =
+                                    parseInt(cartNumber.textContent || 0);
+
+                                cartNumber.textContent =
+                                    currentNumber + quantity;
+                            }
+                        }
+
+                    });
+
+            });
+
+        });
+
+</script>
 </body>
 </html>

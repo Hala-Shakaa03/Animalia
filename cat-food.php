@@ -1,8 +1,24 @@
+<?php
+session_start();
+include "db.php";
+
+$cartCount = 0;
+
+if (isset($_SESSION["user_id"])) {
+    $user_id = $_SESSION["user_id"];
+
+    $countSql = "SELECT SUM(quantity) AS total FROM cart_items WHERE user_id='$user_id'";
+    $countResult = mysqli_query($conn, $countSql);
+    $countRow = mysqli_fetch_assoc($countResult);
+
+    $cartCount = $countRow["total"] ?? 0;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Dog Toys</title>
+    <title>Dog Food</title>
     <link rel="stylesheet" href="all.css">
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -51,7 +67,46 @@
 
             max-width:1550px;
 
-            margin:0 auto 80px;
+            margin:0 auto 90px;
+        }
+
+        .section h2{
+
+            font-size:38px;
+
+            margin-bottom:35px;
+
+            color:#4b3527;
+
+            font-weight:800;
+
+            position:relative;
+
+            padding-left:18px;
+        }
+
+        .section h2::before{
+
+            content:"";
+
+            position:absolute;
+
+            left:0;
+
+            top:5px;
+
+            width:6px;
+
+            height:38px;
+
+            border-radius:20px;
+
+            background:
+                    linear-gradient(
+                            to bottom,
+                            #8b5e3c,
+                            #c58b5c
+                    );
         }
 
         /* =========================
@@ -74,11 +129,7 @@
 
         .product-card{
 
-            position:relative;
-
-            background:rgba(255,255,255,.92);
-
-            backdrop-filter:blur(12px);
+            background:white;
 
             border-radius:35px;
 
@@ -87,8 +138,6 @@
             text-align:center;
 
             overflow:hidden;
-
-            border:1px solid rgba(255,255,255,.4);
 
             box-shadow:
                     0 10px 30px rgba(0,0,0,.06);
@@ -101,7 +150,7 @@
 
             justify-content:space-between;
 
-            min-height:560px;
+            min-height:570px;
         }
 
         .product-card:hover{
@@ -146,9 +195,9 @@
 
         .img-box img{
 
-            width:108%;
+            width:85%;
 
-            height:108%;
+            height:85%;
 
             object-fit:contain;
 
@@ -158,7 +207,7 @@
         .product-card:hover img{
 
             transform:
-                    scale(1.1)
+                    scale(1.08)
                     rotate(-2deg);
         }
 
@@ -176,7 +225,7 @@
 
             margin-bottom:14px;
 
-            min-height:76px;
+            min-height:85px;
 
             font-weight:700;
         }
@@ -279,8 +328,6 @@
             transition:.35s;
 
             margin-top:auto;
-
-            letter-spacing:.5px;
         }
 
         .product-card button:hover{
@@ -349,6 +396,10 @@
                 font-size:50px;
             }
 
+            .section h2{
+                font-size:32px;
+            }
+
             .products{
                 grid-template-columns:
         repeat(auto-fit,minmax(240px,1fr));
@@ -359,6 +410,10 @@
 
             .page-title{
                 font-size:40px;
+            }
+
+            .section h2{
+                font-size:28px;
             }
 
             .products{
@@ -442,19 +497,19 @@
                     <ul class="dropdown-menu">
 
                         <li>
-                            <a href="cat.html">Cats</a>
+                            <a href="cat.php">Cats</a>
                         </li>
 
                         <li>
-                            <a href="dog.html">Dogs</a>
+                            <a href="dog.php">Dogs</a>
                         </li>
 
                         <li>
-                            <a href="bird.html">Birds</a>
+                            <a href="bird.php">Birds</a>
                         </li>
 
                         <li>
-                            <a href="fish.html">Aquarium</a>
+                            <a href="fish.php">Aquarium</a>
                         </li>
 
                     </ul>
@@ -466,7 +521,7 @@
                 </li>
 
                 <li>
-                    <a href="contact.html">
+                    <a href="contact.php">
                         Contact Us</a>
                 </li>
 
@@ -492,10 +547,11 @@
                 <i class="fa-solid fa-user"></i>
 
             </a>
-            <a href="cart.html" class="icon-btn cart-btn">
+            <a href="cart.php" class="icon-btn cart-btn">
 
                 <i class="fa-solid fa-cart-shopping"></i>
 
+                <span class="cart-number"><?php echo $cartCount; ?></span>
 
             </a>
 
@@ -504,114 +560,76 @@
     </div>
 
 </header>
+<h1 class="page-title">Cat Food</h1>
 
-<h1 class="page-title">Dog Toys</h1>
-
+<!-- DRY FOOD -->
 <section class="section">
+    <h2>Dry Food</h2>
+
     <div class="products">
 
         <div class="product-card">
+
             <div class="img-box">
-                <img src="imgs/Blue Rope Ball Dog Toy.jfif" alt="Blue Rope Ball Dog Toy">
+                <img src="imgs/croque_adult_cat_chicken_1.5_kg.jpg" alt="Croque Chicken Dry Food 1.5kg">
             </div>
-            <h3>Blue Rope Ball Dog Toy</h3>
-            <p class="price">₪3</p>
+
+            <h3>Croque Chicken Dry Food 1.5kg</h3>
+            <p class="price">₪25</p>
+
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
+
             <button>Add to Cart</button>
+
         </div>
 
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/Red Rope Knot Dog Toy.jfif" alt="Red Rope Knot Dog Toy">
-            </div>
-            <h3>Red Rope Knot Dog Toy</h3>
-            <p class="price">₪5</p>
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
 
         <div class="product-card">
+
             <div class="img-box">
-                <img src="imgs/Rope Tug Ball Dog Toy.jfif" alt="Rope Tug Ball Dog Toy">
+                <img src="imgs/Gemon_Sterilised_Turkey_Rice_Salmon%20Oil_Dry_Food_2kg.jpeg" alt="Gemon Sterilised Turkey Dry Food 2kg">
             </div>
-            <h3>Rope Tug Ball Dog Toy</h3>
-            <p class="price">₪6</p>
+
+            <h3>Gemon Sterilised Turkey With Rice & Salmon Dry Food 2kg</h3>
+            <p class="price">₪45</p>
+
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
+
             <button>Add to Cart</button>
+
         </div>
 
         <div class="product-card">
 
             <div class="img-box">
-                <img src="imgs/Interwoven Rubber Ball Dog Toy.jfif" alt="Interwoven Rubber Ball Dog Toy">
+                <img src="imgs/Meow_Mix_Kitten_Chicken_Salmon_Fish_Turkey_Dry_Food_1.5kg.jpeg" alt="Meow Mix Kitten Chicken Dry Food 1.5kg">
             </div>
 
-            <h3>Interwoven Rubber Ball Dog Toy</h3>
-            <p class="price">₪8</p>
+            <h3>Meow Mix Kitten Chicken With Salmon, Fish & Turkey Dry Food 1.5kg</h3>
+            <p class="price">₪25</p>
 
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
-            <button>Add to Cart</button>
-        </div>
 
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/Rubber Paw Print Dog Ball.jfif" alt="Rubber Paw Print Dog Ball">
-            </div>
-            <h3>Rubber Paw Print Dog Ball</h3>
-            <p class="price">₪10</p>
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
             <button>Add to Cart</button>
-        </div>
 
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/Chuckit! Ultra Ball Dog Toy.jfif" alt="Chuckit! Ultra Ball Dog Toy">
-            </div>
-            <h3>Chuckit! Ultra Ball Dog Toy</h3>
-            <p class="price">₪12</p>
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
         </div>
-
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/Squeaky Tennis Dog Ball.jfif" alt="Squeaky Tennis Dog Ball">
-            </div>
-            <h3>Squeaky Tennis Dog Ball</h3>
-            <p class="price">₪14</p>
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
-
         <div class="product-card">
 
             <div class="img-box">
-                <img src="imgs/Rubber Squeaky Bone Toy.jfif" alt="Rubber Squeaky Bone Toy">
+                <img src="imgs/Friskies_Purple_1,4kg.png" alt="Friskies Chicken and Salmon Dry Food 1.4kg">
             </div>
 
-            <h3>Rubber Squeaky Bone Toy</h3>
-            <p class="price">₪15</p>
+            <h3>Friskies Purple Chicken & Salmon Dry Food 1.4kg</h3>
+            <p class="price">₪25</p>
 
             <div class="quantity">
                 <label>Quantity</label>
@@ -619,92 +637,415 @@
             </div>
 
             <button>Add to Cart</button>
+
+        </div>
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Friskies_Orange_Tender_Crunchy_Combo_1,4kg.png" alt="Friskies Tender Crunchy Combo 1.4kg">
+            </div>
+
+            <h3>Friskies Orange Tender Crunchy Chicken & Carrots Combo 1.4kg</h3>
+            <p class="price">₪25</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Friskies_Navy_Tider_Crunch_1,4kg.png" alt="Friskies Tender Crunch Combo 1.4kg">
+            </div>
+
+            <h3>Friskies Navy Tender Crunch Combo of Chicken, Beef, Carrots & Green Beans 1.4kg</h3>
+            <p class="price">₪25</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
         </div>
 
         <div class="product-card">
+
             <div class="img-box">
-                <img src="imgs/Rubber Chew Bone Dog Toy.jfif" alt="Rubber Chew Bone Dog Toy">
+                <img src="imgs/Friskies_seafood-sensations_salmon-tuna-shrimp-dry-cat-food_1,4kg.png" alt="Friskies Seafood Combo 1.4kg">
             </div>
-            <h3>Rubber Chew Bone Dog Toy</h3>
-            <p class="price">₪17</p>
+
+            <h3>Friskies Blue Seafood Combo of Salmon, Tuna, Shrimp & Seaweed 1.4kg</h3>
+            <p class="price">₪25</p>
+
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
+
             <button>Add to Cart</button>
+
+        </div>
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Friskies_Green_Indoor_Delights_7,3kg.png" alt="Friskies Indoor Delights 7.3kg">
+            </div>
+
+            <h3>Friskies Green Indoor Delights of Chicken, Salmon, Peas & Carrots 7.3kg</h3>
+            <p class="price">₪120</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
         </div>
 
         <div class="product-card">
+
             <div class="img-box">
-                <img src="imgs/Wooden Stick Chew Dog Toy.jfif" alt="Wooden Stick Chew Dog Toy">
+                <img src="imgs/Friskies_seafood-sensations_salmon-tuna-shrimp-dry-cat-food_7,3kg.png" alt="Friskies Seafood Combo 7.3kg">
             </div>
-            <h3>Wooden Stick Chew Dog Toy</h3>
-            <p class="price">₪12</p>
+
+            <h3>Friskies Blue Seafood Combo of Salmon, Tuna, Shrimp & Seaweed 7.3kg</h3>
+            <p class="price">₪120</p>
+
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
+
             <button>Add to Cart</button>
+
         </div>
 
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/Dog Frisbee Fetch Toy.jfif" alt="Dog Frisbee Fetch Toy">
-            </div>
-            <h3>Dog Frisbee Fetch Toy</h3>
-            <p class="price">₪15</p>
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/Interactive Dog Puzzle Feeder.jfif" alt="Interactive Dog Puzzle Feeder">
-            </div>
-            <h3>Interactive Dog Puzzle Feeder</h3>
-            <p class="price">₪16</p>
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/Burger Plush Dog Toy.jfif" alt="Burger Plush Dog Toy">
-            </div>
-            <h3>Burger Plush Dog Toy</h3>
-            <p class="price">₪5</p>
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/Duck Plush Squeaky Dog Toy.jfif" alt="Duck Plush Squeaky Dog Toy">
-            </div>
-            <h3>Duck Plush Squeaky Dog Toy</h3>
-            <p class="price">₪7</p>
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
 
     </div>
 </section>
 
 
-<a href="dog-supplies.html" class="back-btn">⬅ Back</a>
+<!-- WET FOOD -->
+<section class="section">
+    <h2>Wet Food</h2>
 
+    <div class="products">
+
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Friskies_chicken_tuna_Wet_Food.png" alt="Friskies Chicken and Tuna Wet Food">
+            </div>
+
+            <h3>Friskies Chicken and Tuna Wet Food</h3>
+            <p class="price">₪5</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Friskies_Scallop_Tuna_Fish_Wet_Food.png" alt="Friskies Scallop with Tuna and Fish Wet Food">
+            </div>
+
+            <h3>Friskies Scallop with Tuna & Fish Wet Food</h3>
+            <p class="price">₪5</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Friskies_Turkey-wet-cat-food.png" alt="Friskies Turkey Wet Food">
+            </div>
+
+            <h3>Friskies Turkey & Giblets Wet Food</h3>
+            <p class="price">₪5</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Wanpy_Chicken_Wet_Food.png" alt="Wanpy Chicken Wet Food.png">
+            </div>
+
+            <h3>Wanpy Chicken Wet Food</h3>
+            <p class="price">₪4</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Wanpy_Beef_Gravy_Wet_Food.png" alt="Wanpy Beef Gravy Wet Food.png">
+            </div>
+
+            <h3>Wanpy Beef Gravy Wet Food</h3>
+            <p class="price">₪4</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Wanpy_Lamb_Gravy_Wet_Food.png" alt="Wanpy Lamb Gravy Wet Food.png">
+            </div>
+
+            <h3>Wanpy Lamb Gravy Wet Food</h3>
+            <p class="price">₪4</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Wanpy_Salmon_and_Tuna_Wet_Food.png" alt="Wanpy Salmon and Tuna Wet Food.png">
+            </div>
+
+            <h3>Wanpy Salmon & Tuna Wet Food</h3>
+            <p class="price">₪4</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+    </div>
+</section>
+
+
+
+<!-- TREATS -->
+<section class="section">
+    <h2>Treats</h2>
+
+    <div class="products">
+
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/friskies-party-mix-cat-treat-beachside.png" alt="Friskies Mix Beachside Cat Treats">
+            </div>
+
+            <h3> Friskies Party Mix Beachside Cat Treats</h3>
+            <p class="price">₪10</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Friskies-party-mix-naturals-gourmet-cat-treats.webp" alt="Friskies Mix Naturals Gourmet Chicken Cat Treats">
+            </div>
+
+            <h3> Friskies Party Mix Naturals Gourmet Chicken Cat Treats</h3>
+            <p class="price">₪10</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Friskies-party-mix-natural_yums-salmon-cat-treats.webp" alt="Friskies Mix Natural Yums Salmon Cat Treats">
+            </div>
+
+            <h3> Friskies Party Mix Natural Yums Salmon Cat Treats</h3>
+            <p class="price">₪10</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Wanpy_Chicken_Cat_Treats.png" alt="Wanpy Chicken Cat Treats">
+            </div>
+
+            <h3> Wanpy Chicken Cat Treats</h3>
+            <p class="price">₪5</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Wanpy_Chicken_Veggies_Healthy_Treats.png" alt="Wanpy Chicken and Veggies Cat Treats">
+            </div>
+
+            <h3> Wanpy Chicken & Veggies Cat Treats</h3>
+            <p class="price">₪5</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Wanpy_Salmon_Chicken_Treats.png" alt="Wanpy Salmon and Chicken Cat Treats">
+            </div>
+
+            <h3> Wanpy Salmon & Chicken Cat Treats</h3>
+            <p class="price">₪5</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Wanpy_Tuna_Crab_Treats.png" alt="Wanpy Tuna and Crab Cat Treats">
+            </div>
+            <h3> Wanpy Tuna & Crab Cat Treats</h3>
+            <p class="price">₪5</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Wanpy_Tuna_Shrimp_Treats.png" alt="Wanpy Tuna and Shrimp Cat Treats">
+            </div>
+
+            <h3> Wanpy Tuna & Shrimp Cat Treats</h3>
+            <p class="price">₪5</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+
+    </div>
+</section>
+
+
+
+<!-- MOST POPULAR -->
+<!--<section class="section">-->
+<!--    <h2>⭐ Most Popular</h2>-->
+
+<!--    <div class="products">-->
+
+<!--        <div class="product-card">-->
+
+<!--            <div class="img-box">-->
+<!--                <img src="imgs/best_seller_dry_food.png" alt="Best Seller">-->
+<!--            </div>-->
+
+<!--            <h3>Best Seller Dry Food</h3>-->
+<!--            <p class="price">₪50</p>-->
+
+<!--            <button>Add to Cart</button>-->
+
+<!--        </div>-->
+
+<!--    </div>-->
+<!--</section>-->
+
+
+<a href="cat.php" class="back-btn">⬅ Back</a>
 <footer class="footer">
 
     <div class="footer-content">
@@ -771,6 +1112,73 @@
     </div>
 
 </footer>
+<script>
 
+    document.querySelectorAll(".product-card button")
+        .forEach(function(button){
+
+            button.setAttribute("type", "button");
+
+            button.addEventListener("click", function(){
+
+                const card = button.closest(".product-card");
+
+                const name = card.querySelector("h3").innerText;
+
+                const priceText = card.querySelector(".price").innerText;
+
+                const price = parseFloat(priceText.replace("₪",""));
+
+                const image = card.querySelector("img").getAttribute("src");
+
+                const quantity = parseInt(card.querySelector(".quantity input").value);
+
+                fetch("add_to_cart.php", {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+
+                    body:
+                        "name=" + encodeURIComponent(name)
+                        + "&price=" + price
+                        + "&image=" + encodeURIComponent(image)
+                        + "&quantity=" + quantity
+                })
+
+                    .then(response => response.text())
+
+                    .then(data => {
+
+                        data = data.trim();
+
+                        if(data === "login"){
+
+                            alert("Please login first!");
+                            window.location.href = "login.php";
+
+                        }else{
+
+                            alert("Product added to cart!");
+
+                            const cartNumber = document.querySelector(".cart-number");
+
+                            if(cartNumber){
+
+                                let currentNumber = parseInt(cartNumber.textContent || 0);
+
+                                cartNumber.textContent = currentNumber + quantity;
+                            }
+                        }
+                    });
+
+            });
+
+        });
+
+</script>
 </body>
+
 </html>

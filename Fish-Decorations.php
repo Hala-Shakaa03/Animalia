@@ -1,12 +1,30 @@
+<?php
+session_start();
+include "db.php";
+
+$cartCount = 0;
+
+if (isset($_SESSION["user_id"])) {
+    $user_id = $_SESSION["user_id"];
+
+    $countSql = "SELECT SUM(quantity) AS total FROM cart_items WHERE user_id='$user_id'";
+    $countResult = mysqli_query($conn, $countSql);
+    $countRow = mysqli_fetch_assoc($countResult);
+
+    $cartCount = $countRow["total"] ?? 0;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Collars and Clothes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fish Tanks Decorations</title>
     <link rel="stylesheet" href="all.css">
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
+
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
         *{
@@ -27,18 +45,11 @@
         ========================= */
 
         .page-title{
-
             text-align:center;
-
-            font-size:64px;
-
-            margin:60px 0;
-
+            font-size:55px;
+            margin:50px 0;
             color:#4b3527;
-
             font-weight:800;
-
-            letter-spacing:1px;
         }
 
         /* =========================
@@ -46,12 +57,9 @@
         ========================= */
 
         .section{
-
             width:92%;
-
-            max-width:1550px;
-
-            margin:0 auto 90px;
+            max-width:1450px;
+            margin:auto;
         }
 
         /* =========================
@@ -63,9 +71,11 @@
             display:grid;
 
             grid-template-columns:
-    repeat(auto-fit,minmax(280px,1fr));
+            repeat(auto-fit,minmax(260px,1fr));
 
-            gap:35px;
+            gap:28px;
+
+            margin-bottom:60px;
         }
 
         /* =========================
@@ -76,18 +86,16 @@
 
             background:white;
 
-            border-radius:35px;
+            border-radius:30px;
 
-            padding:22px;
+            padding:18px;
 
             text-align:center;
 
-            overflow:hidden;
-
             box-shadow:
-                    0 10px 30px rgba(0,0,0,.06);
+                    0 8px 20px rgba(0,0,0,.07);
 
-            transition:.4s;
+            transition:.35s;
 
             display:flex;
 
@@ -95,17 +103,11 @@
 
             justify-content:space-between;
 
-            min-height:620px;
+            min-height:540px;
         }
 
         .product-card:hover{
-
-            transform:
-                    translateY(-12px)
-                    scale(1.02);
-
-            box-shadow:
-                    0 20px 45px rgba(139,94,60,.18);
+            transform:translateY(-8px);
         }
 
         /* =========================
@@ -116,16 +118,11 @@
 
             width:100%;
 
-            height:260px;
+            height:230px;
 
-            border-radius:28px;
+            border-radius:24px;
 
-            background:
-                    linear-gradient(
-                            135deg,
-                            #f7efe7,
-                            #efe2d2
-                    );
+            background:#f5ede4;
 
             display:flex;
 
@@ -135,25 +132,22 @@
 
             overflow:hidden;
 
-            margin-bottom:22px;
+            margin-bottom:18px;
         }
 
         .img-box img{
 
-            width:85%;
+            width:100%;
 
-            height:85%;
+            height:100%;
 
             object-fit:contain;
 
-            transition:.5s;
+            transition:.4s;
         }
 
         .product-card:hover img{
-
-            transform:
-                    scale(1.08)
-                    rotate(-2deg);
+            transform:scale(1.05);
         }
 
         /* =========================
@@ -162,17 +156,15 @@
 
         .product-card h3{
 
-            font-size:22px;
+            font-size:20px;
 
             line-height:1.5;
 
             color:#4b3527;
 
-            margin-bottom:14px;
+            margin-bottom:12px;
 
-            min-height:85px;
-
-            font-weight:700;
+            min-height:65px;
         }
 
         /* =========================
@@ -181,13 +173,13 @@
 
         .price{
 
-            font-size:34px;
+            font-size:28px;
 
-            font-weight:800;
+            font-weight:700;
 
             color:#8b5e3c;
 
-            margin-bottom:20px;
+            margin-bottom:18px;
         }
 
         /* =========================
@@ -202,31 +194,32 @@
 
             gap:10px;
 
-            flex-wrap:wrap;
+            margin-bottom:18px;
 
-            margin-bottom:20px;
+            flex-wrap:wrap;
         }
 
         .size{
 
-            padding:10px 18px;
+            padding:8px 16px;
 
             border-radius:999px;
 
-            background:#f3ebe2;
-
-            color:#4b3527;
-
-            font-size:14px;
-
-            font-weight:600;
+            background:#f5ede4;
 
             cursor:pointer;
 
             transition:.3s;
+
+            font-size:14px;
+
+            font-weight:600;
         }
 
-        .size:hover,
+        .size:hover{
+            background:#d8c2ad;
+        }
+
         .size.active{
 
             background:#8b5e3c;
@@ -239,7 +232,7 @@
         ========================= */
 
         .quantity{
-            margin-bottom:20px;
+            margin-bottom:18px;
         }
 
         .quantity label{
@@ -257,32 +250,25 @@
 
         .quantity input{
 
-            width:90px;
+            width:85px;
 
-            height:45px;
+            height:42px;
 
             border:none;
 
             outline:none;
 
-            border-radius:14px;
+            border-radius:12px;
 
-            background:#f7efe7;
+            background:#f5ede4;
 
             text-align:center;
 
-            font-size:18px;
+            font-size:17px;
 
             font-weight:600;
 
             color:#4b3527;
-
-            transition:.3s;
-        }
-
-        .quantity input:focus{
-
-            background:#efe2d2;
         }
 
         /* =========================
@@ -295,16 +281,12 @@
 
             border:none;
 
-            padding:16px;
+            padding:14px;
 
             border-radius:999px;
 
             background:
-                    linear-gradient(
-                            to right,
-                            #5b3822,
-                            #9b6a43
-                    );
+                    linear-gradient(to right,#4b3527,#8b5e3c);
 
             color:white;
 
@@ -314,18 +296,16 @@
 
             cursor:pointer;
 
-            transition:.35s;
+            transition:.3s;
 
             margin-top:auto;
         }
 
         .product-card button:hover{
 
-            transform:
-                    translateY(-4px);
+            transform:translateY(-3px);
 
-            box-shadow:
-                    0 10px 25px rgba(139,94,60,.25);
+            opacity:.92;
         }
 
         /* =========================
@@ -334,7 +314,7 @@
 
         .back-btn{
 
-            width:230px;
+            width:210px;
 
             display:flex;
 
@@ -342,37 +322,30 @@
 
             align-items:center;
 
-            margin:20px auto 90px;
+            margin:20px auto 70px;
 
             text-decoration:none;
 
-            background:
-                    linear-gradient(
-                            to right,
-                            #5b3822,
-                            #9b6a43
-                    );
+            background:#4b3527;
 
             color:white;
 
-            padding:17px;
+            padding:16px;
 
             border-radius:999px;
 
             font-size:18px;
 
-            font-weight:700;
+            font-weight:600;
 
-            transition:.35s;
+            transition:.3s;
         }
 
         .back-btn:hover{
 
-            transform:
-                    translateY(-4px);
+            background:#8b5e3c;
 
-            box-shadow:
-                    0 10px 25px rgba(139,94,60,.25);
+            transform:translateY(-4px);
         }
 
         /* =========================
@@ -382,19 +355,19 @@
         @media(max-width:992px){
 
             .page-title{
-                font-size:50px;
+                font-size:45px;
             }
 
             .products{
                 grid-template-columns:
-        repeat(auto-fit,minmax(240px,1fr));
+                        repeat(auto-fit,minmax(230px,1fr));
             }
         }
 
         @media(max-width:768px){
 
             .page-title{
-                font-size:40px;
+                font-size:38px;
             }
 
             .products{
@@ -402,16 +375,17 @@
             }
 
             .img-box{
-                height:220px;
+                height:210px;
             }
 
             .product-card{
                 min-height:auto;
             }
         }
-    </style>
-</head>
 
+    </style>
+
+</head>
 
 <body>
 
@@ -479,19 +453,19 @@
                     <ul class="dropdown-menu">
 
                         <li>
-                            <a href="cat.html">Cats</a>
+                            <a href="cat.php">Cats</a>
                         </li>
 
                         <li>
-                            <a href="dog.html">Dogs</a>
+                            <a href="dog.php">Dogs</a>
                         </li>
 
                         <li>
-                            <a href="bird.html">Birds</a>
+                            <a href="bird.php">Birds</a>
                         </li>
 
                         <li>
-                            <a href="fish.html">Aquarium</a>
+                            <a href="fish.php">Aquarium</a>
                         </li>
 
                     </ul>
@@ -503,7 +477,7 @@
                 </li>
 
                 <li>
-                    <a href="contact.html">
+                    <a href="contact.php">
                         Contact Us</a>
                 </li>
 
@@ -529,11 +503,9 @@
                 <i class="fa-solid fa-user"></i>
 
             </a>
-            <a href="cart.html" class="icon-btn cart-btn">
-
+            <a href="cart.php" class="icon-btn cart-btn">
                 <i class="fa-solid fa-cart-shopping"></i>
-
-
+                <span class="cart-number"><?php echo $cartCount; ?></span>
             </a>
 
         </div>
@@ -541,20 +513,197 @@
     </div>
 
 </header>
-<h1 class="page-title">Collars & Clothes</h1>
 
+<h1 class="page-title">Tank Decorations</h1>
 <section class="section">
-
 
     <div class="products">
 
+        <!-- PRODUCT 1 -->
         <div class="product-card">
 
             <div class="img-box">
-                <img src="imgs/cat%20walking%20collar.jpeg" alt="Cat Harness with Leash">
+                <img src="imgs/Aquarium Decorative Shells.png">
             </div>
 
-            <h3>Cat Harness with Leash </h3>
+            <h3 class="product-name"
+                data-base="Decorative Shells">
+
+                Decorative Shells - Mini
+
+            </h3>
+
+            <p class="price">₪10</p>
+
+            <div class="sizes">
+
+                <span class="size active"
+                      data-name="Mini"
+                      data-price="10"
+                      data-img="imgs/Aquarium Decorative Shells.png">
+
+                    Mini
+
+                </span>
+
+                <span class="size"
+                      data-name="Small"
+                      data-price="15"
+                      data-img="imgs/Aquarium Decorative Small Shells.jfif">
+
+                    Small
+
+                </span>
+
+                <span class="size"
+                      data-name="Medium"
+                      data-price="20"
+                      data-img="imgs/Aquarium Decorative M Shells.jfif">
+
+                    Medium
+
+                </span>
+
+            </div>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <!-- PRODUCT 2 -->
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Aquarium_Gravel_Multi_Colour.webp">
+            </div>
+
+            <h3>Aquarium Gravel Multi Color</h3>
+
+            <p class="price">₪15</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <!-- PRODUCT 3 -->
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Artificial Green Plant.png">
+            </div>
+
+            <h3>Artificial Green Plant</h3>
+
+            <p class="price">₪5</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <!-- PRODUCT 4 -->
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Artificial Green Aquarium Plant.jpeg">
+            </div>
+
+            <h3>Artificial Green Aquarium Plant</h3>
+
+            <p class="price">₪8</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <!-- PRODUCT 5 -->
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Tall Artificial Aquarium Tree.png">
+            </div>
+
+            <h3>Tall Artificial Aquarium Tree</h3>
+
+            <p class="price">₪15</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <!-- PRODUCT 6 -->
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Mini Aquarium Lavender Decoration.png">
+            </div>
+
+            <h3>Mini Aquarium Lavender Plant</h3>
+
+            <p class="price">₪5</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <!-- PRODUCT 7 -->
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Artificial Pink & Purple Aquarium Plant.jpeg">
+            </div>
+
+            <h3>Artificial Pink & Purple Aquarium Plant</h3>
+
+            <p class="price">₪8</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <!-- PRODUCT 8 -->
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Artificial Pink Aquarium Plant.png">
+            </div>
+
+            <h3>Artificial Pink Aquarium Plant</h3>
+
             <p class="price">₪10</p>
 
             <div class="quantity">
@@ -566,190 +715,218 @@
 
         </div>
 
-
+        <!-- PRODUCT 9 -->
         <div class="product-card">
 
             <div class="img-box">
-                <img src="imgs/cat%20vest%20with%20attacheable%20collar.jpeg" alt="Vest Cat Harness with Leash">
+                <img src="imgs/Pink Coral Aquarium Ornament.jpg">
             </div>
 
-            <h3>Pink Vest Cat Harness with Leash </h3>
-            <p class="price">₪20</p>
-
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-
-            <button>Add to Cart</button>
-
-        </div>
-
-        <div class="product-card">
-
-            <div class="img-box">
-                <img src="imgs/cat%20vest%20with%20removable%20collar.jpeg" alt="Vest Cat Harness with Leash">
-            </div>
-
-            <h3>Baby Blue & Gray Vest Cat Harness with Leash</h3>
-            <p class="price">₪20</p>
-
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-
-            <button>Add to Cart</button>
-
-        </div>
-
-        <div class="product-card">
-
-            <div class="img-box">
-                <img src="imgs/cat%20vest.jpeg" alt="Crochet Cat Vest">
-            </div>
-
-            <h3 class="product-name" data-base="Crochet Cat Vest">
-                Crochet Cat Vest - S
-            </h3>
+            <h3>Pink Coral Aquarium Ornament</h3>
 
             <p class="price">₪15</p>
 
-            <div class="sizes">
-                <span class="size active" data-name="S">S</span>
-                <span class="size" data-name="M">M</span>
-                <span class="size" data-name="L">L</span>
-                <span class="size" data-name="XL">XL</span>
-            </div>
-
-            <div class="quantity">
-                <label>Quantity:</label>
-                <input type="number" value="1" min="1">
-            </div>
-
-            <button>Add to Cart</button>
-
-        </div>
-
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/collars.jfif" alt="Cat Collar">
-            </div>
-            <h3 class="product-name" data-base="Adjustable Cat Collar">Adjustable Cat Collar - Red</h3>
-            <p class="price">₪5</p>
-            <div class="sizes">
-                <span class="size active" data-name="Red">Red</span>
-                <span class="size" data-name="Purple">Purple</span>
-                <span class="size" data-name="Blue">Blue</span>
-                <span class="size" data-name="Green">Green</span>
-            </div>
-            <div class="quantity">
-                <label>Quantity:</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/lavender%20collar.jfif" alt="Adjustable Lavender cat collar">
-            </div>
-            <h3>Adjustable Cat Collar - Lavender</h3>
-            <p class="price">₪5</p>
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
+
             <button>Add to Cart</button>
+
         </div>
 
+        <!-- PRODUCT 10 -->
         <div class="product-card">
+
             <div class="img-box">
-                <img src="imgs/pink%20collar.jfif" alt="Adjustable Pink Cat Collar">
+                <img src="imgs/Decorative Broken Vase Aquarium Ornament.png">
             </div>
-            <h3>Adjustable Sparkly Cat Collar - Pink</h3>
-            <p class="price">₪7</p>
+
+            <h3>Decorative Broken Vase Aquarium Ornament</h3>
+
+            <p class="price">₪30</p>
+
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
+
             <button>Add to Cart</button>
+
         </div>
 
+        <!-- PRODUCT 11 -->
         <div class="product-card">
+
             <div class="img-box">
-                <img src="imgs/glow%20in%20the%20dark%20pink%20collar.jfif" alt="Adjustable glowy Pink Cat Collar">
+                <img src="imgs/Natural Style Rock Aquarium Ornament.png">
             </div>
-            <h3>Adjustable Glow In The Dark Cat Collar - Pink</h3>
-            <p class="price">₪5</p>
+
+            <h3>Natural Style Rock Aquarium Ornament</h3>
+
+            <p class="price">₪25</p>
+
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
+
             <button>Add to Cart</button>
+
         </div>
 
+        <!-- PRODUCT 12 -->
         <div class="product-card">
+
             <div class="img-box">
-                <img src="imgs/gold%20moon%20navy%20collar.jfif" alt="Moon & Stars Adjustable Cat Collar">
+                <img src="imgs/Aquarium Rock Mountain Ornament.png">
             </div>
-            <h3>Adjustable Moon & Stars Cat Collar - Navy Blue</h3>
-            <p class="price">₪5</p>
+
+            <h3>Aquarium Rock Mountain Ornament</h3>
+
+            <p class="price">₪30</p>
+
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
+
             <button>Add to Cart</button>
+
         </div>
 
+        <!-- PRODUCT 13 -->
         <div class="product-card">
+
             <div class="img-box">
-                <img src="imgs/velvet%20green%20collar.jfif" alt="Velvet Green Cat Collar with Bow">
+                <img src="imgs/Mini Bridge Aquarium Ornament.jpeg">
             </div>
-            <h3>Adjustable Velvet Cat Collar with Bow – Green</h3>
-            <p class="price">₪7</p>
+
+            <h3>Mini Bridge Aquarium Ornament</h3>
+
+            <p class="price">₪30</p>
+
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
+
             <button>Add to Cart</button>
+
         </div>
 
+        <!-- PRODUCT 14 -->
         <div class="product-card">
+
             <div class="img-box">
-                <img src="imgs/pearls%20collar.png" alt="Pearl Cat Collar with Heart Charm">
+                <img src="imgs/Mini Castle Aquarium Ornament.png">
             </div>
-            <h3>Pearl Cat Collar with Heart Charm</h3>
-            <p class="price">₪8</p>
+
+            <h3>Mini Castle Aquarium Ornament</h3>
+
+            <p class="price">₪20</p>
+
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
+
             <button>Add to Cart</button>
+
         </div>
+
+        <!-- PRODUCT 15 -->
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Vintage Motorcycle Aquarium Decoration.jpeg">
+            </div>
+
+            <h3>Vintage Motorcycle Aquarium Decoration</h3>
+
+            <p class="price">₪25</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <!-- PRODUCT 16 -->
+        <div class="product-card">
+
+            <div class="img-box">
+                <img src="imgs/Sunken Ship Aquarium Decoration.png">
+            </div>
+
+            <h3>Sunken Ship Aquarium Decoration</h3>
+
+            <p class="price">₪40</p>
+
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+
+            <button>Add to Cart</button>
+
+        </div>
+
     </div>
+
 </section>
+<a href="fish.php" class="back-btn">⬅ Back</a>
 
+<script>
 
-<a href="cat-supplies.html" class="back-btn">⬅ Back</a>
-<!--<script>-->
+    document.querySelectorAll(".product-card").forEach(card => {
 
-<!--    document.querySelectorAll(".product-card").forEach(card => {-->
-<!--        const options = card.querySelectorAll(".size");-->
-<!--        const name = card.querySelector(".product-name");-->
+        const sizes = card.querySelectorAll(".size");
+        const price = card.querySelector(".price");
+        const img = card.querySelector("img");
+        const name = card.querySelector(".product-name");
 
-<!--        options.forEach(btn => {-->
-<!--            btn.addEventListener("click", () => {-->
-<!--                options.forEach(b => b.classList.remove("active"));-->
-<!--                btn.classList.add("active");-->
+        sizes.forEach(btn => {
 
-<!--                if (name && btn.dataset.name) {-->
-<!--                    name.textContent = name.dataset.base + " - " + btn.dataset.name;-->
-<!--                }-->
-<!--            });-->
-<!--        });-->
-<!--    });-->
-<!--</script>-->
+            btn.addEventListener("click", () => {
+
+                sizes.forEach(b =>
+                    b.classList.remove("active"));
+
+                btn.classList.add("active");
+
+                // PRICE
+
+                if(price && btn.dataset.price){
+                    price.textContent =
+                        "₪" + btn.dataset.price;
+                }
+
+                // IMAGE
+
+                if(img && btn.dataset.img){
+                    img.src = btn.dataset.img;
+                }
+
+                // NAME
+
+                if(name && btn.dataset.name){
+                    name.textContent =
+                        name.dataset.base +
+                        " - " +
+                        btn.dataset.name;
+                }
+
+            });
+
+        });
+
+    });
+
+</script>
 
 <footer class="footer">
 
@@ -820,140 +997,76 @@
 <script>
 
     /* =========================
-       SIZE BUTTONS
-    ========================= */
-
-    document.querySelectorAll(".product-card").forEach(card => {
-
-        const options =
-            card.querySelectorAll(".size");
-
-        const name =
-            card.querySelector(".product-name");
-
-        options.forEach(btn => {
-
-            btn.addEventListener("click", () => {
-
-                options.forEach(b =>
-                    b.classList.remove("active")
-                );
-
-                btn.classList.add("active");
-
-                if(name){
-
-                    name.textContent =
-                        name.dataset.base +
-                        " - " +
-                        btn.innerText;
-                }
-            });
-        });
-    });
-
-    /* =========================
-       ADD TO CART
+       ADD TO CART - BACKEND
     ========================= */
 
     document.querySelectorAll(".product-card button")
         .forEach(function(button){
 
+            button.setAttribute("type", "button");
+
             button.addEventListener("click", function(){
 
-                const card =
-                    button.closest(".product-card");
+                const card = button.closest(".product-card");
 
-                const name =
-                    card.querySelector("h3").innerText;
+                const name = card.querySelector("h3").innerText;
 
-                const priceText =
-                    card.querySelector(".price").innerText;
+                const priceText = card.querySelector(".price").innerText;
 
-                const price =
-                    parseFloat(
-                        priceText.replace("₪","")
-                    );
+                const price = parseFloat(priceText.replace("₪",""));
 
-                const image =
-                    card.querySelector("img")
-                        .getAttribute("src");
+                const image = card.querySelector("img").getAttribute("src");
 
-                const quantity =
-                    parseInt(
-                        card.querySelector(".quantity input").value
-                    );
+                const quantity = parseInt(card.querySelector(".quantity input").value);
 
-                let cart =
-                    JSON.parse(localStorage.getItem("cart"))
-                    || [];
+                fetch("add_to_cart.php", {
 
-                const existingItem =
-                    cart.find(item => item.name === name);
+                    method: "POST",
 
-                if(existingItem){
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
 
-                    existingItem.quantity += quantity;
+                    body:
+                        "name=" + encodeURIComponent(name)
+                        + "&price=" + price
+                        + "&image=" + encodeURIComponent(image)
+                        + "&quantity=" + quantity
+                })
 
-                }else{
+                    .then(response => response.text())
 
-                    cart.push({
+                    .then(data => {
 
-                        name:name,
-                        price:price,
-                        image:image,
-                        quantity:quantity
+                        data = data.trim();
+
+                        if(data === "login"){
+
+                            alert("Please login first!");
+                            window.location.href = "login.php";
+
+                        }else{
+
+                            alert("Product added to cart!");
+
+                            const cartNumber =
+                                document.querySelector(".cart-number");
+
+                            if(cartNumber){
+
+                                let currentNumber =
+                                    parseInt(cartNumber.textContent || 0);
+
+                                cartNumber.textContent =
+                                    currentNumber + quantity;
+                            }
+                        }
+
                     });
-                }
 
-                localStorage.setItem(
-                    "cart",
-                    JSON.stringify(cart)
-                );
-
-                alert("Product added to cart!");
-
-                updateCartNumber();
             });
+
         });
-
-    /* =========================
-       CART NUMBER
-    ========================= */
-
-    function updateCartNumber(){
-
-        let cart =
-            JSON.parse(localStorage.getItem("cart"))
-            || [];
-
-        let total = 0;
-
-        cart.forEach(item => {
-
-            total += item.quantity;
-        });
-
-        const cartBtn =
-            document.querySelector(".cart-btn");
-
-        let badge =
-            document.querySelector(".cart-number");
-
-        if(!badge){
-
-            badge =
-                document.createElement("span");
-
-            badge.classList.add("cart-number");
-
-            cartBtn.appendChild(badge);
-        }
-
-        badge.textContent = total;
-    }
-
-    updateCartNumber();
 
 </script>
 </body>

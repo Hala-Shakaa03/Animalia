@@ -1,3 +1,19 @@
+<?php
+session_start();
+include "db.php";
+
+$cartCount = 0;
+
+if (isset($_SESSION["user_id"])) {
+    $user_id = $_SESSION["user_id"];
+
+    $countSql = "SELECT SUM(quantity) AS total FROM cart_items WHERE user_id='$user_id'";
+    $countResult = mysqli_query($conn, $countSql);
+    $countRow = mysqli_fetch_assoc($countResult);
+
+    $cartCount = $countRow["total"] ?? 0;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -298,19 +314,19 @@
                         </li>
 
                         <li>
-                            <a href="dog.html">
+                            <a href="dog.php">
                                 Dogs
                             </a>
                         </li>
 
                         <li>
-                            <a href="bird.html">
+                            <a href="bird.php">
                                 Birds
                             </a>
                         </li>
 
                         <li>
-                            <a href="fish.html">
+                            <a href="fish.php">
                                 Aquarium
                             </a>
                         </li>
@@ -326,7 +342,7 @@
                 </li>
 
                 <li>
-                    <a href="contact.html">
+                    <a href="contact.php">
                         Contact Us
                     </a>
                 </li>
@@ -355,11 +371,9 @@
 
             </a>
 
-            <a href="cart.html"
-               class="icon-btn cart-btn">
-
+            <a href="cart.php" class="icon-btn cart-btn">
                 <i class="fa-solid fa-cart-shopping"></i>
-
+                <span class="cart-number"><?php echo $cartCount; ?></span>
             </a>
 
         </div>
@@ -382,7 +396,7 @@
 
 <div class="categories">
 
-    <a href="cat-food.html"
+    <a href="cat-food.php"
        class="category-card">
 
         <div class="img-box">
@@ -402,7 +416,7 @@
 
     </a>
 
-    <a href="cat-supplies.html"
+    <a href="cat-supplies.php"
        class="category-card">
 
         <div class="img-box">
@@ -475,7 +489,7 @@
                 Customer Help
             </a>
 
-            <a href="contact.html">
+            <a href="contact.php">
                 Contact Us
             </a>
 

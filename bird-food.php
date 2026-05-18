@@ -1,11 +1,29 @@
+<?php
+session_start();
+include "db.php";
+
+$cartCount = 0;
+
+if (isset($_SESSION["user_id"])) {
+    $user_id = $_SESSION["user_id"];
+
+    $countSql = "SELECT SUM(quantity) AS total FROM cart_items WHERE user_id='$user_id'";
+    $countResult = mysqli_query($conn, $countSql);
+    $countRow = mysqli_fetch_assoc($countResult);
+
+    $cartCount = $countRow["total"] ?? 0;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Collars and Clothes</title>
+    <title>Bird Food</title>
+
     <link rel="stylesheet" href="all.css">
     <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">    <style>
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
         *{
@@ -17,7 +35,7 @@
         body{
             font-family:'Poppins',sans-serif;
             background:#f8f3ed;
-            color:#4b3527;
+            color:#3e2f26;
             overflow-x:hidden;
         }
 
@@ -29,11 +47,11 @@
 
             text-align:center;
 
-            font-size:60px;
+            font-size:65px;
 
             margin:60px 0;
 
-            color:#4b3527;
+            color:#3e2414;
 
             font-weight:800;
 
@@ -46,11 +64,13 @@
 
         .section{
 
-            width:92%;
+            width:90%;
 
             max-width:1550px;
 
-            margin:0 auto 80px;
+            margin:auto;
+
+            padding-bottom:90px;
         }
 
         /* =========================
@@ -64,7 +84,7 @@
             grid-template-columns:
     repeat(auto-fit,minmax(280px,1fr));
 
-            gap:35px;
+            gap:32px;
         }
 
         /* =========================
@@ -73,24 +93,16 @@
 
         .product-card{
 
-            position:relative;
+            background:white;
 
-            background:rgba(255,255,255,.92);
-
-            backdrop-filter:blur(12px);
-
-            border-radius:35px;
+            border-radius:32px;
 
             padding:22px;
 
             text-align:center;
 
-            overflow:hidden;
-
-            border:1px solid rgba(255,255,255,.4);
-
             box-shadow:
-                    0 10px 30px rgba(0,0,0,.06);
+                    0 10px 25px rgba(0,0,0,.05);
 
             transition:.4s;
 
@@ -100,17 +112,16 @@
 
             justify-content:space-between;
 
-            min-height:560px;
+            min-height:600px;
         }
 
         .product-card:hover{
 
             transform:
-                    translateY(-12px)
-                    scale(1.02);
+                    translateY(-10px);
 
             box-shadow:
-                    0 20px 45px rgba(139,94,60,.18);
+                    0 18px 35px rgba(0,0,0,.08);
         }
 
         /* =========================
@@ -119,8 +130,6 @@
 
         .img-box{
 
-            width:100%;
-
             height:250px;
 
             border-radius:28px;
@@ -128,8 +137,8 @@
             background:
                     linear-gradient(
                             135deg,
-                            #f7efe7,
-                            #efe2d2
+                            #f3e2d1,
+                            #faf6f1
                     );
 
             display:flex;
@@ -140,27 +149,23 @@
 
             overflow:hidden;
 
-            margin-bottom:22px;
-
-            position:relative;
+            margin-bottom:20px;
         }
 
         .img-box img{
 
-            width:102%;
+            width:85%;
 
-            height:105%;
+            height:85%;
 
             object-fit:contain;
 
-            transition:.5s;
+            transition:.4s;
         }
 
         .product-card:hover img{
 
-            transform:
-                    scale(1.1)
-                    rotate(-2deg);
+            transform:scale(1.08);
         }
 
         /* =========================
@@ -173,13 +178,11 @@
 
             line-height:1.5;
 
+            margin-bottom:12px;
+
             color:#4b3527;
 
-            margin-bottom:14px;
-
-            min-height:76px;
-
-            font-weight:700;
+            min-height:72px;
         }
 
         /* =========================
@@ -188,7 +191,7 @@
 
         .price{
 
-            font-size:34px;
+            font-size:32px;
 
             font-weight:800;
 
@@ -234,18 +237,11 @@
 
             text-align:center;
 
-            font-size:18px;
+            font-size:17px;
 
             font-weight:600;
 
             color:#4b3527;
-
-            transition:.3s;
-        }
-
-        .quantity input:focus{
-
-            background:#efe2d2;
         }
 
         /* =========================
@@ -258,18 +254,18 @@
 
             border:none;
 
-            padding:16px;
-
-            border-radius:999px;
-
             background:
                     linear-gradient(
                             to right,
-                            #5b3822,
-                            #9b6a43
+                            #4b3527,
+                            #8b5e3c
                     );
 
             color:white;
+
+            padding:15px;
+
+            border-radius:999px;
 
             font-size:16px;
 
@@ -277,20 +273,16 @@
 
             cursor:pointer;
 
-            transition:.35s;
+            transition:.3s;
 
             margin-top:auto;
-
-            letter-spacing:.5px;
         }
 
         .product-card button:hover{
 
-            transform:
-                    translateY(-4px);
+            transform:translateY(-4px);
 
-            box-shadow:
-                    0 10px 25px rgba(139,94,60,.25);
+            opacity:.95;
         }
 
         /* =========================
@@ -314,8 +306,8 @@
             background:
                     linear-gradient(
                             to right,
-                            #5b3822,
-                            #9b6a43
+                            #4b3527,
+                            #8b5e3c
                     );
 
             color:white;
@@ -347,7 +339,7 @@
         @media(max-width:992px){
 
             .page-title{
-                font-size:48px;
+                font-size:50px;
             }
 
             .products{
@@ -359,7 +351,7 @@
         @media(max-width:768px){
 
             .page-title{
-                font-size:38px;
+                font-size:40px;
             }
 
             .products{
@@ -443,19 +435,19 @@
                     <ul class="dropdown-menu">
 
                         <li>
-                            <a href="cat.html">Cats</a>
+                            <a href="cat.php">Cats</a>
                         </li>
 
                         <li>
-                            <a href="dog.html">Dogs</a>
+                            <a href="dog.php">Dogs</a>
                         </li>
 
                         <li>
-                            <a href="bird.html">Birds</a>
+                            <a href="bird.php">Birds</a>
                         </li>
 
                         <li>
-                            <a href="fish.html">Aquarium</a>
+                            <a href="fish.php">Aquarium</a>
                         </li>
 
                     </ul>
@@ -467,7 +459,7 @@
                 </li>
 
                 <li>
-                    <a href="contact.html">
+                    <a href="contact.php">
                         Contact Us</a>
                 </li>
 
@@ -493,11 +485,9 @@
                 <i class="fa-solid fa-user"></i>
 
             </a>
-            <a href="cart.html" class="icon-btn cart-btn">
-
+            <a href="cart.php" class="icon-btn cart-btn">
                 <i class="fa-solid fa-cart-shopping"></i>
-
-
+                <span class="cart-number"><?php echo $cartCount; ?></span>
             </a>
 
         </div>
@@ -505,18 +495,18 @@
     </div>
 
 </header>
-
-<h1 class="page-title">Collars & Clothes</h1>
+<h1 class="page-title">Bird Food</h1>
 
 <section class="section">
     <div class="products">
 
         <div class="product-card">
             <div class="img-box">
-                <img src="imgs/Black Studded Dog Collar – 50cm.jpeg" alt="Black Studded Dog Collar – 50cm">
+                <img src="imgs/Budgie Seed Mix Food – 500g.jfif" alt="Budgie Seed Mix Food – 500g">
             </div>
-            <h3>Black Studded Dog Collar – 50cm </h3>
-            <p class="price">₪10</p>
+            <h3>Budgie Seed Mix Food – 500g</h3>
+            <p class="price">₪15</p>
+
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
@@ -526,74 +516,9 @@
 
         <div class="product-card">
             <div class="img-box">
-                <img src="imgs/Black Dog Collar.jfif" alt="Black Dog Collar – 50cm">
+                <img src="imgs/Premium Parrot Seed Mix – 1KG.jfif" alt="Premium Parrot Seed Mix – 1KG">
             </div>
-            <h3>Black Dog Collar – 50cm </h3>
-            <p class="price">₪10</p>
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/Pink Dog Collar.jfif" alt="Pink Dog Collar – 50cm">
-            </div>
-            <h3>Pink Dog Collar – 50cm </h3>
-            <p class="price">₪10</p>
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/Burgandy Dog Collar.jfif" alt="Burgandy Dog Collar – 50cm">
-            </div>
-            <h3>Burgundy Dog Collar – 50cm </h3>
-            <p class="price">₪10</p>
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/Braided Dog Leash with Collar – 115cm.jpeg" alt="Braided Dog Leash with Collar – 115cm">
-            </div>
-            <h3>Braided Dog Leash with Collar – 115cm </h3>
-            <p class="price">₪20</p>
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/Soft Handle Dog Leash – 120cm.jpeg" alt="Soft Handle Dog Leash – 120cm">
-            </div>
-            <h3>Soft Handle Dog Leash – 120cm</h3>
-            <p class="price">₪20</p>
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/Pink Dog Harness & Leash Set.jpeg" alt="Pink Dog Harness & Leash Set">
-            </div>
-            <h3>Pink Dog Harness & Leash Set</h3>
+            <h3>Premium Parrot Seed Mix – 1KG</h3>
             <p class="price">₪25</p>
             <div class="quantity">
                 <label>Quantity</label>
@@ -604,74 +529,9 @@
 
         <div class="product-card">
             <div class="img-box">
-                <img src="imgs/Military Dog Harness & Leash Set.jpeg" alt="Military Dog Harness & Leash Set">
+                <img src="imgs/Canary Seed Mix – High Quality – 500g.jfif" alt="Canary Seed Mix – High Quality – 500g">
             </div>
-            <h3>Military Dog Harness & Leash Set</h3>
-            <p class="price">₪30</p>
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/Red Retractable Dog Leash – 3M.jpg" alt="Red Retractable Dog Leash – 3M">
-            </div>
-            <h3>Red Retractable Dog Leash – 3M</h3>
-            <p class="price">₪15</p>
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/Pink Retractable Dog Leash.png" alt="Pink Retractable Dog Leash">
-            </div>
-            <h3>Pink Retractable Dog Leash - 3M</h3>
-            <p class="price">₪15</p>
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/Automatic Dog Leash.png" alt="Automatic Dog Leash">
-            </div>
-            <h3>Automatic Dog Leash - 3M</h3>
-            <p class="price">₪17</p>
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/Metal Dog Training Collar – 50cm.jpg" alt="Metal Dog Training Collar – 50cm">
-            </div>
-            <h3>Metal Dog Training Collar – 50cm</h3>
-            <p class="price">₪12</p>
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/Metal Dog Chain Leash – 150cm.png" alt="Metal Dog Chain Leash – 150cm">
-            </div>
-            <h3>Metal Dog Chain Leash – 150cm</h3>
+            <h3>Canary Seed Mix – High Quality – 500g</h3>
             <p class="price">₪20</p>
             <div class="quantity">
                 <label>Quantity</label>
@@ -682,9 +542,74 @@
 
         <div class="product-card">
             <div class="img-box">
-                <img src="imgs/Heavy Duty Metal Dog Chain – 160cm.png" alt="Heavy Duty Metal Dog Chain – 160cm">
+                <img src="imgs/NutriBird P15 Original Parrot Pellets – 1KG.jfif" alt="NutriBird P15 Original Parrot Pellets – 1KG">
             </div>
-            <h3>Heavy Duty Metal Dog Chain – 160cm</h3>
+            <h3>NutriBird P15 Original Parrot Pellets – 1KG</h3>
+            <p class="price">₪30</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Premium Bird Pellets Food – Natural Formula – 500g.jfif" alt="Premium Bird Pellets Food 500g">
+            </div>
+            <h3>Premium Bird Pellets Food Natural Formula – 500g</h3>
+            <p class="price">₪18</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Parrot Pellets Food – Vitamin Rich – 400g.jfif" alt="Parrot Pellets Food 400g">
+            </div>
+            <h3>Parrot Pellets Food Vitamin Rich – 400g</h3>
+            <p class="price">₪15</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Parrot Seed Treat Stick – Natural Mix.jfif" alt="Parrot Seed Treat Stick">
+            </div>
+            <h3>Parrot Seed Treat Stick Natural Mix</h3>
+            <p class="price">₪10</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Prestige Bird Treat Sticks – Banana & Coconut – 2 Sticks.jfif" alt="Prestige Bird Treat Sticks Banana & Coconut">
+            </div>
+            <h3>Banana & Coconut Prestige Bird Treat Sticks – 2 Sticks</h3>
+            <p class="price">₪20</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Starsnack Bird Treat Sticks – Honey Flavor – 2 Sticks.jfif" alt="Starsnack Bird Treat Sticks Honey Flavor">
+            </div>
+            <h3>Honey Flavor Starsnack Bird Treat Sticks – 2 Sticks</h3>
             <p class="price">₪25</p>
             <div class="quantity">
                 <label>Quantity</label>
@@ -693,38 +618,11 @@
             <button>Add to Cart</button>
         </div>
 
-
         <div class="product-card">
             <div class="img-box">
-                <img src="imgs/Knitted Dog Sweater.png" alt="Knitted Dog Sweater">
+                <img src="imgs/RIO Fruit & Nut Bird Mix – Premium Food – 500g.jfif" alt="RIO Fruit & Nut Bird Mix Premium Food">
             </div>
-            <h3>Knitted Dog Red Sweater</h3>
-            <p class="price">₪15</p>
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/Soft Dog Hoodie.png" alt="Soft Dog Hoodie">
-            </div>
-            <h3>Soft Dog Gray Hoodie</h3>
-            <p class="price">₪20</p>
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/Puffer Dog Jacket.png" alt="Puffer Dog Jacket">
-            </div>
-            <h3>Puffer Dog Purple Jacket</h3>
+            <h3>RIO Fruit & Nut Bird Mix Premium Food – 500g</h3>
             <p class="price">₪30</p>
             <div class="quantity">
                 <label>Quantity</label>
@@ -735,10 +633,10 @@
 
         <div class="product-card">
             <div class="img-box">
-                <img src="imgs/Waterproof Reflective Dog Coat.png" alt="Waterproof Reflective Dog Coat">
+                <img src="imgs/Fruit & Nut Bird Mix – Natural Energy Blend – 400g.jfif" alt="Fruit & Nut Bird Mix Natural Energy Blend">
             </div>
-            <h3>Waterproof Reflective Dog Red Coat</h3>
-            <p class="price">₪35</p>
+            <h3>Fruit & Nut Bird Mix Natural Energy Blend – 400g</h3>
+            <p class="price">₪15</p>
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
@@ -748,23 +646,25 @@
 
         <div class="product-card">
             <div class="img-box">
-                <img src="imgs/Pink Princess Dog Dress Set.png" alt="Pink Princess Dog Dress Set">
+                <img src="imgs/Premium Seed & Fruit Mix for Birds – 1KG.jfif" alt="Premium Seed & Fruit Mix for Birds">
             </div>
-            <h3>Pink Princess Dog Dress Set</h3>
-            <p class="price">₪15</p>
+            <h3>Premium Seed & Fruit Mix – 1KG</h3>
+            <p class="price">₪30</p>
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
             </div>
             <button>Add to Cart</button>
         </div>
+
+
+
+
 
     </div>
 </section>
 
-
-<a href="dog-supplies.html" class="back-btn">⬅ Back</a>
-</body>
+<a href="bird.php" class="back-btn">⬅ Back</a>
 
 <footer class="footer">
 
@@ -832,5 +732,80 @@
     </div>
 
 </footer>
+<script>
 
+    /* =========================
+       ADD TO CART - BACKEND
+    ========================= */
+
+    document.querySelectorAll(".product-card button")
+        .forEach(function(button){
+
+            button.setAttribute("type", "button");
+
+            button.addEventListener("click", function(){
+
+                const card = button.closest(".product-card");
+
+                const name = card.querySelector("h3").innerText;
+
+                const priceText = card.querySelector(".price").innerText;
+
+                const price = parseFloat(priceText.replace("₪",""));
+
+                const image = card.querySelector("img").getAttribute("src");
+
+                const quantity = parseInt(card.querySelector(".quantity input").value);
+
+                fetch("add_to_cart.php", {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+
+                    body:
+                        "name=" + encodeURIComponent(name)
+                        + "&price=" + price
+                        + "&image=" + encodeURIComponent(image)
+                        + "&quantity=" + quantity
+                })
+
+                    .then(response => response.text())
+
+                    .then(data => {
+
+                        data = data.trim();
+
+                        if(data === "login"){
+
+                            alert("Please login first!");
+                            window.location.href = "login.php";
+
+                        }else{
+
+                            alert("Product added to cart!");
+
+                            const cartNumber =
+                                document.querySelector(".cart-number");
+
+                            if(cartNumber){
+
+                                let currentNumber =
+                                    parseInt(cartNumber.textContent || 0);
+
+                                cartNumber.textContent =
+                                    currentNumber + quantity;
+                            }
+                        }
+
+                    });
+
+            });
+
+        });
+
+</script>
+</body>
 </html>

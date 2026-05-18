@@ -1,7 +1,19 @@
 <?php
 session_start();
-?>
+include "db.php";
 
+$cartCount = 0;
+
+if (isset($_SESSION["user_id"])) {
+    $user_id = $_SESSION["user_id"];
+
+    $countSql = "SELECT SUM(quantity) AS total FROM cart_items WHERE user_id='$user_id'";
+    $countResult = mysqli_query($conn, $countSql);
+    $countRow = mysqli_fetch_assoc($countResult);
+
+    $cartCount = $countRow["total"] ?? 0;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -91,19 +103,19 @@ session_start();
                     <ul class="dropdown-menu">
 
                         <li>
-                            <a href="cat.html">Cats</a>
+                            <a href="cat.php">Cats</a>
                         </li>
 
                         <li>
-                            <a href="dog.html">Dogs</a>
+                            <a href="dog.php">Dogs</a>
                         </li>
 
                         <li>
-                            <a href="bird.html">Birds</a>
+                            <a href="bird.php">Birds</a>
                         </li>
 
                         <li>
-                            <a href="fish.html">Aquarium</a>
+                            <a href="fish.php">Aquarium</a>
                         </li>
 
                     </ul>
@@ -115,7 +127,7 @@ session_start();
                 </li>
 
                 <li>
-                    <a href="contact.html">
+                    <a href="contact.php">
                         Contact Us</a>
                 </li>
 
@@ -141,11 +153,9 @@ session_start();
                 <i class="fa-solid fa-user"></i>
 
             </a>
-            <a href="cart.html" class="icon-btn cart-btn">
-
+            <a href="cart.php" class="icon-btn cart-btn">
                 <i class="fa-solid fa-cart-shopping"></i>
-
-
+                <span class="cart-number"><?php echo $cartCount; ?></span>
             </a>
 
         </div>
@@ -255,7 +265,7 @@ session_start();
 
             <!-- CAT -->
 
-            <a href="cat.html" class="pet-item">
+            <a href="cat.php" class="pet-item">
 
                 <div class="pet-image">
 
@@ -277,7 +287,7 @@ session_start();
 
             <!-- DOG -->
 
-            <a href="dog.html" class="pet-item">
+            <a href="dog.php" class="pet-item">
 
                 <div class="pet-image">
 
@@ -299,7 +309,7 @@ session_start();
 
             <!-- BIRD -->
 
-            <a href="bird.html" class="pet-item">
+            <a href="bird.php" class="pet-item">
 
                 <div class="pet-image">
 
@@ -321,7 +331,7 @@ session_start();
 
             <!-- FISH -->
 
-            <a href="fish.html" class="pet-item">
+            <a href="fish.php" class="pet-item">
 
                 <div class="pet-image">
 

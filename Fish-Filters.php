@@ -1,11 +1,29 @@
+<?php
+session_start();
+include "db.php";
+
+$cartCount = 0;
+
+if (isset($_SESSION["user_id"])) {
+    $user_id = $_SESSION["user_id"];
+
+    $countSql = "SELECT SUM(quantity) AS total FROM cart_items WHERE user_id='$user_id'";
+    $countResult = mysqli_query($conn, $countSql);
+    $countRow = mysqli_fetch_assoc($countResult);
+
+    $cartCount = $countRow["total"] ?? 0;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Birds Cages</title>
+    <title>Fish Tank Filters</title>
     <link rel="stylesheet" href="all.css">
     <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">    <style>
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
         *{
@@ -17,7 +35,7 @@
         body{
             font-family:'Poppins',sans-serif;
             background:#f8f3ed;
-            color:#3e2f26;
+            color:#4b3527;
             overflow-x:hidden;
         }
 
@@ -26,18 +44,11 @@
         ========================= */
 
         .page-title{
-
             text-align:center;
-
-            font-size:64px;
-
-            margin:60px 0;
-
-            color:#3e2414;
-
+            font-size:55px;
+            margin:50px 0;
+            color:#4b3527;
             font-weight:800;
-
-            letter-spacing:1px;
         }
 
         /* =========================
@@ -45,14 +56,9 @@
         ========================= */
 
         .section{
-
-            width:90%;
-
-            max-width:1550px;
-
+            width:92%;
+            max-width:1450px;
             margin:auto;
-
-            padding-bottom:90px;
         }
 
         /* =========================
@@ -64,9 +70,11 @@
             display:grid;
 
             grid-template-columns:
-    repeat(auto-fit,minmax(280px,1fr));
+    repeat(auto-fit,minmax(260px,1fr));
 
-            gap:32px;
+            gap:28px;
+
+            margin-bottom:60px;
         }
 
         /* =========================
@@ -77,16 +85,16 @@
 
             background:white;
 
-            border-radius:32px;
+            border-radius:30px;
 
-            padding:22px;
+            padding:18px;
 
             text-align:center;
 
             box-shadow:
-                    0 10px 25px rgba(0,0,0,.05);
+                    0 8px 20px rgba(0,0,0,.07);
 
-            transition:.4s;
+            transition:.35s;
 
             display:flex;
 
@@ -94,16 +102,11 @@
 
             justify-content:space-between;
 
-            min-height:600px;
+            min-height:500px;
         }
 
         .product-card:hover{
-
-            transform:
-                    translateY(-10px);
-
-            box-shadow:
-                    0 18px 35px rgba(0,0,0,.08);
+            transform:translateY(-8px);
         }
 
         /* =========================
@@ -112,16 +115,13 @@
 
         .img-box{
 
-            height:250px;
+            width:100%;
 
-            border-radius:28px;
+            height:220px;
 
-            background:
-                    linear-gradient(
-                            135deg,
-                            #f3e2d1,
-                            #faf6f1
-                    );
+            border-radius:24px;
+
+            background:#f5ede4;
 
             display:flex;
 
@@ -131,14 +131,14 @@
 
             overflow:hidden;
 
-            margin-bottom:20px;
+            margin-bottom:18px;
         }
 
         .img-box img{
 
-            width:85%;
+            width:100%;
 
-            height:85%;
+            height:100%;
 
             object-fit:contain;
 
@@ -146,214 +146,24 @@
         }
 
         .product-card:hover img{
-
-            transform:scale(1.08);
-        }
-        /* =========================
-           HERO SECTION
-        ========================= */
-
-        .bird-hero{
-
-            width:96%;
-
-            max-width:1500px;
-
-            margin:30px auto 70px;
+            transform:scale(1.05);
         }
 
-        .bird-hero-content{
-
-            background:
-                    linear-gradient(
-                            to right,
-                            #4b2412,
-                            #a57b5b
-                    );
-
-            border-radius:40px;
-
-            padding:65px 45px;
-
-            display:flex;
-
-            align-items:center;
-
-            justify-content:space-between;
-
-            overflow:hidden;
-
-            position:relative;
-        }
-
-        .bird-hero-content::before{
-
-            content:"";
-
-            position:absolute;
-
-            width:300px;
-
-            height:300px;
-
-            border-radius:50%;
-
-            background:rgba(255,255,255,.06);
-
-            right:-80px;
-
-            top:-40px;
-        }
-
-        /* TEXT */
-
-        .bird-hero-text{
-
-            color:white;
-
-            z-index:2;
-
-            max-width:700px;
-        }
-
-        .bird-tag{
-
-            display:inline-block;
-
-            background:#f5c97b;
-
-            color:#3e2414;
-
-            padding:10px 20px;
-
-            border-radius:999px;
-
-            font-size:15px;
-
-            font-weight:700;
-
-            margin-bottom:28px;
-        }
-
-        .bird-hero-text h1{
-
-            font-size:72px;
-
-            line-height:1.15;
-
-            margin-bottom:20px;
-
-            font-weight:800;
-        }
-
-        .bird-hero-text p{
-
-            font-size:22px;
-
-            line-height:1.8;
-
-            color:#f5ede4;
-
-            max-width:620px;
-        }
-
-        /* IMAGE */
-
-        .bird-hero-image{
-
-            position:relative;
-
-            z-index:2;
-        }
-
-        .bird-hero-image img{
-
-            width:360px;
-
-            object-fit:contain;
-
-            animation:float 4s ease-in-out infinite;
-        }
-
-        /* ANIMATION */
-
-        @keyframes float{
-
-            0%,100%{
-                transform:translateY(0);
-            }
-
-            50%{
-                transform:translateY(-15px);
-            }
-        }
-
-        /* =========================
-           RESPONSIVE HERO
-        ========================= */
-
-        @media(max-width:1100px){
-
-            .bird-hero-content{
-
-                flex-direction:column;
-
-                text-align:center;
-
-                gap:40px;
-            }
-
-            .bird-hero-text p{
-                margin:auto;
-            }
-
-            .bird-hero-text h1{
-                font-size:55px;
-            }
-        }
-
-        @media(max-width:768px){
-
-            .bird-hero{
-
-                width:92%;
-            }
-
-            .bird-hero-content{
-
-                padding:45px 25px;
-            }
-
-            .bird-hero-text h1{
-
-                font-size:40px;
-            }
-
-            .bird-hero-text p{
-
-                font-size:18px;
-            }
-
-            .bird-hero-image img{
-
-                width:250px;
-            }
-        }
         /* =========================
            PRODUCT NAME
         ========================= */
 
         .product-card h3{
 
-            font-size:23px;
+            font-size:20px;
 
             line-height:1.5;
 
-            margin-bottom:12px;
-
             color:#4b3527;
 
-            min-height:70px;
+            margin-bottom:12px;
+
+            min-height:65px;
         }
 
         /* =========================
@@ -362,13 +172,13 @@
 
         .price{
 
-            font-size:32px;
+            font-size:28px;
 
-            font-weight:800;
+            font-weight:700;
 
             color:#8b5e3c;
 
-            margin-bottom:20px;
+            margin-bottom:18px;
         }
 
         /* =========================
@@ -376,7 +186,7 @@
         ========================= */
 
         .quantity{
-            margin-bottom:20px;
+            margin-bottom:18px;
         }
 
         .quantity label{
@@ -394,17 +204,17 @@
 
         .quantity input{
 
-            width:90px;
+            width:85px;
 
-            height:45px;
+            height:42px;
 
             border:none;
 
             outline:none;
 
-            border-radius:14px;
+            border-radius:12px;
 
-            background:#f7efe7;
+            background:#f5ede4;
 
             text-align:center;
 
@@ -425,18 +235,14 @@
 
             border:none;
 
-            background:
-                    linear-gradient(
-                            to right,
-                            #4b3527,
-                            #8b5e3c
-                    );
-
-            color:white;
-
-            padding:15px;
+            padding:14px;
 
             border-radius:999px;
+
+            background:
+                    linear-gradient(to right,#4b3527,#8b5e3c);
+
+            color:white;
 
             font-size:16px;
 
@@ -451,9 +257,9 @@
 
         .product-card button:hover{
 
-            transform:translateY(-4px);
+            transform:translateY(-3px);
 
-            opacity:.95;
+            opacity:.92;
         }
 
         /* =========================
@@ -462,7 +268,7 @@
 
         .back-btn{
 
-            width:230px;
+            width:210px;
 
             display:flex;
 
@@ -470,37 +276,30 @@
 
             align-items:center;
 
-            margin:20px auto 90px;
+            margin:20px auto 70px;
 
             text-decoration:none;
 
-            background:
-                    linear-gradient(
-                            to right,
-                            #4b3527,
-                            #8b5e3c
-                    );
+            background:#4b3527;
 
             color:white;
 
-            padding:17px;
+            padding:16px;
 
             border-radius:999px;
 
             font-size:18px;
 
-            font-weight:700;
+            font-weight:600;
 
-            transition:.35s;
+            transition:.3s;
         }
 
         .back-btn:hover{
 
-            transform:
-                    translateY(-4px);
+            background:#8b5e3c;
 
-            box-shadow:
-                    0 10px 25px rgba(139,94,60,.25);
+            transform:translateY(-4px);
         }
 
         /* =========================
@@ -510,38 +309,36 @@
         @media(max-width:992px){
 
             .page-title{
-                font-size:50px;
+                font-size:45px;
             }
 
             .products{
                 grid-template-columns:
-        repeat(auto-fit,minmax(240px,1fr));
+        repeat(auto-fit,minmax(230px,1fr));
             }
         }
 
-        @media(max-width:768px){
+        @media(max-width:768px) {
 
-            .page-title{
-                font-size:40px;
+            .page-title {
+                font-size: 38px;
             }
 
-            .products{
+            .products {
                 grid-template-columns:1fr;
             }
 
-            .img-box{
-                height:220px;
+            .img-box {
+                height: 210px;
             }
 
-            .product-card{
-                min-height:auto;
+            .product-card {
+                min-height: auto;
             }
         }
     </style>
 </head>
-
 <body>
-
 <div class="topbar">
 
     <div class="topbar-left">
@@ -606,19 +403,19 @@
                     <ul class="dropdown-menu">
 
                         <li>
-                            <a href="cat.html">Cats</a>
+                            <a href="cat.php">Cats</a>
                         </li>
 
                         <li>
-                            <a href="dog.html">Dogs</a>
+                            <a href="dog.php">Dogs</a>
                         </li>
 
                         <li>
-                            <a href="bird.html">Birds</a>
+                            <a href="bird.php">Birds</a>
                         </li>
 
                         <li>
-                            <a href="fish.html">Aquarium</a>
+                            <a href="fish.php">Aquarium</a>
                         </li>
 
                     </ul>
@@ -630,7 +427,7 @@
                 </li>
 
                 <li>
-                    <a href="contact.html">
+                    <a href="contact.php">
                         Contact Us</a>
                 </li>
 
@@ -656,11 +453,9 @@
                 <i class="fa-solid fa-user"></i>
 
             </a>
-            <a href="cart.html" class="icon-btn cart-btn">
-
+            <a href="cart.php" class="icon-btn cart-btn">
                 <i class="fa-solid fa-cart-shopping"></i>
-
-
+                <span class="cart-number"><?php echo $cartCount; ?></span>
             </a>
 
         </div>
@@ -668,47 +463,17 @@
     </div>
 
 </header>
-<h1 class="page-title">Birds Cages & Nests</h1>
 
-<section class="bird-hero">
+<h1 class="page-title">Fish Tank Filters</h1>
 
-    <div class="bird-hero-content">
-
-        <div class="bird-hero-text">
-
-            <span class="bird-tag">
-                Bird Accessories
-            </span>
-
-            <h1>
-                Feeders • Drinkers • Baths
-            </h1>
-
-            <p>
-                Premium accessories for your lovely birds
-                with elegant designs and high quality.
-            </p>
-
-        </div>
-
-        <div class="bird-hero-image">
-
-            <img src="imgs/birdd.png"
-                 alt="Bird">
-
-        </div>
-
-    </div>
-
-</section>
 <section class="section">
     <div class="products">
 
         <div class="product-card">
             <div class="img-box">
-                <img src="imgs/Round Bird Cage With Plate.jfif" alt="Round Bird Cage With Plate">
+                <img src="imgs/Fish Tank Air Pump (2 Outlets).jpeg" alt="Fish Tank Air Pump (2 Outlets)">
             </div>
-            <h3>Round Bird Cage With Plate</h3>
+            <h3>Fish Tank Air Pump - 2 Outlets</h3>
             <p class="price">₪35</p>
 
             <div class="quantity">
@@ -720,10 +485,10 @@
 
         <div class="product-card">
             <div class="img-box">
-                <img src="imgs/Hassoun Plastic Bird Cage.jpg" alt="Hassoun Plastic Bird Cage">
+                <img src="imgs/Aquarium Submersible Water Pump.jpeg" alt="Aquarium Submersible Water Pump">
             </div>
-            <h3>Hassoun Plastic Bird Cage</h3>
-            <p class="price">₪20</p>
+            <h3>Aquarium Submersible Water Pump</h3>
+            <p class="price">₪40</p>
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
@@ -733,74 +498,9 @@
 
         <div class="product-card">
             <div class="img-box">
-                <img src="imgs/Blue Round Top Brird Cage.jfif" alt="Blue Round Top Bird Cag">
+                <img src="imgs/Fish Tank Silicone Air Tubing (15m).jpg" alt="Fish Tank Silicone Air Tubing (15m)">
             </div>
-            <h3>Blue Round Top Bird Cage</h3>
-            <p class="price">₪25</p>
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/Bird Cage for Small Birds.jpg" alt="Red Bird Cage for Small Birds">
-            </div>
-            <h3>Red Bird Cage for Small Birds</h3>
-            <p class="price">₪25</p>
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/Villa Bird Cage.jpeg" alt="Villa Bird Cage">
-            </div>
-            <h3>Red Villa Shaped Bird Cage</h3>
-            <p class="price">₪45</p>
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/Big Silver Bird Cage With Stand.jpeg" alt="Big Silver Bird Cage With Stand">
-            </div>
-            <h3>Big Silver Bird Cage With Stand</h3>
-            <p class="price">₪100</p>
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/Big Black Bird Cage With Stand.jpeg" alt="Big Black Bird Cage With Stand">
-            </div>
-            <h3>Big Black Bird Cage With Stand</h3>
-            <p class="price">₪90</p>
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/Hanging Straw Bird Nest.png" alt="Hanging Straw Bird Nest">
-            </div>
-            <h3>Hanging Straw Bird Nest</h3>
+            <h3>Fish Tank Silicone Air Tubing - 15m</h3>
             <p class="price">₪15</p>
             <div class="quantity">
                 <label>Quantity</label>
@@ -811,10 +511,10 @@
 
         <div class="product-card">
             <div class="img-box">
-                <img src="imgs/Bamboo Bird Nest.jpg" alt="Bamboo Bird Nest">
+                <img src="imgs/Fish Tank Silicone Air Tubing (50m).png" alt="Fish Tank Silicone Air Tubing (50m)">
             </div>
-            <h3>Bamboo Bird Nest</h3>
-            <p class="price">₪12</p>
+            <h3>Fish Tank Silicone Air Tubing - 50m</h3>
+            <p class="price">₪50</p>
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
@@ -824,10 +524,88 @@
 
         <div class="product-card">
             <div class="img-box">
-                <img src="imgs/3-Hole Finch Nest.jpg" alt="3-Hole Finch Nest">
+                <img src="imgs/Internal Aquarium Filter.jpg" alt="Internal Aquarium Filter">
             </div>
-            <h3>3-Hole Finch Nest</h3>
-            <p class="price">₪20</p>
+            <h3>Internal Aquarium Filter</h3>
+            <p class="price">₪50</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Aquarium Filter Sponge.png" alt="Aquarium Filter Sponge">
+            </div>
+            <h3>Aquarium Filter Sponge</h3>
+            <p class="price">₪15</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Aquarium Glass Cleaner Sponge.jpg" alt="Aquarium Glass Cleaner Sponge">
+            </div>
+            <h3>Aquarium Glass Cleaner Sponge</h3>
+            <p class="price">₪10</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Cylindrical Air Stone.png" alt="Cylindrical Air Stone">
+            </div>
+            <h3>Cylindrical Air Stone</h3>
+            <p class="price">₪5</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Aquarium Air Stone (Dome Shape).jpg" alt="Aquarium Air Stone Dome Shape">
+            </div>
+            <h3>Dome Shaped Aquarium Air Stone </h3>
+            <p class="price">₪10</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Shell-Shaped Air Stone.jpeg" alt="Shell-Shaped Air Stone">
+            </div>
+            <h3>Shell Shaped Air Stone </h3>
+            <p class="price">₪8</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Turtle-Shaped Air Stone.jpeg" alt="Turtle-Shaped Air Stone">
+            </div>
+            <h3>Turtle Shaped Air Stone</h3>
+            <p class="price">₪8</p>
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
@@ -838,42 +616,7 @@
     </div>
 </section>
 
-<a href="bird.html" class="back-btn">⬅ Back</a>
-
-<script>
-    document.querySelectorAll(".product-card").forEach(card => {
-
-        const sizes = card.querySelectorAll(".size");
-        const price = card.querySelector(".price");
-        const img = card.querySelector("img");
-        const name = card.querySelector(".product-name");
-
-        sizes.forEach(btn => {
-            btn.addEventListener("click", () => {
-
-                sizes.forEach(b => b.classList.remove("active"));
-                btn.classList.add("active");
-
-                // السعر
-                if (price && btn.dataset.price) {
-                    price.textContent = "₪" + btn.dataset.price;
-                }
-
-                // الصورة
-                if (img && btn.dataset.img) {
-                    img.src = btn.dataset.img;
-                }
-
-                // الاسم + الطول
-                if (name && btn.dataset.name) {
-                    name.textContent = name.dataset.base + " - " + btn.dataset.name;
-                }
-
-            });
-        });
-
-    });
-</script>
+<a href="fish.php" class="back-btn">⬅ Back</a>
 
 <footer class="footer">
 
@@ -941,5 +684,80 @@
     </div>
 
 </footer>
+<script>
+
+    /* =========================
+       ADD TO CART - BACKEND
+    ========================= */
+
+    document.querySelectorAll(".product-card button")
+        .forEach(function(button){
+
+            button.setAttribute("type", "button");
+
+            button.addEventListener("click", function(){
+
+                const card = button.closest(".product-card");
+
+                const name = card.querySelector("h3").innerText;
+
+                const priceText = card.querySelector(".price").innerText;
+
+                const price = parseFloat(priceText.replace("₪",""));
+
+                const image = card.querySelector("img").getAttribute("src");
+
+                const quantity = parseInt(card.querySelector(".quantity input").value);
+
+                fetch("add_to_cart.php", {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+
+                    body:
+                        "name=" + encodeURIComponent(name)
+                        + "&price=" + price
+                        + "&image=" + encodeURIComponent(image)
+                        + "&quantity=" + quantity
+                })
+
+                    .then(response => response.text())
+
+                    .then(data => {
+
+                        data = data.trim();
+
+                        if(data === "login"){
+
+                            alert("Please login first!");
+                            window.location.href = "login.php";
+
+                        }else{
+
+                            alert("Product added to cart!");
+
+                            const cartNumber =
+                                document.querySelector(".cart-number");
+
+                            if(cartNumber){
+
+                                let currentNumber =
+                                    parseInt(cartNumber.textContent || 0);
+
+                                cartNumber.textContent =
+                                    currentNumber + quantity;
+                            }
+                        }
+
+                    });
+
+            });
+
+        });
+
+</script>
 </body>
 </html>

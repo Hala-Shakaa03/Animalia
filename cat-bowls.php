@@ -1,9 +1,24 @@
+<?php
+session_start();
+include "db.php";
+
+$cartCount = 0;
+
+if (isset($_SESSION["user_id"])) {
+    $user_id = $_SESSION["user_id"];
+
+    $countSql = "SELECT SUM(quantity) AS total FROM cart_items WHERE user_id='$user_id'";
+    $countResult = mysqli_query($conn, $countSql);
+    $countRow = mysqli_fetch_assoc($countResult);
+
+    $cartCount = $countRow["total"] ?? 0;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Bird Food</title>
-
+    <title>Cat Bowls</title>
     <link rel="stylesheet" href="all.css">
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -19,7 +34,7 @@
         body{
             font-family:'Poppins',sans-serif;
             background:#f8f3ed;
-            color:#3e2f26;
+            color:#4b3527;
             overflow-x:hidden;
         }
 
@@ -31,15 +46,13 @@
 
             text-align:center;
 
-            font-size:65px;
+            font-size:60px;
 
             margin:60px 0;
 
-            color:#3e2414;
+            color:#4b3527;
 
             font-weight:800;
-
-            letter-spacing:1px;
         }
 
         /* =========================
@@ -48,13 +61,11 @@
 
         .section{
 
-            width:90%;
+            width:92%;
 
-            max-width:1550px;
+            max-width:1500px;
 
-            margin:auto;
-
-            padding-bottom:90px;
+            margin:0 auto 70px;
         }
 
         /* =========================
@@ -66,7 +77,7 @@
             display:grid;
 
             grid-template-columns:
-    repeat(auto-fit,minmax(280px,1fr));
+    repeat(auto-fit,minmax(270px,1fr));
 
             gap:32px;
         }
@@ -77,16 +88,24 @@
 
         .product-card{
 
-            background:white;
+            position:relative;
 
-            border-radius:32px;
+            background:rgba(255,255,255,.92);
+
+            backdrop-filter:blur(12px);
+
+            border-radius:35px;
 
             padding:22px;
 
             text-align:center;
 
+            overflow:hidden;
+
+            border:1px solid rgba(255,255,255,.4);
+
             box-shadow:
-                    0 10px 25px rgba(0,0,0,.05);
+                    0 10px 30px rgba(0,0,0,.06);
 
             transition:.4s;
 
@@ -96,16 +115,17 @@
 
             justify-content:space-between;
 
-            min-height:600px;
+            min-height:540px;
         }
 
         .product-card:hover{
 
             transform:
-                    translateY(-10px);
+                    translateY(-12px)
+                    scale(1.02);
 
             box-shadow:
-                    0 18px 35px rgba(0,0,0,.08);
+                    0 20px 45px rgba(139,94,60,.18);
         }
 
         /* =========================
@@ -114,15 +134,17 @@
 
         .img-box{
 
-            height:250px;
+            width:100%;
+
+            height:240px;
 
             border-radius:28px;
 
             background:
                     linear-gradient(
                             135deg,
-                            #f3e2d1,
-                            #faf6f1
+                            #f7efe7,
+                            #efe2d2
                     );
 
             display:flex;
@@ -133,7 +155,7 @@
 
             overflow:hidden;
 
-            margin-bottom:20px;
+            margin-bottom:22px;
         }
 
         .img-box img{
@@ -144,12 +166,14 @@
 
             object-fit:contain;
 
-            transition:.4s;
+            transition:.5s;
         }
 
         .product-card:hover img{
 
-            transform:scale(1.08);
+            transform:
+                    scale(1.1)
+                    rotate(-2deg);
         }
 
         /* =========================
@@ -162,11 +186,13 @@
 
             line-height:1.5;
 
-            margin-bottom:12px;
-
             color:#4b3527;
 
+            margin-bottom:14px;
+
             min-height:72px;
+
+            font-weight:700;
         }
 
         /* =========================
@@ -175,7 +201,7 @@
 
         .price{
 
-            font-size:32px;
+            font-size:34px;
 
             font-weight:800;
 
@@ -221,7 +247,7 @@
 
             text-align:center;
 
-            font-size:17px;
+            font-size:18px;
 
             font-weight:600;
 
@@ -238,18 +264,18 @@
 
             border:none;
 
+            padding:16px;
+
+            border-radius:999px;
+
             background:
                     linear-gradient(
                             to right,
-                            #4b3527,
-                            #8b5e3c
+                            #5b3822,
+                            #9b6a43
                     );
 
             color:white;
-
-            padding:15px;
-
-            border-radius:999px;
 
             font-size:16px;
 
@@ -257,16 +283,20 @@
 
             cursor:pointer;
 
-            transition:.3s;
+            transition:.35s;
 
             margin-top:auto;
+
+            letter-spacing:.5px;
         }
 
         .product-card button:hover{
 
-            transform:translateY(-4px);
+            transform:
+                    translateY(-4px);
 
-            opacity:.95;
+            box-shadow:
+                    0 10px 25px rgba(139,94,60,.25);
         }
 
         /* =========================
@@ -275,7 +305,7 @@
 
         .back-btn{
 
-            width:230px;
+            width:220px;
 
             display:flex;
 
@@ -283,15 +313,15 @@
 
             align-items:center;
 
-            margin:20px auto 90px;
+            margin:20px auto 80px;
 
             text-decoration:none;
 
             background:
                     linear-gradient(
                             to right,
-                            #4b3527,
-                            #8b5e3c
+                            #5b3822,
+                            #9b6a43
                     );
 
             color:white;
@@ -323,7 +353,7 @@
         @media(max-width:992px){
 
             .page-title{
-                font-size:50px;
+                font-size:46px;
             }
 
             .products{
@@ -335,7 +365,7 @@
         @media(max-width:768px){
 
             .page-title{
-                font-size:40px;
+                font-size:38px;
             }
 
             .products{
@@ -419,19 +449,19 @@
                     <ul class="dropdown-menu">
 
                         <li>
-                            <a href="cat.html">Cats</a>
+                            <a href="cat.php">Cats</a>
                         </li>
 
                         <li>
-                            <a href="dog.html">Dogs</a>
+                            <a href="dog.php">Dogs</a>
                         </li>
 
                         <li>
-                            <a href="bird.html">Birds</a>
+                            <a href="bird.php">Birds</a>
                         </li>
 
                         <li>
-                            <a href="fish.html">Aquarium</a>
+                            <a href="fish.php">Aquarium</a>
                         </li>
 
                     </ul>
@@ -443,7 +473,7 @@
                 </li>
 
                 <li>
-                    <a href="contact.html">
+                    <a href="contact.php">
                         Contact Us</a>
                 </li>
 
@@ -469,11 +499,9 @@
                 <i class="fa-solid fa-user"></i>
 
             </a>
-            <a href="cart.html" class="icon-btn cart-btn">
-
+            <a href="cart.php" class="icon-btn cart-btn">
                 <i class="fa-solid fa-cart-shopping"></i>
-
-
+                <span class="cart-number"><?php echo $cartCount; ?></span>
             </a>
 
         </div>
@@ -481,17 +509,19 @@
     </div>
 
 </header>
-<h1 class="page-title">Bird Food</h1>
+
+<h1 class="page-title">Cat Bowls</h1>
 
 <section class="section">
+    <h2>Food Bowls</h2>
     <div class="products">
 
         <div class="product-card">
             <div class="img-box">
-                <img src="imgs/Budgie Seed Mix Food – 500g.jfif" alt="Budgie Seed Mix Food – 500g">
+                <img src="imgs/Pink%20Food%20Bowls.jpg" alt="Round Deep Plastic Pink Cat Food Bowl">
             </div>
-            <h3>Budgie Seed Mix Food – 500g</h3>
-            <p class="price">₪15</p>
+            <h3>Round Deep Plastic Pink Cat Food Bowl</h3>
+            <p class="price">₪5</p>
 
             <div class="quantity">
                 <label>Quantity</label>
@@ -502,10 +532,10 @@
 
         <div class="product-card">
             <div class="img-box">
-                <img src="imgs/Premium Parrot Seed Mix – 1KG.jfif" alt="Premium Parrot Seed Mix – 1KG">
+                <img src="imgs/orange%20bowl.png" alt="Round Deep Plastic Orange Cat Food Bowl">
             </div>
-            <h3>Premium Parrot Seed Mix – 1KG</h3>
-            <p class="price">₪25</p>
+            <h3>Round Deep Plastic Orange Cat Food Bowl</h3>
+            <p class="price">₪5</p>
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
@@ -515,10 +545,10 @@
 
         <div class="product-card">
             <div class="img-box">
-                <img src="imgs/Canary Seed Mix – High Quality – 500g.jfif" alt="Canary Seed Mix – High Quality – 500g">
+                <img src="imgs/Non-Slip%20Wide%20Base%20Plastic%20Pet%20Bowl.png" alt="Non-Slip Wide Base Blue Cat Bowl">
             </div>
-            <h3>Canary Seed Mix – High Quality – 500g</h3>
-            <p class="price">₪20</p>
+            <h3>Non-Slip Wide Base Blue Cat Food Bowl</h3>
+            <p class="price">₪5</p>
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
@@ -528,10 +558,10 @@
 
         <div class="product-card">
             <div class="img-box">
-                <img src="imgs/NutriBird P15 Original Parrot Pellets – 1KG.jfif" alt="NutriBird P15 Original Parrot Pellets – 1KG">
+                <img src="imgs/Rounded%20Square%20Plastic%20Pet%20Bowl.jpeg" alt="Rounded Square Plastic Cat Bowl">
             </div>
-            <h3>NutriBird P15 Original Parrot Pellets – 1KG</h3>
-            <p class="price">₪30</p>
+            <h3>Rounded Square Plastic Cat Bowl</h3>
+            <p class="price">₪5</p>
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
@@ -541,10 +571,10 @@
 
         <div class="product-card">
             <div class="img-box">
-                <img src="imgs/Premium Bird Pellets Food – Natural Formula – 500g.jfif" alt="Premium Bird Pellets Food 500g">
+                <img src="imgs/Slow%20Feeder%20Cat%20Bowl.jpeg" alt="Slow Feeder Cat Bowl">
             </div>
-            <h3>Premium Bird Pellets Food Natural Formula – 500g</h3>
-            <p class="price">₪18</p>
+            <h3>Slow Feeder Cat Bowl</h3>
+            <p class="price">₪7</p>
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
@@ -554,10 +584,10 @@
 
         <div class="product-card">
             <div class="img-box">
-                <img src="imgs/Parrot Pellets Food – Vitamin Rich – 400g.jfif" alt="Parrot Pellets Food 400g">
+                <img src="imgs/Non-Slip%20Base%20Stainless%20Steel%20Cat%20Bowl.jpg" alt="Non-Slip Base Stainless Steel Cat Bowl">
             </div>
-            <h3>Parrot Pellets Food Vitamin Rich – 400g</h3>
-            <p class="price">₪15</p>
+            <h3>Non-Slip Base Stainless Steel Cat Bowl</h3>
+            <p class="price">₪8</p>
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
@@ -567,9 +597,9 @@
 
         <div class="product-card">
             <div class="img-box">
-                <img src="imgs/Parrot Seed Treat Stick – Natural Mix.jfif" alt="Parrot Seed Treat Stick">
+                <img src="imgs/Double%20Cat%20Food%20&%20Water%20Bowl.png" alt="Double Cat Food & Water Bowl">
             </div>
-            <h3>Parrot Seed Treat Stick Natural Mix</h3>
+            <h3>Double Plastic Cat Food & Water Bowl</h3>
             <p class="price">₪10</p>
             <div class="quantity">
                 <label>Quantity</label>
@@ -580,48 +610,9 @@
 
         <div class="product-card">
             <div class="img-box">
-                <img src="imgs/Prestige Bird Treat Sticks – Banana & Coconut – 2 Sticks.jfif" alt="Prestige Bird Treat Sticks Banana & Coconut">
+                <img src="imgs/Stainless%20Steel%20Double%20Cat%20Bowl.jpeg" alt="Stainless Steel Double Cat Bowl">
             </div>
-            <h3>Banana & Coconut Prestige Bird Treat Sticks – 2 Sticks</h3>
-            <p class="price">₪20</p>
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/Starsnack Bird Treat Sticks – Honey Flavor – 2 Sticks.jfif" alt="Starsnack Bird Treat Sticks Honey Flavor">
-            </div>
-            <h3>Honey Flavor Starsnack Bird Treat Sticks – 2 Sticks</h3>
-            <p class="price">₪25</p>
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/RIO Fruit & Nut Bird Mix – Premium Food – 500g.jfif" alt="RIO Fruit & Nut Bird Mix Premium Food">
-            </div>
-            <h3>RIO Fruit & Nut Bird Mix Premium Food – 500g</h3>
-            <p class="price">₪30</p>
-            <div class="quantity">
-                <label>Quantity</label>
-                <input type="number" value="1" min="1">
-            </div>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product-card">
-            <div class="img-box">
-                <img src="imgs/Fruit & Nut Bird Mix – Natural Energy Blend – 400g.jfif" alt="Fruit & Nut Bird Mix Natural Energy Blend">
-            </div>
-            <h3>Fruit & Nut Bird Mix Natural Energy Blend – 400g</h3>
+            <h3>Stainless Steel Double Cat Bowl</h3>
             <p class="price">₪15</p>
             <div class="quantity">
                 <label>Quantity</label>
@@ -632,10 +623,23 @@
 
         <div class="product-card">
             <div class="img-box">
-                <img src="imgs/Premium Seed & Fruit Mix for Birds – 1KG.jfif" alt="Premium Seed & Fruit Mix for Birds">
+                <img src="imgs/Rectangular%20Gravity%20Cat%20Feeder.jpg" alt="Rectangular Gravity Cat Feeder">
             </div>
-            <h3>Premium Seed & Fruit Mix – 1KG</h3>
-            <p class="price">₪30</p>
+            <h3>Rectangular Gravity Cat Feeder</h3>
+            <p class="price">₪20</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Automatic%20Gravity%20Pet%20Feeder%20Round.jpg" alt="Tower Maze With Balls and Feathers">
+            </div>
+            <h3>Rounded Gravity Cat Feeder</h3>
+            <p class="price">₪18</p>
             <div class="quantity">
                 <label>Quantity</label>
                 <input type="number" value="1" min="1">
@@ -644,13 +648,83 @@
         </div>
 
 
+    </div>
+</section>
 
+<section class="section">
+    <h2>Water Dispensers</h2>
+    <div class="products">
 
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Round%20Gravity%20Water%20Dispenser.png" alt="Round Gravity Water Dispenser">
+            </div>
+            <h3>Round Gravity Water Dispenser</h3>
+            <p class="price">₪18</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Square%20Gravity%20Water%20Dispenser.jpg" alt="Rectangle Gravity Water Dispenser">
+            </div>
+            <h3>Rectangle Gravity Water Dispenser</h3>
+            <p class="price">₪20</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Automatic%20Water%20Dispenser%20with%20Food%20Bowl.jpg" alt="Automatic Water Dispenser with Food Bowl">
+            </div>
+            <h3>Automatic Water Dispenser with Food Bowl</h3>
+            <p class="price">₪45</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Automatic%20Cat%20Water%20Fountain.jpg" alt="Automatic Cat Water Fountain">
+            </div>
+            <h3>Automatic Square Cat Water Fountain</h3>
+            <p class="price">₪40</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="img-box">
+                <img src="imgs/Ceramic%20Round%20Cat%20Water%20Fountain.jpg" alt="Ceramic Round Cat Water Fountain">
+            </div>
+            <h3>Ceramic Round Cat Water Fountain</h3>
+            <p class="price">₪50</p>
+            <div class="quantity">
+                <label>Quantity</label>
+                <input type="number" value="1" min="1">
+            </div>
+            <button>Add to Cart</button>
+        </div>
 
     </div>
 </section>
 
-<a href="bird.html" class="back-btn">⬅ Back</a>
+
+<a href="cat-supplies.php" class="back-btn">⬅ Back</a>
 
 <footer class="footer">
 
@@ -718,5 +792,77 @@
     </div>
 
 </footer>
+<script>
+
+    /* =========================
+       ADD TO CART - BACKEND
+    ========================= */
+
+    document.querySelectorAll(".product-card button")
+        .forEach(function(button){
+
+            button.setAttribute("type", "button");
+
+            button.addEventListener("click", function(){
+
+                const card = button.closest(".product-card");
+
+                const name = card.querySelector("h3").innerText;
+
+                const priceText = card.querySelector(".price").innerText;
+
+                const price = parseFloat(priceText.replace("₪",""));
+
+                const image = card.querySelector("img").getAttribute("src");
+
+                const quantity = parseInt(card.querySelector(".quantity input").value);
+
+                fetch("add_to_cart.php", {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+
+                    body:
+                        "name=" + encodeURIComponent(name)
+                        + "&price=" + price
+                        + "&image=" + encodeURIComponent(image)
+                        + "&quantity=" + quantity
+                })
+
+                    .then(response => response.text())
+
+                    .then(data => {
+
+                        data = data.trim();
+
+                        if(data === "login"){
+
+                            alert("Please login first!");
+                            window.location.href = "login.php";
+
+                        }else{
+
+                            alert("Product added to cart!");
+
+                            const cartNumber = document.querySelector(".cart-number");
+
+                            if(cartNumber){
+
+                                let currentNumber = parseInt(cartNumber.textContent || 0);
+
+                                cartNumber.textContent = currentNumber + quantity;
+                            }
+                        }
+
+                    });
+
+            });
+
+        });
+
+</script>
 </body>
 </html>
