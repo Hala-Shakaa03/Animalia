@@ -535,22 +535,11 @@ if (isset($_SESSION["user_id"])) {
                 Send Us a Message
             </h2>
 
-            <form>
+            <form action="send_message.php" method="POST">
 
-                <input type="text"
-                       placeholder="Full Name"
-                       required>
+                <input type="text" name="subject" placeholder="Subject" required>
 
-                <input type="email"
-                       placeholder="Email Address"
-                       required>
-
-                <input type="text"
-                       placeholder="Subject"
-                       required>
-
-                <textarea placeholder="Your Message..."
-                          required></textarea>
+                <textarea name="message" placeholder="Your Message..." required></textarea>
 
                 <button type="submit">
 
