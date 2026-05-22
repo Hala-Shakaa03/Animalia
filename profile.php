@@ -51,6 +51,10 @@ if (!isset($_SESSION["user_id"])) {
             Change Password
         </a>
 
+        <a href="my_orders.php" class="home-link">
+            My Orders
+        </a>
+
         <a href="logout.php" class="home-link">
             Logout
         </a>

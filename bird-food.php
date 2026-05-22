@@ -380,20 +380,20 @@ if (isset($_SESSION["user_id"])) {
 
     <div class="topbar-center">
         <i class="fa-solid fa-truck"></i>
-        Free delivery on orders over $100
+        Free delivery on orders over ₪100
     </div>
 
     <div class="topbar-right">
 
-        <a href="#">
+        <a href="https://facebook.com">
             <i class="fa-brands fa-facebook-f"></i>
         </a>
 
-        <a href="#">
+        <a href="https://instagram.com">
             <i class="fa-brands fa-instagram"></i>
         </a>
 
-        <a href="#">
+        <a href="https://twitter.com">
             <i class="fa-brands fa-twitter"></i>
         </a>
 
@@ -423,11 +423,11 @@ if (isset($_SESSION["user_id"])) {
             <ul>
 
                 <li>
-                    <a href="#" class="active">Home</a>
+                    <a href="p1.php" class="active">Home</a>
                 </li>
                 <li class="dropdown">
 
-                    <a href="#">
+                    <a href="p1.php#categories">
                         Store
                         <i class="fa-solid fa-chevron-down"></i>
                     </a>
@@ -455,7 +455,7 @@ if (isset($_SESSION["user_id"])) {
                 </li>
 
                 <li>
-                    <a href="#">About</a>
+                    <a href="about.html">About</a>
                 </li>
 
                 <li>
@@ -480,7 +480,7 @@ if (isset($_SESSION["user_id"])) {
 
             </div>
 
-            <a href="#" class="icon-btn" id="userBtn">
+            <a href="profile.php" class="icon-btn" id="userBtn">
 
                 <i class="fa-solid fa-user"></i>
 
@@ -690,11 +690,11 @@ if (isset($_SESSION["user_id"])) {
 
             <h3>Help</h3>
 
-            <a href="#">Customer Help</a>
+            <a href="contact.php">Customer Help</a>
 
-            <a href="#">Contact Us</a>
+            <a href="contact.php">Contact Us</a>
 
-            <a href="#">Refund & Returns</a>
+<!--            <a href="#">Refund & Returns</a>-->
 
         </div>
 
@@ -704,13 +704,13 @@ if (isset($_SESSION["user_id"])) {
 
             <h3>Follow</h3>
 
-            <a href="#">Instagram</a>
+            <a href="https://instagram.com">Instagram</a>
 
-            <a href="#">TikTok</a>
+            <a href="https://tiktok.com">TikTok</a>
 
-            <a href="#">Facebook</a>
+            <a href="https://facebook.com">Facebook</a>
 
-            <a href="#">Twitter</a>
+            <a href="https://twitter.com">Twitter</a>
 
         </div>
 
@@ -799,13 +799,245 @@ if (isset($_SESSION["user_id"])) {
                                     currentNumber + quantity;
                             }
                         }
-
                     });
-
             });
-
         });
 
+</script>
+<script>
+    const searchInput =
+        document.querySelector(".search-box input");
+    searchInput.addEventListener("keypress", function(e){
+        if(e.key === "Enter"){
+            const value =
+                searchInput.value.toLowerCase();
+            // CAT
+            if(value.includes("cat food") || value.includes("cat dry food") || value.includes("dry food")){
+                window.location.href =
+                    "cat-food.php#dry-food";
+            }
+            else if(
+                value.includes("cat wet food")
+            ){
+                window.location.href =
+                    "cat-food.php#wet-food";
+            }
+            else if(
+                value.includes("cat treat") ||
+                value.includes("cat treats")
+            ){
+                window.location.href =
+                    "cat-food.php#cat-treats";
+            }
+            else if(
+                value.includes("cat toy") ||
+                value.includes("cat toys")
+            ){
+                window.location.href = "cat-toys.php";
+            }
+            else if(
+                value.includes("cat collar") ||
+                value.includes("cat collars")
+            ){
+                window.location.href = "cat-collars.php";
+            }
+            else if(
+                value.includes("carrier") ||
+                value.includes("travel bag") ||
+                value.includes("cat bag") ||
+                value.includes("cat carrier")
+            ){
+                window.location.href =
+                    "cat-beds.php#cat-carriers";
+            }
+            else if(
+                value.includes("cat tree") ||
+                value.includes("cat bed") ||
+                value.includes("cat beds")
+            ){
+                window.location.href =
+                    "cat-beds.php#cat-beds";
+            }
+            else if(
+                value.includes("cat litter")
+            ){
+                window.location.href = "cat-litter.php";
+            }
+            else if(
+                value.includes("litter box") ||
+                value.includes("cat litter box")
+            ){
+                window.location.href = "cat-litter.php#products";
+            }
+            else if(
+                value.includes("food bowl") ||
+                value.includes("food bowls") ||
+                value.includes("cat bowl") ||
+                value.includes("cat bowls")
+            ){
+                window.location.href =
+                    "cat-bowls.php#food-bowls";
+            }
+            else if(
+                value.includes("water dispenser") ||
+                value.includes("water dispensers") ||
+                value.includes("water bowl") ||
+                value.includes("water bowls")
+            ){
+                window.location.href =
+                    "cat-bowls.php#water-dispensers";
+            }
+            else if(
+                value.includes("cat clothes")
+            ){
+                window.location.href = "cat-collars.php";
+            }
+            else if(value.includes("cat")){
+                window.location.href = "cat.php";
+            }
+            // DOG
+            else if(
+                value.includes("dog food")||
+                value.includes("dog dry food")
+            ){
+                window.location.href =
+                    "dog-food.php#dog-dry-food";
+            }
+            else if(
+                value.includes("dog wet food")
+            ){
+                window.location.href =
+                    "dog-food.php#dog-wet-food";
+            }
+            else if(
+                value.includes("dog treats") ||
+                value.includes("treats")
+            ){
+                window.location.href =
+                    "dog-food.php#dog-treats";
+            }
+            else if(
+                value.includes("dog toy") ||
+                value.includes("dog toys")
+            ){
+                window.location.href = "dog-toys.php";
+            }
+            else if(
+                value.includes("dog collar") ||
+                value.includes("dog collars")
+            ){
+                window.location.href = "dog-collars.php";
+            }
+            else if(
+                value.includes("dog bed") ||
+                value.includes("dog beds")
+            ){
+                window.location.href =
+                    "dog-beds.php#dog-beds";
+            }
+            else if(
+                value.includes("dog carrier") ||
+                value.includes("dog carriers") ||
+                value.includes("dog bag") ||
+                value.includes("travel bag")
+            ){
+                window.location.href =
+                    "dog-beds.php#dog-carriers";
+            }
+            else if(
+                value.includes("dog clothes")
+            ){
+                window.location.href = "dog-clothes.php";
+            }
+            else if(value.includes("dog")){
+                window.location.href = "dog.php";
+            }
+            //BIRD
+            else if(
+                value.includes("bird cage") ||
+                value.includes("bird cages") ||
+                value.includes("bird nests") ||
+                value.includes("nest")
+            ){
+                window.location.href = "bird-cages.php";
+            }
+            else if(
+                value.includes("bird food") ||
+                value.includes("bird snacks")
+            ){
+                window.location.href = "bird-food.php";
+            }
+            else if(
+                value.includes("bird perch") ||
+                value.includes("bird perches") ||
+                value.includes("bird stand") ||
+                value.includes("bird swing")
+            ){
+                window.location.href = "bird-perches.php";
+            }
+            else if(
+                value.includes("bird accessory") ||
+                value.includes("bird feeder") ||
+                value.includes("bird water dispenser") ||
+                value.includes("bird bath tub") ||
+                value.includes("bird accessories")
+            ){
+                window.location.href = "bird-accessories.php";
+            }
+            else if(value.includes("bird")){
+                window.location.href = "bird.php";
+            }
+            //FISH
+            else if(
+                value.includes("fish food")
+            ){
+                window.location.href = "fish-food.php#fish-food";
+            }
+            else if(
+                value.includes("filters") ||
+                value.includes("fish filter") ||
+                value.includes("tank filter")
+            ){
+                window.location.href =
+                    "fish-filter.php#fish-filters";
+            }
+            else if(
+                value.includes("fish tank") ||
+                value.includes("fish bowls") ||
+                value.includes("aquarium")
+            ){
+                window.location.href = "fish-tank.php#fish-tanks";
+            }
+            else if(
+                value.includes("lights") ||
+                value.includes("lighting")||
+                value.includes("tank lights") ||
+                value.includes("fish decor") ||
+                value.includes("tank decorations") ||
+                value.includes("decorations")
+            ){
+                window.location.href = "fish-decoration.php#fish-decor";
+            }
+            // NOT FOUND
+            else{
+                alert("No matching category found!");
+            }
+        }
+    });
+</script>
+<script>
+    let isLoggedIn = <?php echo isset($_SESSION["user_id"]) ? "true" : "false"; ?>;
+    // false = مو مسجل
+    // true = مسجل دخول
+    const userBtn = document.getElementById("userBtn");
+    userBtn.addEventListener("click", function () {
+        if(isLoggedIn){
+            window.location.href = "profile.php";
+        }
+        else{
+            window.location.href = "login.php";
+        }
+    });
 </script>
 </body>
 </html>

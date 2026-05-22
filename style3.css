@@ -422,3 +422,45 @@ body{
     border:none;
     cursor:pointer;
 }
+
+.payment-methods{
+
+    margin:25px 0;
+
+    padding:20px;
+
+    border-radius:20px;
+
+    background:#f8f3ed;
+}
+
+.payment-methods h2{
+
+    font-size:22px;
+
+    margin-bottom:15px;
+
+    color:#4b3527;
+}
+
+.payment-option{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    margin-bottom:12px;
+
+    font-size:17px;
+
+    color:#6f5a4d;
+}
+
+.payment-option input{
+
+    transform:scale(1.2);
+
+    accent-color:#8b5e3c;
+}
