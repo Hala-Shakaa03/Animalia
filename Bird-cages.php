@@ -683,38 +683,38 @@ if (isset($_SESSION["user_id"])) {
 
 </header>
 <h1 class="page-title">Birds Cages & Nests</h1>
+<!---->
+<!--<section class="bird-hero">-->
+<!---->
+<!--    <div class="bird-hero-content">-->
+<!---->
+<!--        <div class="bird-hero-text">-->
+<!---->
+<!--            <span class="bird-tag">-->
+<!--                Bird Accessories-->
+<!--            </span>-->
+<!---->
+<!--            <h1>-->
+<!--                Feeders • Drinkers • Baths-->
+<!--            </h1>-->
+<!---->
+<!--            <p>-->
+<!--                Premium accessories for your lovely birds-->
+<!--                with elegant designs and high quality.-->
+<!--            </p>-->
+<!---->
+<!--        </div>-->
+<!---->
+<!--        <div class="bird-hero-image">-->
+<!---->
+<!--            <img src="imgs/birdd.png"-->
+<!--                 alt="Bird">-->
+<!---->
+<!--        </div>-->
+<!---->
+<!--    </div>-->
 
-<section class="bird-hero">
-
-    <div class="bird-hero-content">
-
-        <div class="bird-hero-text">
-
-            <span class="bird-tag">
-                Bird Accessories
-            </span>
-
-            <h1>
-                Feeders • Drinkers • Baths
-            </h1>
-
-            <p>
-                Premium accessories for your lovely birds
-                with elegant designs and high quality.
-            </p>
-
-        </div>
-
-        <div class="bird-hero-image">
-
-            <img src="imgs/birdd.png"
-                 alt="Bird">
-
-        </div>
-
-    </div>
-
-</section>
+<!--</section>-->
 <section class="section">
     <div class="products">
 
@@ -932,28 +932,13 @@ if (isset($_SESSION["user_id"])) {
             <a href="https://tiktok.com">TikTok</a>
 
             <a href="https://facebook.com">Facebook</a>
-
             <a href="https://twitter.com">Twitter</a>
-
         </div>
-
-
-
-        <!-- PAYMENT -->
-
-
     </div>
-
-    </div>
-
     <!-- BOTTOM -->
-
     <div class="footer-bottom">
-
         © 2026 Animalia Pet Store — All Rights Reserved
-
     </div>
-
 </footer>
 <script>
 

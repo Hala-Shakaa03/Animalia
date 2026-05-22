@@ -400,7 +400,7 @@ if (isset($_SESSION["user_id"])) {
 
             </div>
 
-            <a href="#" class="icon-btn">
+            <a href="profile.php" class="icon-btn" id="userBtn">
 
                 <i class="fa-solid fa-user"></i>
 

@@ -510,6 +510,54 @@ if (isset($_SESSION["user_id"])) {
             min-height:auto;
         }
     }
+
+    /* =========================
+           BACK BUTTON
+        ========================= */
+
+    .back-btn{
+
+        width:230px;
+
+        display:flex;
+
+        justify-content:center;
+
+        align-items:center;
+
+        margin:20px auto 90px;
+
+        text-decoration:none;
+
+        background:
+                linear-gradient(
+                        to right,
+                        #4b3527,
+                        #8b5e3c
+                );
+
+        color:white;
+
+        padding:17px;
+
+        border-radius:999px;
+
+        font-size:18px;
+
+        font-weight:700;
+
+        transition:.35s;
+    }
+
+    .back-btn:hover{
+
+        transform:
+                translateY(-4px);
+
+        box-shadow:
+                0 10px 25px rgba(139,94,60,.25);
+    }
+
 </style>
 </head>
 
@@ -642,38 +690,38 @@ if (isset($_SESSION["user_id"])) {
 <!-- =========================
      HERO SECTION
 ========================= -->
+<!---->
+<!--<section class="bird-hero">-->
+<!---->
+<!--    <div class="bird-hero-content">-->
+<!---->
+<!--        <div class="bird-hero-text">-->
+<!---->
+<!--            <span class="bird-tag">-->
+<!--                Bird Accessories-->
+<!--            </span>-->
+<!---->
+<!--            <h1>-->
+<!--                Feeders • Drinkers • Baths-->
+<!--            </h1>-->
+<!---->
+<!--            <p>-->
+<!--                Premium accessories for your lovely birds-->
+<!--                with elegant designs and high quality.-->
+<!--            </p>-->
+<!---->
+<!--        </div>-->
+<!---->
+<!--        <div class="bird-hero-image">-->
+<!---->
+<!--            <img src="imgs/birdd.png"-->
+<!--                 alt="Bird">-->
+<!---->
+<!--        </div>-->
+<!---->
+<!--    </div>-->
 
-<section class="bird-hero">
-
-    <div class="bird-hero-content">
-
-        <div class="bird-hero-text">
-
-            <span class="bird-tag">
-                Bird Accessories
-            </span>
-
-            <h1>
-                Feeders • Drinkers • Baths
-            </h1>
-
-            <p>
-                Premium accessories for your lovely birds
-                with elegant designs and high quality.
-            </p>
-
-        </div>
-
-        <div class="bird-hero-image">
-
-            <img src="imgs/birdd.png"
-                 alt="Bird">
-
-        </div>
-
-    </div>
-
-</section>
+<!--</section>-->
 
 <!-- =========================
      PRODUCTS
@@ -1011,7 +1059,7 @@ if (isset($_SESSION["user_id"])) {
     </div>
 
 </section>
-
+<a href="bird.php" class="back-btn">⬅ Back</a>
 <!-- =========================
      SCRIPT
 ========================= -->

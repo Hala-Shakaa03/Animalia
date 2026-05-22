@@ -646,7 +646,7 @@ if (isset($_SESSION["user_id"])) {
 </section>
 
 
-<a href="cat-supplies.php" class="back-btn">⬅ Back</a>
+<a href="dog-supplies.php" class="back-btn">⬅ Back</a>
 
 <footer class="footer">
     <div class="footer-content">
