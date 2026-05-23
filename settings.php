@@ -16,7 +16,7 @@ if(!$conn){
 
 $query = "SELECT * FROM settings WHERE id=1";
 $result = mysqli_query($conn, $query);
-$data = mysqli_fetch_assoc($result);
+$data  = mysqli_fetch_assoc($result);
 
 if(isset($_POST['save'])){
 

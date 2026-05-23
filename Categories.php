@@ -8,6 +8,7 @@ if(!$conn){
 
 
 
+
 $total_categories_query = mysqli_query($conn,
 
 "SELECT * FROM categories");

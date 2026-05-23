@@ -1,4 +1,16 @@
+
 <?php
+
+$conn = mysqli_connect(
+    "localhost",
+    "root",
+    "",
+    "animalia_db"
+);
+
+if(!$conn){
+    die("Connection Failed");
+}
 
 session_start();
 include "db.php";
@@ -8,12 +20,47 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST["email"];
     $password = $_POST["password"];
 
-    $sql = "SELECT * FROM users WHERE email = '$email'";
+
+
+    /* ADMIN LOGIN */
+
+    $admin_sql = "SELECT * FROM admin WHERE email='$email'";
+
+    $admin_result = mysqli_query($conn, $admin_sql);
+
+
+
+    if(mysqli_num_rows($admin_result) == 1){
+
+        $admin = mysqli_fetch_assoc($admin_result);
+
+
+
+        if(password_verify($password, $admin["password"])){
+
+            $_SESSION["admin_id"] = $admin["id"];
+            $_SESSION["admin_name"] = $admin["full_name"];
+
+            header("Location: dash.php");
+            exit();
+        }
+    }
+
+
+
+    /* USER LOGIN */
+
+    $sql = "SELECT * FROM users WHERE email='$email'";
+
     $result = mysqli_query($conn, $sql);
+
+
 
     if (mysqli_num_rows($result) == 1) {
 
         $user = mysqli_fetch_assoc($result);
+
+
 
         if (password_verify($password, $user["password"])) {
 
@@ -25,14 +72,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
 
         } else {
+
             header("Location: login.php?error=wrong");
             exit();
         }
 
     } else {
+
         header("Location: login.php?error=notfound");
         exit();
     }
 }
-
 ?>

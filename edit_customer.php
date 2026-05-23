@@ -10,7 +10,6 @@ $query = mysqli_query($conn,
 $user = mysqli_fetch_assoc($query);
 
 if(isset($_POST['update'])){
-
     $full_name = $_POST['full_name'];
     $email = $_POST['email'];
     $phone = $_POST['phone'];

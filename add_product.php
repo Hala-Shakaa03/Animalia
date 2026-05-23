@@ -171,6 +171,7 @@ if(isset($_POST['add_product'])){
         </div>
 
         <button
+
             type="submit"
             name="add_product"
             class="btn">

@@ -6,7 +6,7 @@ if(!$conn){
     die("Connection Failed");
 }
 
-$product_query = mysqli_query($conn,
+$product_query  = mysqli_query($conn,
         "SELECT * FROM products");
 
 $products_count = mysqli_num_rows($product_query);

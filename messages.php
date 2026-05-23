@@ -8,6 +8,7 @@ $conn = mysqli_connect(
 );
 
 if(!$conn){
+
     die("Connection Failed");
 }
 
