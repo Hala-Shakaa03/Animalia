@@ -18,6 +18,7 @@ if ($action == "plus") {
     mysqli_query($conn, "DELETE FROM cart_items WHERE id='$id' AND quantity <= 0 AND user_id='$user_id'");
 }
 
+
 header("Location: cart.php");
 exit();
 ?>

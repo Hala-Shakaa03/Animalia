@@ -6,6 +6,7 @@ if(!$conn){
     die("Connection Failed");
 }
 
+
 $users_query = mysqli_query($conn,
 "SELECT * FROM users");
 

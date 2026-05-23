@@ -131,6 +131,7 @@ if(isset($_POST['add_product'])){
                 name="name"
                 required>
 
+
         </div>
 
         <div class="input-group">

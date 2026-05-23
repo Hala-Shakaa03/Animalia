@@ -13,6 +13,7 @@ $products_count = mysqli_num_rows($product_query);
 
 
 
+
 $category_query = mysqli_query($conn,
         "SELECT DISTINCT category FROM products");
 

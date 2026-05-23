@@ -10,6 +10,7 @@
 
 
 
+
             $total_orders_query = mysqli_query($conn,
 
                     "SELECT * FROM orders");

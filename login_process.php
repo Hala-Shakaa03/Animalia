@@ -8,6 +8,7 @@ $conn = mysqli_connect(
     "animalia_db"
 );
 
+
 if(!$conn){
     die("Connection Failed");
 }
