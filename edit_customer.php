@@ -5,7 +5,7 @@ $conn = mysqli_connect("localhost","root","","animalia_db");
 $id = $_GET['id'];
 
 
-$query = mysqli_query($conn,
+$query  = mysqli_query($conn,
     "SELECT * FROM users WHERE id='$id'");
 
 $user = mysqli_fetch_assoc($query);

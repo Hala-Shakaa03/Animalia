@@ -3,6 +3,20 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
+
+$conn = mysqli_connect(
+    "localhost",
+    "root",
+    "",
+    "animalia_db"
+);
+
+
+if (!$conn) {
+    die("Connection Failed");
+}
+
+
 require 'vendor/autoload.php';
 
 include "db.php";

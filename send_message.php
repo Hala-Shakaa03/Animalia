@@ -3,6 +3,20 @@
 session_start();
 include "db.php";
 
+
+$conn = mysqli_connect(
+    "localhost",
+    "root",
+    "",
+    "animalia_db"
+);
+
+
+if (!$conn) {
+    die("Connection Failed");
+}
+
+
 $user_id = $_SESSION["user_id"];
 
 $userQuery =

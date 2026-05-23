@@ -5,6 +5,21 @@ include "db.php";
 if (!isset($_SESSION["user_id"])) {
     echo "login";
     exit();
+
+
+    $conn = mysqli_connect(
+        "localhost",
+        "root",
+        "",
+        "animalia_db"
+    );
+
+
+    if (!$conn) {
+        die("Connection Failed");
+    }
+
+
 }
 
 $user_id = $_SESSION["user_id"];

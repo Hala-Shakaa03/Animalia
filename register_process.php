@@ -1,5 +1,19 @@
 <?php
 
+
+$conn = mysqli_connect(
+    "localhost",
+    "root",
+    "",
+    "animalia_db"
+);
+
+
+if (!$conn) {
+    die("Connection Failed");
+}
+
+
 include "db.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

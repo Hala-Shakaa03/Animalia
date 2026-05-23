@@ -519,7 +519,7 @@ if(isset($_GET['delete'])){
 
                     <div class="actions">
                         <a
-                                href="edit_category.php?id=<?php echo $category['id']; ?>"
+                                href="edit_categories.php?id=<?php echo $category['id']; ?>"
                                 class="action-btn">
 
                             <i class="fa-solid fa-pen"></i>

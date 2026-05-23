@@ -3,6 +3,20 @@
 session_start();
 include "db.php";
 
+
+$conn = mysqli_connect(
+    "localhost",
+    "root",
+    "",
+    "animalia_db"
+);
+
+
+if (!$conn) {
+    die("Connection Failed");
+}
+
+
 if (!isset($_SESSION["user_id"])) {
     header("Location: login.php");
     exit();
