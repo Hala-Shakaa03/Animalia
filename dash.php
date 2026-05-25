@@ -1,4 +1,12 @@
 <?php
+session_start();
+
+if(!isset($_SESSION['admin_id'])){
+    header("Location: login.php");
+    exit();
+}
+?>
+<?php
 
 $conn = mysqli_connect("localhost", "root", "", "animalia_db");
 
@@ -17,6 +25,7 @@ $orders_count = 0;
 $messages_count = 0;
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -333,7 +342,7 @@ $messages_count = 0;
             Products
         </a>
 
-        <a href="../../../Users/AWE/PhpstormProjects/Animalia/Categories.php">
+        <a href="Categories.php">
             <i class="fa-solid fa-layer-group"></i>
             Categories
         </a>
@@ -343,7 +352,7 @@ $messages_count = 0;
             Orders
         </a>
 
-        <a href="../../../Users/AWE/PhpstormProjects/Animalia/customer.php">
+        <a href="customer.php">
             <i class="fa-solid fa-users"></i>
             Customers
         </a>

@@ -12,7 +12,7 @@ if(!$conn){
 
 $total_categories_query = mysqli_query($conn,
 
-"SELECT * FROM categories");
+        "SELECT * FROM categories");
 
 $total_categories = mysqli_num_rows($total_categories_query);
 
@@ -20,7 +20,7 @@ $total_categories = mysqli_num_rows($total_categories_query);
 
 $total_products_query = mysqli_query($conn,
 
-"SELECT * FROM products");
+        "SELECT * FROM products");
 
 $total_products = mysqli_num_rows($total_products_query);
 
@@ -32,7 +32,7 @@ if(isset($_GET['delete'])){
 
     mysqli_query($conn,
 
-    "DELETE FROM categories
+            "DELETE FROM categories
     WHERE id='$delete_id'");
 
     header("Location: categories.php");
@@ -42,7 +42,7 @@ if(isset($_GET['delete'])){
 
 $categories_query = mysqli_query($conn,
 
-"SELECT * FROM categories");
+        "SELECT * FROM categories");
 if(isset($_GET['delete'])){
 
     $delete_id = $_GET['delete'];
@@ -438,7 +438,7 @@ if(isset($_GET['delete'])){
 
                 <div>
                     <h3>Total Categories</h3>
-                    <h2>12</h2>
+                    <h2><?php  echo $total_categories; ?></h2>
                 </div>
 
             </div>
@@ -458,7 +458,7 @@ if(isset($_GET['delete'])){
 
                 <div>
                     <h3>Total Products</h3>
-                    <h2>128</h2>
+                    <h2><?php  echo $total_products; ?></h2>
                 </div>
 
             </div>
@@ -475,10 +475,10 @@ if(isset($_GET['delete'])){
 
             <h2>All Categories</h2>
 
-            <button class="add-btn">
+            <a href ="add_category.php" class="add-btn">
                 <i class="fa-solid fa-plus"></i>
                 Add Category
-            </button>
+            </a>
 
         </div>
 
@@ -491,137 +491,63 @@ if(isset($_GET['delete'])){
                 <th>Actions</th>
             </tr>
 
-            <tr>
+            <?php while($category = mysqli_fetch_assoc($categories_query)){ ?>
 
-                <td>
+                <tr>
 
-                    <div class="category-info">
+                    <td>
 
-                        <div class="category-img">
-                            <i class="fa-solid fa-dog"></i>
+                        <div class="category-info">
+
+                            <div class="category-img">
+                                <i class="fa-solid fa-paw"></i>
+                            </div>
+
+                            <div>
+                                <h4><?php echo $category['name']; ?></h4>
+                                <span>Pet Products</span>
+                            </div>
+
                         </div>
 
-                        <div>
-                            <h4>Dogs</h4>
-                            <span>Pet Products</span>
+                    </td>
+
+                    <td>
+                        <?php echo strtolower($category['name']); ?>
+                    </td>
+
+                    <td>
+                        0
+                    </td>
+
+                    <td>
+
+                        <div class="actions">
+
+<!--                            <a href="edit_Categories.php?id=--><?php //echo $category['id']; ?><!--"-->
+<!--                               class="action-btn">-->
+<!---->
+<!--                                <i class="fa-solid fa-pen"></i>-->
+<!---->
+<!--                            </a>-->
+
+                            <a href="Categories.php?delete=<?php echo $category['id']; ?>"
+                               class="action-btn">
+
+                                <i class="fa-solid fa-trash"></i>
+
+                            </a>
+
                         </div>
 
-                    </div>
+                    </td>
 
-                </td>
+                </tr>
 
-                <td>dogs</td>
-
-                <td>34</td>
-
-
-                <td>
-
-                    <div class="actions">
-                        <a
-                                href="edit_categories.php?id=<?php echo $category['id']; ?>"
-                                class="action-btn">
-
-                            <i class="fa-solid fa-pen"></i>
-
-                        </a>
-                        <a
-                                href="categories.php?delete=<?php echo $category['id']; ?>"
-                                class="action-btn">
-
-                            <i class="fa-solid fa-trash"></i>
-
-                        </a>
-                    </div>
-
-                </td>
-
-            </tr>
-
-            <tr>
-
-                <td>
-
-                    <div class="category-info">
-
-                        <div class="category-img">
-                            <i class="fa-solid fa-cat"></i>
-                        </div>
-
-                        <div>
-                            <h4>Cats</h4>
-                            <span>Pet Products</span>
-                        </div>
-
-                    </div>
-
-                </td>
-
-                <td>cats</td>
-
-                <td>21</td>
-
-
-                <td>
-
-                    <div class="actions">
-
-                        <button class="action-btn">
-                            <i class="fa-solid fa-pen"></i>
-                        </button>
-
-                        <button class="action-btn">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-
-                    </div>
-
-                </td>
-
-            </tr>
-
-            <tr>
-
-                <td>
-
-                    <div class="category-info">
-
-                        <div class="category-img">
-                            <i class="fa-solid fa-fish"></i>
-                        </div>
-
-                        <div>
-                            <h4>Fish</h4>
-                            <span>Aquarium Products</span>
-                        </div>
-
-                    </div>
-
-                </td>
-
-                <td>fish</td>
-
-                <td>11</td>
+            <?php } ?>
 
 
 
-                <td>
-
-                    <div class="actions">
-
-                        <button class="action-btn">
-                            <i class="fa-solid fa-pen"></i>
-                        </button>
-
-                        <button class="action-btn">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-
-                    </div>
-
-                </td>
-
-            </tr>
 
         </table>
 

@@ -375,7 +375,7 @@ if(isset($_GET['delete'])){
             Products
         </a>
 
-        <a href="../../../Users/AWE/PhpstormProjects/Animalia/Categories.php">
+        <a href="Categories.php">
             <i class="fa-solid fa-layer-group"></i>
             Categories
         </a>

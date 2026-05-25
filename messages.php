@@ -384,7 +384,7 @@ if(isset($_GET['delete'])){
 
     <div class="menu">
 
-        <a  href="../../../Users/AWE/PhpstormProjects/Animalia/dash.php">
+        <a  href="dash.php">
             <i class="fa-solid fa-chart-line"></i>
             Dashboard
         </a>
@@ -394,7 +394,7 @@ if(isset($_GET['delete'])){
             Products
         </a>
 
-        <a href="../../../Users/AWE/PhpstormProjects/Animalia/Categories.php">
+        <a href="Categories.php">
             <i class="fa-solid fa-layer-group"></i>
             Categories
         </a>
@@ -404,7 +404,7 @@ if(isset($_GET['delete'])){
             Orders
         </a>
 
-        <a href="../../../Users/AWE/PhpstormProjects/Animalia/customer.php">
+        <a href="customer.php">
             <i class="fa-solid fa-users"></i>
             Customers
         </a>
@@ -559,7 +559,8 @@ if(isset($_GET['delete'])){
                         <div class="actions">
 
                             <a
-                                    href="mailto:<?php echo $row['email']; ?>"
+                                    href="https://accounts.google.com/AccountChooser?continue=https://mail.google.com/mail/u/0/?view=cm%26fs=1%26to=<?php echo urlencode($row['email']); ?>"
+                                    target="_blank"
                                     class="action-btn">
 
                                 <i class="fa-solid fa-reply"></i>

@@ -377,7 +377,7 @@ ORDER BY orders.id DESC");
 
                 <div class="menu">
 
-                    <a href="../../../Users/AWE/PhpstormProjects/Animalia/dash.php">
+                    <a href="dash.php">
                         <i class="fa-solid fa-chart-line"></i>
                         Dashboard
                     </a>
@@ -390,7 +390,7 @@ ORDER BY orders.id DESC");
                         Products
                     </a>
 
-                    <a href="../../../Users/AWE/PhpstormProjects/Animalia/Categories.php">
+                    <a href="Categories.php">
                         <i class="fa-solid fa-layer-group"></i>
                         Categories
                     </a>
@@ -400,12 +400,12 @@ ORDER BY orders.id DESC");
                         Orders
                     </a>
 
-                    <a href="../../../Users/AWE/PhpstormProjects/Animalia/customer.php">
+                    <a href="customer.php">
                         <i class="fa-solid fa-users"></i>
                         Customers
                     </a>
 
-                    <a href="../../../Users/AWE/PhpstormProjects/Animalia/messages.php">
+                    <a href="messages.php">
                         <i class="fa-solid fa-envelope"></i>
                         Messages
                     </a>

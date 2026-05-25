@@ -629,16 +629,16 @@ if (isset($_SESSION["user_id"])) {
             <ul>
 
                 <li>
-                    <a href="p1.php" class="active">Home</a>
+                    <a href="p1.php" >Home</a>
                 </li>
                 <li class="dropdown">
 
-                    <a href="p1.php#categories">
+                    <a href="p1.php#categories" class="active">
                         Store
                         <i class="fa-solid fa-chevron-down"></i>
                     </a>
 
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu" >
 
                         <li>
                             <a href="cat.php">Cats</a>

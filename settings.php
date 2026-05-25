@@ -290,32 +290,32 @@ window.location.href='settings.php';
 
     <div class="menu">
 
-        <a  href="../../../Users/AWE/PhpstormProjects/Animalia/dash.php">
+        <a  href="dash.php">
             <i class="fa-solid fa-chart-line"></i>
             Dashboard
         </a>
 
-        <a  href="../../../Users/AWE/PhpstormProjects/Animalia/products.php" >
+        <a  href="products.php" >
             <i class="fa-solid fa-box"></i>
             Products
         </a>
 
-        <a href="../../../Users/AWE/PhpstormProjects/Animalia/Categories.php">
+        <a href="Categories.php">
             <i class="fa-solid fa-layer-group"></i>
             Categories
         </a>
 
-        <a href="../../../Users/AWE/PhpstormProjects/Animalia/orders.php"  >
+        <a href="orders.php"  >
             <i class="fa-solid fa-cart-shopping"></i>
             Orders
         </a>
 
-        <a href="../../../Users/AWE/PhpstormProjects/Animalia/customer.php">
+        <a href="customer.php">
             <i class="fa-solid fa-users"></i>
             Customers
         </a>
 
-        <a href="../../../Users/AWE/PhpstormProjects/Animalia/messages.php" >
+        <a href="messages.php" >
             <i class="fa-solid fa-envelope"></i>
             Messages
         </a>
@@ -425,9 +425,9 @@ window.location.href='settings.php';
 
         </div>
 
-    </div>
+<!--    </div>-->
 
-</div>
+<!--</div>-->
 
 </body>
 </html>

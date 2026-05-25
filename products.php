@@ -502,7 +502,7 @@ if(isset($_GET['delete'])){
 
     <div class="menu">
 
-        <a  href="../../../Users/AWE/PhpstormProjects/Animalia/dash.php">
+        <a  href="dash.php">
             <i class="fa-solid fa-chart-line"></i>
             Dashboard
         </a>
@@ -512,22 +512,22 @@ if(isset($_GET['delete'])){
             Products
         </a>
 
-        <a href="../../../Users/AWE/PhpstormProjects/Animalia/Categories.php" >
+        <a href="Categories.php" >
             <i class="fa-solid fa-layer-group"></i>
             Categories
         </a>
 
-        <a href="../../../Users/AWE/PhpstormProjects/Animalia/orders.php"  >
+        <a href="orders.php"  >
             <i class="fa-solid fa-cart-shopping"></i>
             Orders
         </a>
 
-        <a href="../../../Users/AWE/PhpstormProjects/Animalia/customer.php">
+        <a href="customer.php">
             <i class="fa-solid fa-users"></i>
             Customers
         </a>
 
-        <a href="../../../Users/AWE/PhpstormProjects/Animalia/messages.php">
+        <a href="messages.php">
             <i class="fa-solid fa-envelope"></i>
             Messages
         </a>
@@ -640,7 +640,7 @@ if(isset($_GET['delete'])){
 
             <h2>Manage Products</h2>
 
-            <a href="../../../Users/AWE/PhpstormProjects/Animalia/add_product.php" class="add-btn">
+            <a href="add_product.php" class="add-btn">
                 <i class="fa-solid fa-plus"></i>
                 Add Product
             </a>
